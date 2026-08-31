@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+.git/
+.pytest_cache/
+*.db
+*.sqlite3
+.env
+tests/
+ml_training/
+dl_training/
+data/
+scripts/
+*.log
