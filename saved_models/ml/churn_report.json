@@ -1,0 +1,74 @@
+{
+  "best_model": "gradient_boosting",
+  "features_numeric": [
+    "tenure_months",
+    "monthly_charge",
+    "total_charges",
+    "num_tickets",
+    "avg_satisfaction",
+    "charge_per_tenure",
+    "tickets_per_tenure"
+  ],
+  "features_categorical": [
+    "contract_type",
+    "payment_method"
+  ],
+  "model_version": "1.0.0",
+  "eda": {
+    "churn_distribution": {
+      "0": 0.9,
+      "1": 0.1
+    },
+    "correlation_with_churn": {
+      "tenure_months": -0.129,
+      "monthly_charge": 0.089,
+      "total_charges": -0.068,
+      "num_tickets": 0.077,
+      "avg_satisfaction": -0.138,
+      "charge_per_tenure": 0.092,
+      "tickets_per_tenure": 0.102
+    },
+    "null_counts_before_imputation": {
+      "customer_id": 0,
+      "name": 0,
+      "email": 0,
+      "phone": 0,
+      "plan_type": 0,
+      "monthly_charge": 0,
+      "tenure_months": 0,
+      "total_charges": 0,
+      "contract_type": 0,
+      "payment_method": 0,
+      "num_tickets": 0,
+      "avg_satisfaction": 75,
+      "churn_status": 0,
+      "charge_per_tenure": 0,
+      "tickets_per_tenure": 0
+    }
+  },
+  "results": {
+    "random_forest": {
+      "auc_roc": 0.7094444444444444,
+      "average_precision": 0.23257534491750653
+    },
+    "gradient_boosting": {
+      "auc_roc": 0.7308333333333333,
+      "average_precision": 0.2725331838580986
+    }
+  },
+  "feature_importance": {
+    "charge_per_tenure": 0.2359,
+    "avg_satisfaction": 0.195,
+    "total_charges": 0.1417,
+    "tickets_per_tenure": 0.1416,
+    "monthly_charge": 0.1134,
+    "contract_type_month-to-month": 0.0713,
+    "tenure_months": 0.0645,
+    "payment_method_credit_card": 0.01,
+    "num_tickets": 0.01,
+    "payment_method_cash": 0.0061,
+    "payment_method_bank_transfer": 0.006,
+    "contract_type_two-year": 0.0045,
+    "contract_type_one-year": 0.0
+  }
+}

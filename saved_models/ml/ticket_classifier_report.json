@@ -1,0 +1,136 @@
+{
+  "best_model": "logistic_regression",
+  "categories": [
+    "TECH",
+    "BILL",
+    "PLAN",
+    "CNCL",
+    "OTHR"
+  ],
+  "n_samples_total": 800,
+  "n_train": 640,
+  "n_test": 160,
+  "model_version": "1.0.0",
+  "results": {
+    "logistic_regression": {
+      "cv_f1_macro_5fold": {
+        "mean": 0.9984313725490196,
+        "std": 0.003137254901960773,
+        "folds": [
+          1.0,
+          0.9921568627450981,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "test_accuracy": 1.0,
+      "test_f1_macro": 1.0,
+      "classification_report": {
+        "TECH": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 32.0
+        },
+        "BILL": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 32.0
+        },
+        "PLAN": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 32.0
+        },
+        "CNCL": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 32.0
+        },
+        "OTHR": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 32.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 160.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 160.0
+        }
+      }
+    },
+    "linear_svc_calibrated": {
+      "cv_f1_macro_5fold": {
+        "mean": 0.9984313725490196,
+        "std": 0.003137254901960773,
+        "folds": [
+          1.0,
+          0.9921568627450981,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "test_accuracy": 1.0,
+      "test_f1_macro": 1.0,
+      "classification_report": {
+        "TECH": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 32.0
+        },
+        "BILL": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 32.0
+        },
+        "PLAN": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 32.0
+        },
+        "CNCL": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 32.0
+        },
+        "OTHR": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 32.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 160.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 160.0
+        }
+      }
+    }
+  }
+}
