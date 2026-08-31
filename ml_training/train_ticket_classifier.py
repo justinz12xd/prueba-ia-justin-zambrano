@@ -15,8 +15,6 @@ Ejecutar:  python ml_training/train_ticket_classifier.py
 from __future__ import annotations
 
 import json
-import re
-import unicodedata
 from pathlib import Path
 
 import joblib
@@ -33,46 +31,24 @@ from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test
 from sklearn.pipeline import Pipeline
 from sklearn.svm import LinearSVC
 
+import sys
+
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+from app.ml_runtime.text_preprocessing import (  # noqa: E402  (ver nota abajo)
+    SPANISH_STOPWORDS, normalize_text, validate_min_length as validate_input_text)
+
 DATA_PATH = ROOT / "data" / "tickets_train.csv"
 OUT_DIR = ROOT / "saved_models" / "ml"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 CATEGORIES = ["TECH", "BILL", "PLAN", "CNCL", "OTHR"]
 
-SPANISH_STOPWORDS = [
-    "de", "la", "que", "el", "en", "y", "a", "los", "del", "se", "las", "por",
-    "un", "para", "con", "no", "una", "su", "al", "lo", "como", "más", "pero",
-    "sus", "le", "ya", "o", "este", "sí", "porque", "esta", "entre", "cuando",
-    "muy", "sin", "sobre", "también", "me", "hasta", "hay", "donde", "quien",
-    "desde", "todo", "nos", "durante", "todos", "uno", "les", "ni", "contra",
-    "otros", "ese", "eso", "ante", "ellos", "e", "esto", "mí", "antes", "algunos",
-    "qué", "unos", "yo", "otro", "otras", "otra", "él", "tanto", "esa", "estos",
-    "mucho", "quienes", "nada", "muchos", "cual", "poco", "ella", "estar", "estas",
-    "algunas", "algo", "nosotros", "mi", "mis", "tú", "te", "ti", "tu", "tus",
-]
-
-
-def normalize_text(text: str) -> str:
-    """Limpieza de texto: minúsculas, quita acentos duplicados de ruido, conserva ñ.
-
-    Nota: el vectorizador TF-IDF de sklearn ya tokeniza; aquí solo normalizamos
-    espacios y caracteres no alfabéticos para reducir ruido, MANTENIENDO tildes
-    y 'ñ' (importante para español) porque el requisito pide manejarlas, no
-    eliminarlas.
-    """
-    text = str(text).strip().lower()
-    text = unicodedata.normalize("NFC", text)
-    text = re.sub(r"[^a-záéíóúüñ0-9\s]", " ", text)
-    text = re.sub(r"\s+", " ", text).strip()
-    return text
-
-
-def validate_input_text(text: str) -> str:
-    """Validación de negocio: mínimo 10 caracteres (según especificación)."""
-    if text is None or len(text.strip()) < 10:
-        raise ValueError("El texto de entrada debe tener mínimo 10 caracteres")
-    return text
+# NOTA: `normalize_text` se importa desde app.ml_runtime.text_preprocessing (en vez de
+# definirse aquí) a propósito: el TfidfVectorizer serializa esta función con joblib, y
+# joblib necesita poder reimportarla por su ruta de módulo real al cargar el modelo
+# desde otro proceso (la API). Si viviera en este script, quedaría pickleada como
+# `__main__.normalize_text` y fallaría al cargar fuera de este archivo.
 
 
 def build_pipelines() -> dict[str, Pipeline]:

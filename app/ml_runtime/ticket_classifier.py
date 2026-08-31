@@ -6,6 +6,10 @@ from functools import lru_cache
 import joblib
 
 from app.core.config import get_settings
+# Import necesario aunque no se referencie explícitamente: `normalize_text` es el
+# `preprocessor` serializado dentro del TfidfVectorizer del pipeline entrenado, y
+# joblib debe poder resolverlo por esta misma ruta de módulo al deserializar.
+from app.ml_runtime.text_preprocessing import normalize_text, validate_min_length  # noqa: F401
 
 settings = get_settings()
 CATEGORIES = ["TECH", "BILL", "PLAN", "CNCL", "OTHR"]
@@ -24,11 +28,6 @@ def _load_pipeline():
             "Ejecute: python ml_training/train_ticket_classifier.py"
         )
     return joblib.load(path)
-
-
-def validate_min_length(text: str, min_len: int = 10) -> None:
-    if text is None or len(text.strip()) < min_len:
-        raise ValueError(f"El texto de entrada debe tener mínimo {min_len} caracteres")
 
 
 def classify_ticket(description: str) -> tuple[str, dict[str, float]]:
