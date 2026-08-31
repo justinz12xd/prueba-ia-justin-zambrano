@@ -1,0 +1,19 @@
+{
+  "model_version": "1.0.0",
+  "mae_hours": 1.7527724538743494,
+  "rmse_hours": 2.531811084049974,
+  "r2": 0.5843315309020194,
+  "categories": [
+    "TECH",
+    "BILL",
+    "PLAN",
+    "CNCL",
+    "OTHR"
+  ],
+  "priorities": [
+    "low",
+    "medium",
+    "high"
+  ],
+  "epochs_trained": 19
+}

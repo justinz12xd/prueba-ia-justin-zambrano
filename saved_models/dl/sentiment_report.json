@@ -1,0 +1,46 @@
+{
+  "model_version": "1.0.0",
+  "classes": [
+    "negative",
+    "neutral",
+    "positive"
+  ],
+  "max_vocab": 10000,
+  "max_len": 200,
+  "test_accuracy": 1.0,
+  "test_loss": 2.47523644247849e-06,
+  "classification_report": {
+    "negative": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 118.0
+    },
+    "neutral": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 122.0
+    },
+    "positive": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 120.0
+    },
+    "accuracy": 1.0,
+    "macro avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 360.0
+    },
+    "weighted avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 360.0
+    }
+  },
+  "epochs_trained": 26
+}
