@@ -49,7 +49,7 @@ data/            datasets sintéticos generados (scripts/generate_synthetic_data
 sql/init.sql     DDL + función y stored procedure PL/pgSQL
 static/          portal del cliente (/portal) y panel técnico (/demo)
 docs/            chuleta de defensa oral para la entrevista
-tests/           pytest (52 tests) con TestClient + SQLite
+tests/           pytest (53 tests) con TestClient + SQLite
 ```
 
 ## 3. Cómo ejecutar
@@ -121,7 +121,7 @@ aunque la intención sea otra.
 ### Tests
 
 ```bash
-pytest tests/ -v      # 52 tests, corren contra SQLite en un archivo temporal
+pytest tests/ -v      # 53 tests, corren contra SQLite en un archivo temporal
 ```
 
 ## 4. Credenciales de prueba
@@ -170,8 +170,8 @@ categoría, se reutiliza en vez de duplicarlo. El chat muestra el resultado como
 tarjeta: número de solicitud, equipo asignado y tiempo estimado de respuesta.
 
 **Roles `agent` / `admin` → consola de soporte.** Bandeja de tickets sin resolver, cada
-uno enriquecido con las señales de los otros modelos (frustración detectada, riesgo de
-churn y tiempo estimado), con acciones para tomar el caso o marcarlo resuelto. Se arma
+uno enriquecido con las señales de los otros modelos (frustración detectada sobre el
+último mensaje del cliente, riesgo de churn y tiempo estimado), con acciones para tomar el caso o marcarlo resuelto. Se arma
 con una sola llamada a `GET /api/v1/tickets/queue`: el trabajo pesado lo hace el backend
 en vez de N peticiones desde el navegador.
 
@@ -308,6 +308,13 @@ Gráficas y reportes completos en `saved_models/ml/*.png|json` y `saved_models/d
 - No se implementaron migraciones (Alembic incluido en `requirements.txt` pero
   no configurado); las tablas se crean con `Base.metadata.create_all` al
   arrancar, más `sql/init.sql` como documentación/alternativa manual.
+- **El agente puede inventar datos concretos.** Con `GOOGLE_API_KEY` configurada, ante
+  *"¿cuál es el horario de atención los sábados?"* Gemini respondió *"de 9:00 a 14:00"*:
+  un dato que no existe en el sistema, y lo hizo pese a la instrucción explícita del
+  prompt de no inventar precios, horarios ni fechas. Es alucinación de manual y no se
+  arregla con prompting: haría falta una base de conocimiento que el agente consulte
+  (RAG) y responder "no dispongo de ese dato" cuando no la encuentre. Sin la API key el
+  agente usa plantillas y el problema no se da, porque no improvisa.
 - **Sentimiento:** el modelo ya distingue una consulta informativa, un reporte de avería
   en calma y un cliente enfadado (10/10 en frases escritas a mano fuera del generador),
   pero sigue entrenado con datos sintéticos: con mensajes reales, llenos de ironía,

@@ -46,7 +46,7 @@ dl_training/       Parte 2 — TensorFlow/Keras
 saved_models/      artefactos entrenados + reportes JSON + gráficas
 sql/init.sql       DDL + 1 función + 1 stored procedure PL/pgSQL
 static/            portal del cliente (/portal) y panel técnico (/demo)
-tests/             52 tests (pytest + TestClient + SQLite)
+tests/             53 tests (pytest + TestClient + SQLite)
 ```
 
 **La frase para explicar la arquitectura en una línea:**
@@ -248,7 +248,7 @@ de la sesión: el JWT solo lleva email y rol) y `GET /tickets/queue` (la bandeja
 
 - *¿Por qué Postgres y no SQLite?* Porque el requisito de stored procedure pedía PL/pgSQL
   real. Los tests sí usan SQLite, por velocidad y para no depender de infraestructura.
-- *¿Los tests cubren qué?* 52 tests sobre los endpoints críticos: auth (incluido rechazo de
+- *¿Los tests cubren qué?* 53 tests sobre los endpoints críticos: auth (incluido rechazo de
   refresh token como access), CRUD de clientes con sus validaciones, tickets, los 4 modelos,
   el agente (incluidos 401 y 403 por rol) y MCP.
 - *¿Cómo garantizas que el modelo carga en producción?* `ml_runtime` cachea con `lru_cache`
@@ -291,7 +291,11 @@ Reconocer un límite con la solución al lado suma; que te lo descubran, resta.
 4. **Sin Alembic.** Las tablas se crean con `Base.metadata.create_all`; para producción haría
    falta migraciones versionadas.
 5. **Sin checkpointer de LangGraph** (decisión consciente, ver sección 5).
-6. **Sin rate limiting ni paginación en tickets** (clientes sí tiene paginación).
+6. **El agente con LLM puede alucinar datos concretos** (inventó un horario de oficinas
+   que no existe, pese a que el prompt se lo prohíbe). La solución real es RAG sobre una
+   base de conocimiento, no más prompting. Buena respuesta si preguntan por los riesgos
+   de poner un LLM de cara al cliente.
+7. **Sin rate limiting ni paginación en tickets** (clientes sí tiene paginación).
 
 ---
 
@@ -367,7 +371,7 @@ convincente, porque el ejemplo no lo elegiste tú.
 
 ```bash
 docker compose up --build              # stack completo
-pytest tests/ -v                       # 52 tests
+pytest tests/ -v                       # 53 tests
 python ml_training/train_churn_model.py    # reentrenar
 docker exec -it telecom_support_db psql -U postgres -d telecom_support \
   -c "SELECT * FROM fn_customer_churn_summary(1);"   # demostrar la función SQL

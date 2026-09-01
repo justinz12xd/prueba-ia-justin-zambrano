@@ -2,10 +2,12 @@
 from __future__ import annotations
 
 from fastapi import HTTPException, status
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.ml_runtime import (churn_model, resolution_time_model, sentiment_model,
                             ticket_classifier)
+from app.models.interaction import Interaction
 from app.models.ticket import Ticket
 from app.repositories.customer_repository import CustomerRepository
 from app.repositories.ticket_repository import TicketRepository
@@ -22,6 +24,18 @@ class TicketService:
     def list_tickets(self, skip: int, limit: int, customer_id: int | None) -> list[Ticket]:
         return self.repo.list(skip, limit, customer_id)
 
+    def _ultimo_mensaje_por_ticket(self, ticket_ids: list[int]) -> dict[int, str]:
+        """Último `customer_msg` registrado de cada ticket, en una sola consulta."""
+        if not ticket_ids:
+            return {}
+        filas = self.db.execute(
+            select(Interaction.ticket_id, Interaction.customer_msg)
+            .where(Interaction.ticket_id.in_(ticket_ids))
+            .order_by(Interaction.ticket_id, Interaction.interaction_id)
+        ).all()
+        # Al ir ordenadas de forma ascendente, la última asignación de cada ticket gana.
+        return {ticket_id: mensaje for ticket_id, mensaje in filas if mensaje}
+
     def queue(self, limit: int = 20, only_open: bool = True) -> list[TicketQueueItem]:
         """Bandeja de trabajo del agente: tickets + señales de los tres modelos.
 
@@ -31,6 +45,8 @@ class TicketService:
         tickets = self.repo.list(0, limit, None)
         if only_open:
             tickets = [t for t in tickets if t.status in ("open", "in_progress")]
+
+        ultimos_mensajes = self._ultimo_mensaje_por_ticket([t.ticket_id for t in tickets])
 
         items: list[TicketQueueItem] = []
         for ticket in tickets:
@@ -44,8 +60,15 @@ class TicketService:
                 description=ticket.description,
                 created_at=ticket.created_at,
             )
+            # El sentimiento se evalúa sobre el ÚLTIMO mensaje del cliente en esa
+            # conversación, no sobre la descripción del ticket. La descripción es el
+            # primer mensaje —normalmente el más calmado—, así que un cliente que se
+            # enfada más adelante aparecía en la bandeja como si estuviera tranquilo.
+            texto_sentimiento = ultimos_mensajes.get(ticket.ticket_id) or ticket.description
+            item.sentiment_source = ("last_message" if ticket.ticket_id in ultimos_mensajes
+                                      else "description")
             try:
-                sentiment, _, is_frustrated = sentiment_model.analyze_sentiment(ticket.description)
+                sentiment, _, is_frustrated = sentiment_model.analyze_sentiment(texto_sentimiento)
                 item.sentiment, item.is_frustrated = sentiment, is_frustrated
             except Exception:  # noqa: BLE001
                 pass

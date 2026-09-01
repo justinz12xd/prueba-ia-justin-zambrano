@@ -93,7 +93,11 @@ class TicketQueueItem(BaseModel):
     description: str
     created_at: dt.datetime
 
-    sentiment: str | None = Field(None, description="Sentimiento detectado en la descripción")
+    sentiment: str | None = Field(
+        None, description="Sentimiento del último mensaje del cliente en la conversación "
+                          "(o de la descripción, si el ticket no tiene interacciones)")
+    sentiment_source: Literal["last_message", "description"] = Field(
+        "description", description="Sobre qué texto se evaluó el sentimiento")
     is_frustrated: bool = False
     churn_probability: float | None = None
     churn_risk: str | None = None

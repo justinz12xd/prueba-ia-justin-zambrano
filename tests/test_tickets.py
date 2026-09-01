@@ -69,3 +69,32 @@ def test_support_queue_is_internal_only(client, customer_headers):
     """La bandeja es una herramienta interna: sin token 401, y el cliente 403."""
     assert client.get("/api/v1/tickets/queue").status_code == 401
     assert client.get("/api/v1/tickets/queue", headers=customer_headers).status_code == 403
+
+
+def test_queue_uses_last_message_not_the_description(client, auth_headers):
+    """La bandeja debe reflejar el ánimo ACTUAL del cliente.
+
+    Regresión: el sentimiento se calculaba sobre la descripción del ticket —que es el
+    primer mensaje, normalmente el más calmado—, así que un cliente que se enfadaba
+    más adelante en la conversación aparecía en la bandeja como si estuviera tranquilo.
+    """
+    calmado = ("Buenas tardes, desde el lunes el internet se corta cada media hora "
+               "y ya reinicie el router")
+    enfadado = "Esto es inaceptable, llevo tres dias sin internet y nadie resuelve nada"
+
+    primero = client.post("/api/v1/agent/chat", json={"message": calmado, "customer_id": 1},
+                          headers=auth_headers).json()
+    ticket_id = primero["ticket"]["ticket_id"]
+    assert primero["escalate"] is False
+
+    # El mismo cliente se enfada: se reutiliza el ticket, pero cambia su ánimo
+    segundo = client.post("/api/v1/agent/chat", json={"message": enfadado, "customer_id": 1},
+                           headers=auth_headers).json()
+    assert segundo["ticket"]["ticket_id"] == ticket_id
+    assert segundo["escalate"] is True
+
+    fila = next(t for t in client.get("/api/v1/tickets/queue", headers=auth_headers).json()
+                if t["ticket_id"] == ticket_id)
+    assert fila["sentiment_source"] == "last_message"
+    assert fila["sentiment"] == "negative"
+    assert fila["is_frustrated"] is True
