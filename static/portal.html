@@ -259,11 +259,11 @@
     resolved: { text: "Resuelto", cls: "ok" },
     closed: { text: "Cerrado", cls: "" },
   };
-  const SENTIMENT_UI = {
-    negative: { text: "😠 negativo", cls: "danger" },
-    neutral: { text: "😐 neutral", cls: "" },
-    positive: { text: "🙂 positivo", cls: "ok" },
-  };
+  // El modelo de sentimiento se entrenó con mensajes emocionales, así que sobre una
+  // descripción factual su salida es poco informativa. Por eso la bandeja solo muestra
+  // la señal cuando el modelo detecta frustración con confianza (is_frustrated), que es
+  // el caso en el que acierta y en el que el dato le sirve al agente: priorizar.
+  const FRUSTRATION_PILL = { text: "😠 cliente molesto", cls: "danger" };
 
   // ------------------------------ helpers ------------------------------
 
@@ -478,7 +478,6 @@
   function renderQueueCard(t) {
     const ui = CATEGORY_UI[t.category] || CATEGORY_UI.OTHR;
     const st = STATUS_UI[t.status] || { text: t.status, cls: "" };
-    const sent = SENTIMENT_UI[t.sentiment];
     const eta = formatHours(t.estimated_hours);
     // El borde izquierdo resalta lo que conviene atender primero.
     const urgency = (t.is_frustrated || t.churn_risk === "high") ? "urgent"
@@ -488,7 +487,9 @@
       `<span class="pill ${st.cls}">${st.text}</span>`,
       `<span class="pill brand">${ui.team}</span>`,
       `<span class="pill ${t.priority === "high" ? "warn" : ""}">prioridad ${PRIORITY_UI[t.priority]}</span>`,
-      sent ? `<span class="pill ${sent.cls}">${sent.text}</span>` : "",
+      t.is_frustrated
+        ? `<span class="pill ${FRUSTRATION_PILL.cls}">${FRUSTRATION_PILL.text}</span>`
+        : "",
       t.churn_risk
         ? `<span class="pill ${t.churn_risk === "high" ? "danger" : t.churn_risk === "medium" ? "warn" : ""}">` +
           `churn ${(t.churn_probability * 100).toFixed(0)}%</span>`

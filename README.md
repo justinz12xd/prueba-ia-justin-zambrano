@@ -150,7 +150,7 @@ categoría, se reutiliza en vez de duplicarlo. El chat muestra el resultado como
 tarjeta: número de solicitud, equipo asignado y tiempo estimado de respuesta.
 
 **Roles `agent` / `admin` → consola de soporte.** Bandeja de tickets sin resolver, cada
-uno enriquecido con las señales de los tres modelos (sentimiento del cliente, riesgo de
+uno enriquecido con las señales de los otros modelos (frustración detectada, riesgo de
 churn y tiempo estimado), con acciones para tomar el caso o marcarlo resuelto. Se arma
 con una sola llamada a `GET /api/v1/tickets/queue`: el trabajo pesado lo hace el backend
 en vez de N peticiones desde el navegador.
@@ -270,11 +270,14 @@ Gráficas y reportes completos en `saved_models/ml/*.png|json` y `saved_models/d
 - No se implementaron migraciones (Alembic incluido en `requirements.txt` pero
   no configurado); las tablas se crean con `Base.metadata.create_all` al
   arrancar, más `sql/init.sql` como documentación/alternativa manual.
-- El modelo de sentimiento se entrenó con mensajes emocionales de `interactions.csv`,
-  pero en la bandeja del agente se aplica a la *descripción* del ticket, que suele ser
-  más factual. Es un desajuste de dominio: sobre descripciones neutras la predicción es
-  poco informativa. Lo correcto sería entrenarlo también con descripciones de tickets, o
-  mostrar el sentimiento del último mensaje de la conversación en vez del de la descripción.
+- **Sentimiento sobre descripciones factuales:** el modelo se entrenó con mensajes
+  emocionales de `interactions.csv`, así que sobre una descripción neutra su salida es
+  poco informativa (llegaba a etiquetar como "positivo" un reporte de avería). La bandeja
+  del agente por eso **solo muestra la señal cuando el modelo detecta frustración con
+  confianza** (`is_frustrated`, umbral 0.6), que es el caso en el que acierta y en el que
+  el dato sirve para priorizar; el resto del tiempo no se muestra nada en vez de mostrar
+  una etiqueta engañosa. La solución de fondo sería entrenarlo también con descripciones
+  de tickets, o evaluar el último mensaje de la conversación en lugar de la descripción.
 - El checkpointer de LangGraph no se usó explícitamente: el historial de la
   conversación se reconstruye en cada turno desde `agent_session` (Postgres),
   que es la fuente de verdad pedida por el esquema de datos.

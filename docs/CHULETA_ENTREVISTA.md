@@ -74,7 +74,7 @@ SQLAlchemy; aquí las entidades SQLAlchemy sí son el modelo.
    **No se duplica el ticket**: es una regla de negocio, no un accidente.
 5. Salir y entrar con `agente@telecom.com` / `Agente123!` → **la misma URL muestra otra
    cosa**: la bandeja de soporte, con ese ticket ya clasificado y etiquetado con
-   sentimiento, riesgo de churn y tiempo estimado. Tomar el caso o resolverlo.
+   riesgo de churn y tiempo estimado. Tomar el caso o resolverlo.
 6. `/demo` para la vista técnica (probabilidades por clase, MCP con su sobre JSON-RPC).
 
 > **El punto que hay que dejar claro:** un solo mensaje del cliente activa los cuatro
@@ -260,6 +260,11 @@ de la sesión: el JWT solo lleva email y rol) y `GET /tickets/queue` (la bandeja
 Reconocer un límite con la solución al lado suma; que te lo descubran, resta.
 
 1. **Datos sintéticos ⇒ métricas optimistas** en tickets y sentimiento. Ya explicado arriba.
+   Relacionado: el modelo de sentimiento se entrenó con mensajes **emocionales**, así que
+   sobre una descripción factual de avería su salida es ruido (llegó a decir "positivo").
+   Por eso la bandeja solo muestra la etiqueta cuando `is_frustrated` es verdadero:
+   **prefiero no mostrar nada antes que mostrar un dato engañoso.** Si preguntan por
+   criterio de producto, esta es una buena respuesta.
 2. **`avg_satisfaction` está fijo en 3.5** al predecir churn de un cliente concreto
    (`app/services/customer_service.py:60`), pese a ser la 2ª feature más importante. La
    función SQL `fn_customer_churn_summary` ya calcula el promedio real: cablearla es el
