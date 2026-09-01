@@ -1,801 +1,801 @@
 ticket_id,category,priority,description,hour_of_day,day_of_week,resolution_time_hours
-1,OTHR,low,Necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,1,0,5.06
-2,OTHR,medium,"Quiero felicitar al agente que me atendió, excelente servicio",15,3,1.68
-3,TECH,medium,"Se me corta el wifi cada 5 minutos, es muy frustrante",10,5,9.13
-4,CNCL,medium,"Ya encontré otro proveedor, necesito cancelar mi cuenta cuanto antes",20,3,4.1
-5,TECH,high,"Tengo pérdida de paquetes constante jugando online, revisen la señal por favor",2,1,4.68
-6,CNCL,medium,Deseo dar de baja mi línea porque me mudo de ciudad!!,20,1,5.61
-7,PLAN,medium,Estoy interesado en el combo de internet más streaming,18,1,4.04
-8,CNCL,medium,Solicito la baja definitiva de todos mis servicios contratados,21,3,6.55
-9,OTHR,high,"Quiero felicitar al agente que me atendió, excelente servicio",4,5,2.38
-10,PLAN,high,Necesito bajar de plan porque el actual me queda muy caro!!,15,4,2.12
-11,TECH,medium,"Mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",1,3,10.01
-12,BILL,medium,No reconozco un cargo de $35 en mi ultima factura!!,5,2,4.36
-13,CNCL,medium,"Quiero cancelar mi servicio de internet, ya no lo necesito",21,4,3.7
-14,TECH,low,"Tengo pérdida de paquetes constante jugando online, revisen la señal por favor",21,2,8.58
-15,PLAN,medium,Quiero contratar el Fibra 1GB para mi nueva casa en Ambato,19,6,4.42
-16,PLAN,low,¿Puedo hacer upgrade a Fibra 1GB sin pagar penalidad por cambio?,13,5,4.0
-17,BILL,medium,"se me generó un cargo por mora que no debería aplicar, ya pagué a tiempo!!",22,5,3.12
-18,PLAN,medium,Quisiera cambiar mi plan antes de que termine el contrato actual,6,2,5.12
-19,CNCL,high,"Me mudo fuera de Loja y no hay cobertura, debo cancelar",7,4,3.44
-20,CNCL,high,¿Cuál es el proceso para cancelar mi plan sin penalidad?,9,4,2.86
-21,OTHR,medium,Quisiera saber más sobre las políticas de privacidad de datos!!,6,3,2.29
-22,CNCL,low,"Ya encontre otro proveedor, necesito cancelar mi cuenta cuanto antes",3,4,7.21
-23,CNCL,low,Deseo dar de baja mi línea porque me mudo de ciudad,7,0,5.56
-24,OTHR,medium,¿Dónde queda la sucursal más cercana a mi domicilio?,6,0,3.04
-25,PLAN,low,¿Puedo combinar dos servicios en un solo plan con descuento?,20,2,8.75
-26,TECH,high,No detecta la red wifi en ninguno de mis dispositivos desde ayer,16,6,5.88
-27,BILL,low,Quiero saber la fecha límite de pago de mi factura actual,17,5,3.67
-28,CNCL,high,Quiero dar de baja el combo de TV pero mantener el internet,14,5,3.1
-29,OTHR,high,Tengo una consulta general sobre los servicios que ofrecen!!,16,1,1.17
-30,CNCL,medium,quiero cancelar mi suscripción antes de la próxima facturación,14,5,6.12
-31,BILL,low,¿Por que me cobraron $25 de mas este mes en Guayaquil?,23,0,6.16
-32,TECH,low,"Contrate fibra optica pero la velocidad real es pesima, parece adsl",9,6,11.37
-33,CNCL,medium,Quiero cancelar porque el precio subió demasiado,21,0,7.01
-34,PLAN,low,Necesito aumentar la cantidad de datos móviles de mi plan actual,17,0,5.5
-35,TECH,medium,El servicio de internet se cae todas las noches entre las 8 y las 10,14,1,16.19
-36,TECH,medium,"Mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",20,2,9.27
-37,OTHR,low,Tengo una duda sobre el proceso de portabilidad numérica,4,4,2.71
-38,PLAN,low,Quiero información sobre los planes empresariales disponibles,23,6,13.63
-39,OTHR,low,¿Puedo pagar mi factura en efectivo en algún punto físico?,10,1,2.64
-40,OTHR,high,¿Dónde queda la sucursal más cercana a mi domicilio?,3,0,1.65
-41,TECH,low,No carga ninguna página web desde esta mañana en Cuenca,19,6,8.31
-42,BILL,medium,"Se me generó un cargo por mora que no debería aplicar, ya pagué a tiempo",12,6,5.55
-43,BILL,medium,El total de la factura no coincide con el valor de mi plan mensual,13,0,2.38
-44,PLAN,medium,"Me interesa subir de velocidad, ¿que opciones tienen sobre 50MB?",22,4,3.34
-45,CNCL,low,"Quiero cancelar mi servicio de internet, ya no lo necesito",10,5,12.05
-46,CNCL,low,"Quiero cancelar mi servicio de internet, ya no lo necesito",15,4,5.4
-47,PLAN,medium,"Me interesa subir de velocidad, ¿qué opciones tienen sobre 200MB?!!",10,6,3.82
-48,CNCL,low,Deseo dar de baja mi línea porque me mudo de ciudad,2,6,7.27
-49,CNCL,high,quiero cancelar porque el precio subió demasiado,17,2,2.55
-50,CNCL,high,¿Tiene costo cancelar antes de que termine el contrato de Fibra 500MB?,21,3,2.78
-51,BILL,medium,"El descuento de la promoción no se aplicó en mi factura, sigo pagando el full!!",1,4,4.54
-52,TECH,high,"La luz del módem está en ámbar, no logro navegar",14,2,3.78
-53,OTHR,medium,¿Puedo pagar mi factura en efectivo en algún punto físico?,14,6,2.16
-54,BILL,high,No reconozco un cargo de $15 en mi ultima factura,19,5,1.9
-55,PLAN,high,Quiero agregar una línea móvil adicional a mi plan familiar,7,4,2.84
-56,PLAN,medium,¿Tienen promociones para migrar a Fibra 200MB este mes?,7,6,6.78
-57,PLAN,low,¿Tienen promociones para migrar a Plan Ilimitado este mes?,0,5,8.55
-58,PLAN,low,Necesito aumentar la cantidad de datos móviles de mi plan actual,5,1,6.47
-59,BILL,medium,"el valor de mi plan subió sin previo aviso, quiero una explicación",9,5,3.98
-60,BILL,high,¿Por qué me cobraron $5 de más este mes en Ambato?,12,4,1.89
-61,CNCL,medium,¿Cuál es el proceso para cancelar mi plan sin penalidad?,17,3,6.11
-62,OTHR,medium,¿Dónde queda la sucursal más cercana a mi domicilio?,7,1,2.39
-63,OTHR,medium,¿Cómo puedo actualizar mis datos de contacto?,20,6,1.17
-64,BILL,medium,No me ha llegado la factura electrónica de este mes a mi correo,17,3,2.16
-65,BILL,medium,"Me llegó un cobro duplicado en la factura de este mes, favor revisar",3,1,1.88
-66,PLAN,medium,"Quiero cambiar mi plan actual a Fibra 500MB, ¿cuáles son los requisitos?",22,3,5.16
-67,TECH,low,"No tengo conexión a internet, el router tiene la luz roja parpadeando",4,1,8.81
-68,OTHR,low,Necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,3,6,4.97
-69,PLAN,low,Deseo conocer los beneficios de pasar de plan mes a mes a plan anual,6,2,7.03
-70,TECH,medium,La velocidad contratada es de 50MB pero el speedtest me marca menos de la mitad,10,5,10.01
-71,CNCL,low,"Ya encontré otro proveedor, necesito cancelar mi cuenta cuanto antes",9,5,8.21
-72,BILL,medium,"Me llegó un cobro duplicado en la factura de este mes, favor revisar",2,0,4.65
-73,OTHR,medium,¿Cómo puedo actualizar mis datos de contacto?,17,5,3.03
-74,TECH,low,El servicio de internet se cae todas las noches entre las 8 y las 10,8,1,7.87
-75,TECH,low,"Contraté fibra óptica pero la velocidad real es pésima, parece adsl!!",17,4,11.85
-76,BILL,medium,Quiero verificar si mi pago de ayer ya se refleja en el sistema,12,4,3.03
-77,PLAN,low,Quiero agregar una línea móvil adicional a mi plan familiar,8,5,10.47
-78,CNCL,low,Quiero cancelar porque el precio subió demasiado,22,5,16.56
-79,CNCL,low,¿Cuál es el proceso para cancelar mi plan sin penalidad?,12,5,8.99
-80,CNCL,high,¿Tiene costo cancelar antes de que termine el contrato de Internet Hogar 100MB?,17,3,5.88
-81,PLAN,low,¿Como hago para cambiar de plan prepago a pospago?,23,2,5.19
-82,TECH,medium,El servicio de internet se cae todas las noches entre las 8 y las 10,8,1,4.86
-83,TECH,low,Tengo alta latencia y ping inestable trabajando desde casa,4,0,21.23
-84,TECH,high,"Se me desconecta el internet apenas empieza a llover, necesito soporte técnico",2,3,4.27
-85,CNCL,medium,"No estoy conforme con la atención recibida, quiero terminar el contrato",3,4,3.7
-86,OTHR,low,Quisiera saber si tienen cobertura en el sector de Ambato,6,2,2.54
-87,OTHR,low,¿Como puedo actualizar mis datos de contacto?!!,6,5,3.63
-88,BILL,medium,No reconozco un cargo de $12 en mi última factura,15,5,2.07
-89,PLAN,high,¿Puedo combinar dos servicios en un solo plan con descuento?,11,3,2.13
-90,TECH,low,"se me desconecta el internet apenas empieza a llover, necesito soporte tecnico",3,0,10.83
-91,OTHR,medium,¿Qué documentos necesito para abrir una cuenta nueva?,10,6,2.6
-92,OTHR,low,"Quiero felicitar al agente que me atendió, excelente servicio",18,0,1.28
-93,BILL,low,El total de la factura no coincide con el valor de mi plan mensual,15,5,4.96
-94,PLAN,medium,Quisiera agregar el servicio de TV por cable a mi plan de internet,21,3,10.17
-95,CNCL,medium,Llevo meses con problemas y ya decidí cancelar el servicio,18,6,8.78
-96,CNCL,low,Necesito cancelar el servicio a nombre de un familiar fallecido,12,1,4.42
-97,OTHR,medium,"Quiero felicitar al agente que me atendió, excelente servicio",3,5,2.41
-98,OTHR,medium,"Consulta general, no encuentro la opción que busco en la app!!",1,1,2.02
-99,TECH,low,"El internet está muy lento desde hace 8 días, no puedo ni hacer una videollamada",1,6,27.22
-100,OTHR,medium,Quiero saber si puedo transferir mi cuenta a otra persona,14,2,1.78
-101,TECH,low,No carga ninguna página web desde esta mañana en Riobamba,8,1,9.48
-102,PLAN,high,¿Como hago para cambiar de plan prepago a pospago?,4,1,1.9
-103,TECH,low,No detecta la red wifi en ninguno de mis dispositivos desde ayer,9,0,9.51
-104,TECH,low,"El internet está muy lento desde hace 5 días, no puedo ni hacer una videollamada",20,2,11.85
-105,TECH,medium,Tengo alta latencia y ping inestable trabajando desde casa,23,0,9.89
-106,BILL,medium,"El descuento de la promocion no se aplico en mi factura, sigo pagando el full",6,3,2.68
-107,PLAN,medium,Estoy interesado en el combo de internet más streaming,20,6,4.13
-108,OTHR,medium,¿Dónde queda la sucursal más cercana a mi domicilio?,15,0,1.31
-109,BILL,low,"El valor de mi plan subió sin previo aviso, quiero una explicación!!",18,4,5.74
-110,PLAN,medium,Deseo conocer los beneficios de pasar de plan mes a mes a plan anual,13,4,5.79
-111,PLAN,medium,Quisiera agregar el servicio de TV por cable a mi plan de internet,5,4,6.6
-112,CNCL,medium,Quiero cancelar porque el precio subió demasiado,14,2,4.26
-113,TECH,medium,La velocidad contratada es de 500MB pero el speedtest me marca menos de la mitad,4,0,12.93
-114,TECH,high,El técnico vino pero el problema de conexión sigue igual,17,4,6.12
-115,OTHR,low,Necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,17,0,3.15
-116,TECH,low,"Se me corta el wifi cada 5 minutos, es muy frustrante",17,0,9.79
-117,CNCL,low,Llevo meses con problemas y ya decidí cancelar el servicio,8,5,10.24
-118,OTHR,medium,¿Dónde queda la sucursal más cercana a mi domicilio?,11,0,1.27
-119,BILL,low,Quiero verificar si mi pago de ayer ya se refleja en el sistema,20,0,6.54
-120,BILL,high,quiero verificar si mi pago de ayer ya se refleja en el sistema,12,5,1.16
-121,BILL,medium,"El descuento de la promoción no se aplicó en mi factura, sigo pagando el full",6,1,3.15
-122,PLAN,high,¿Cómo hago para cambiar de plan prepago a pospago?,7,2,2.23
-123,TECH,low,"Tengo pérdida de paquetes constante jugando online, revisen la señal por favor",2,3,11.58
-124,OTHR,low,¿Qué documentos necesito para abrir una cuenta nueva?,22,5,5.71
-125,BILL,medium,No me ha llegado la factura electrónica de este mes a mi correo,10,6,2.5
-126,BILL,high,"el descuento de la promoción no se aplicó en mi factura, sigo pagando el full",20,6,2.0
-127,CNCL,low,¿Cuál es el proceso para cancelar mi plan sin penalidad?,11,3,7.03
-128,TECH,low,El técnico vino pero el problema de conexión sigue igual,21,6,10.28
-129,BILL,high,Solicito el desglose detallado de los cargos de mi factura,2,2,1.82
-130,OTHR,medium,"Consulta general, no encuentro la opción que busco en la app",15,2,3.23
-131,OTHR,low,"Quiero felicitar al agente que me atendió, excelente servicio!!",1,0,4.35
-132,BILL,low,Mi factura llegó con un monto mayor al acordado en el contrato,18,2,7.27
-133,TECH,low,No puedo configurar el wifi de 5GHz en mi router nuevo,3,2,13.03
-134,OTHR,medium,"Consulta general, no encuentro la opción que busco en la app",0,4,3.19
-135,BILL,medium,"Me llegó un cobro duplicado en la factura de este mes, favor revisar",10,6,5.29
-136,CNCL,low,deseo dar de baja mi línea porque me mudo de ciudad,18,5,5.4
-137,OTHR,medium,¿Ofrecen algún programa de referidos con beneficios?,23,5,2.46
-138,BILL,medium,Mi factura llegó con un monto mayor al acordado en el contrato!!,1,6,4.03
-139,OTHR,low,¿Dónde queda la sucursal más cercana a mi domicilio?!!,0,6,9.35
-140,PLAN,high,Necesito aumentar la cantidad de datos móviles de mi plan actual,7,6,4.55
-141,BILL,low,El total de la factura no coincide con el valor de mi plan mensual,18,1,2.86
-142,CNCL,medium,quiero cancelar mi suscripción antes de la próxima facturación!!,3,6,13.15
-143,CNCL,low,"Ya encontré otro proveedor, necesito cancelar mi cuenta cuanto antes",23,6,9.11
-144,BILL,medium,Quisiera una copia de mi factura del mes pasado para mi contabilidad!!,18,5,4.62
-145,TECH,low,No puedo configurar el wifi de 5GHz en mi router nuevo,9,4,9.85
-146,PLAN,medium,Necesito bajar de plan porque el actual me queda muy caro,21,2,2.42
-147,TECH,high,el servicio de internet se cae todas las noches entre las 8 y las 10,2,2,9.76
-148,PLAN,medium,¿Puedo combinar dos servicios en un solo plan con descuento?,18,4,5.53
-149,OTHR,medium,¿Puedo pagar mi factura en efectivo en algún punto físico?,17,4,1.82
-150,CNCL,low,Quiero cancelar mi suscripción antes de la próxima facturación,9,0,7.84
-151,OTHR,medium,¿Tienen aplicación móvil para gestionar mi cuenta?,9,1,1.58
-152,TECH,high,No carga ninguna página web desde esta mañana en Riobamba,22,5,5.67
-153,OTHR,medium,"Quiero felicitar al agente que me atendio, excelente servicio",10,4,2.76
-154,OTHR,low,Necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,15,5,4.76
-155,CNCL,low,Quiero cancelar mi suscripción antes de la próxima facturación,0,0,16.07
-156,CNCL,medium,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato,10,3,6.62
-157,OTHR,high,¿Cómo puedo actualizar mis datos de contacto?,5,6,2.07
-158,OTHR,low,Necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,15,6,4.87
-159,CNCL,medium,Necesito cancelar el servicio a nombre de un familiar fallecido,4,4,6.95
-160,OTHR,low,¿Puedo pagar mi factura en efectivo en algun punto fisico?,9,5,4.35
-161,BILL,medium,El total de la factura no coincide con el valor de mi plan mensual,11,1,3.83
-162,CNCL,medium,Deseo dar de baja mi linea porque me mudo de ciudad,0,3,8.23
-163,PLAN,low,Quiero contratar el Combo TV+Internet para mi nueva casa en Ambato,18,2,5.35
-164,PLAN,medium,necesito bajar de plan porque el actual me queda muy caro,5,3,2.31
-165,PLAN,low,Quisiera agregar el servicio de TV por cable a mi plan de internet,5,0,6.54
-166,TECH,medium,"Se me corta el wifi cada 15 minutos, es muy frustrante",0,5,8.89
-167,TECH,medium,no detecta la red wifi en ninguno de mis dispositivos desde ayer,0,3,2.74
-168,PLAN,high,quisiera agregar el servicio de TV por cable a mi plan de internet,7,1,3.61
-169,PLAN,low,¿Puedo combinar dos servicios en un solo plan con descuento?,6,0,11.0
-170,PLAN,low,quisiera agregar el servicio de TV por cable a mi plan de internet!!,20,3,4.9
-171,BILL,low,Quisiera una copia de mi factura del mes pasado para mi contabilidad!!,16,2,3.67
-172,OTHR,low,Tengo una consulta general sobre los servicios que ofrecen,12,6,3.42
-173,TECH,medium,La velocidad contratada es de 100MB pero el speedtest me marca menos de la mitad,9,3,5.97
-174,PLAN,medium,Necesito bajar de plan porque el actual me queda muy caro,19,4,4.63
-175,BILL,low,¿Por que me cobraron $8 de mas este mes en Riobamba?,6,4,3.26
-176,OTHR,medium,Quisiera saber más sobre las políticas de privacidad de datos,13,4,2.15
-177,TECH,high,"No tengo conexion a internet, el router tiene la luz roja parpadeando",23,3,7.49
-178,OTHR,low,Quisiera saber más sobre las políticas de privacidad de datos,8,0,3.38
-179,CNCL,low,¿Cuál es el proceso para cancelar mi plan sin penalidad?,15,2,8.21
-180,CNCL,medium,¿Tiene costo cancelar antes de que termine el contrato de Plan Ilimitado?,0,3,4.65
-181,OTHR,high,"Quiero felicitar al agente que me atendió, excelente servicio",10,6,2.5
-182,CNCL,low,Quiero cancelar mi suscripción antes de la próxima facturación,8,5,13.15
-183,BILL,high,No me ha llegado la factura electrónica de este mes a mi correo,18,2,1.56
-184,OTHR,high,¿Tienen aplicación móvil para gestionar mi cuenta?,21,1,1.81
-185,OTHR,low,¿Qué documentos necesito para abrir una cuenta nueva?!!,11,2,2.31
-186,TECH,medium,"El internet esta muy lento desde hace 1 dias, no puedo ni hacer una videollamada",11,6,13.13
-187,CNCL,medium,¿Tiene costo cancelar antes de que termine el contrato de Plan Ilimitado?!!,6,6,5.12
-188,CNCL,medium,necesito cancelar el servicio a nombre de un familiar fallecido,3,3,8.43
-189,PLAN,low,¿Cómo hago para cambiar de plan prepago a pospago?,18,6,6.11
-190,CNCL,medium,Solicito la baja definitiva de todos mis servicios contratados,1,3,4.34
-191,PLAN,medium,deseo conocer los beneficios de pasar de plan mes a mes a plan anual,9,1,2.76
-192,PLAN,medium,Quisiera cambiar mi plan antes de que termine el contrato actual,19,1,4.37
-193,BILL,low,¿Por qué me cobraron $25 de más este mes en Riobamba?,4,5,3.57
-194,CNCL,low,¿Tiene costo cancelar antes de que termine el contrato de Plan Prepago Movil?,15,6,11.0
-195,CNCL,low,"Me mudo fuera de Riobamba y no hay cobertura, debo cancelar",2,2,7.77
-196,TECH,low,"el internet está muy lento desde hace 4 días, no puedo ni hacer una videollamada",5,1,17.53
-197,OTHR,medium,¿Puedo pagar mi factura en efectivo en algún punto físico?,16,6,1.34
-198,BILL,medium,Mi factura llegó con un monto mayor al acordado en el contrato!!,19,1,3.06
-199,OTHR,low,Necesito hablar con un asesor sobre un tema que no es tecnico ni de facturacion,2,6,4.01
-200,CNCL,high,"Quiero cancelar mi servicio de internet, ya no lo necesito",12,2,2.25
-201,BILL,high,"El valor de mi plan subió sin previo aviso, quiero una explicación",1,2,1.53
-202,TECH,high,"El internet está muy lento desde hace 8 días, no puedo ni hacer una videollamada",16,5,7.74
-203,TECH,low,"Mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",8,3,7.4
-204,CNCL,high,Deseo dar de baja mi línea porque me mudo de ciudad,17,2,2.99
-205,TECH,medium,el servicio de internet se cae todas las noches entre las 8 y las 10,2,3,5.81
-206,TECH,medium,"Se me corta el wifi cada 5 minutos, es muy frustrante!!",18,0,4.53
-207,TECH,low,El servicio de internet se cae todas las noches entre las 8 y las 10,13,2,10.89
-208,OTHR,medium,Necesito hablar con un asesor sobre un tema que no es tecnico ni de facturacion,21,6,3.33
-209,PLAN,medium,"me interesa subir de velocidad, ¿qué opciones tienen sobre 100MB?",9,0,3.01
-210,PLAN,high,"Me interesa subir de velocidad, ¿qué opciones tienen sobre 100MB?",16,6,3.66
-211,OTHR,low,Tengo una duda sobre el proceso de portabilidad numérica,22,2,4.85
-212,TECH,medium,No puedo configurar el wifi de 5GHz en mi router nuevo!!,15,0,10.05
-213,TECH,high,El tecnico vino pero el problema de conexion sigue igual,20,4,5.61
-214,BILL,low,No me ha llegado la factura electrónica de este mes a mi correo!!,11,2,5.91
-215,BILL,medium,necesito cambiar mi método de pago de efectivo a débito automático,12,6,4.03
-216,TECH,low,Tengo alta latencia y ping inestable trabajando desde casa,1,5,12.56
-217,PLAN,medium,¿Puedo combinar dos servicios en un solo plan con descuento?,5,2,5.82
-218,BILL,low,"Me llegó un cobro duplicado en la factura de este mes, favor revisar",21,2,6.8
-219,BILL,medium,Me cobraron un servicio adicional que nunca contraté,8,0,1.86
-220,OTHR,low,¿Cuál es el horario de atención de las oficinas en Cuenca?,21,5,3.9
-221,OTHR,low,¿Cuál es el horario de atención de las oficinas en Ambato?!!,20,5,3.15
-222,TECH,low,"Mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",4,4,14.02
-223,OTHR,low,Quisiera saber si tienen cobertura en el sector de Loja,21,6,4.05
-224,BILL,low,"Se me generó un cargo por mora que no debería aplicar, ya pagué a tiempo",9,6,3.88
-225,TECH,low,Tengo alta latencia y ping inestable trabajando desde casa,20,1,13.08
-226,PLAN,low,¿Puedo hacer upgrade a Plan Familiar sin pagar penalidad por cambio?,18,1,6.06
-227,TECH,medium,No carga ninguna pagina web desde esta mañana en Guayaquil!!,18,4,9.46
-228,OTHR,low,Quisiera saber mas sobre las politicas de privacidad de datos,20,4,5.99
-229,OTHR,high,Quisiera saber si tienen cobertura en el sector de Manta,6,0,1.31
-230,TECH,low,No detecta la red wifi en ninguno de mis dispositivos desde ayer,18,6,14.64
-231,CNCL,low,Deseo dar de baja mi linea porque me mudo de ciudad,9,3,6.94
-232,BILL,low,Necesito cambiar mi método de pago de efectivo a débito automático,21,1,10.67
-233,TECH,medium,El técnico vino pero el problema de conexión sigue igual,23,2,8.05
-234,BILL,medium,El total de la factura no coincide con el valor de mi plan mensual!!,4,1,3.33
-235,BILL,low,El total de la factura no coincide con el valor de mi plan mensual,16,1,3.98
-236,BILL,high,"El valor de mi plan subió sin previo aviso, quiero una explicación",21,2,1.42
-237,PLAN,high,Estoy interesado en el combo de internet más streaming,15,0,2.78
-238,PLAN,medium,¿Cómo hago para cambiar de plan prepago a pospago?,20,6,6.57
-239,TECH,low,"Contraté fibra óptica pero la velocidad real es pésima, parece adsl",13,3,9.23
-240,PLAN,high,Quisiera agregar el servicio de TV por cable a mi plan de internet,11,1,2.83
-241,PLAN,low,Deseo conocer los beneficios de pasar de plan mes a mes a plan anual,9,1,6.24
-242,CNCL,low,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato,7,6,6.42
-243,OTHR,low,Quisiera saber más sobre las políticas de privacidad de datos,1,1,3.91
-244,PLAN,high,Quiero información sobre los planes empresariales disponibles,12,4,1.33
-245,TECH,low,El servicio de internet se cae todas las noches entre las 8 y las 10,15,3,11.3
-246,CNCL,medium,Quiero dar de baja el combo de TV pero mantener el internet,11,5,4.9
-247,TECH,medium,La velocidad contratada es de 50MB pero el speedtest me marca menos de la mitad,17,3,12.99
-248,PLAN,low,Quiero agregar una linea movil adicional a mi plan familiar,21,2,9.47
-249,TECH,high,"Mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",4,3,9.39
-250,BILL,high,"El descuento de la promoción no se aplicó en mi factura, sigo pagando el full!!",6,6,2.19
-251,PLAN,medium,Quiero información sobre los planes empresariales disponibles,15,5,3.71
-252,CNCL,low,Solicito la baja definitiva de todos mis servicios contratados,5,4,8.04
-253,BILL,low,El total de la factura no coincide con el valor de mi plan mensual,12,0,3.38
-254,BILL,low,"El descuento de la promoción no se aplicó en mi factura, sigo pagando el full",11,0,3.16
-255,CNCL,medium,Quiero cancelar mi suscripción antes de la próxima facturación,17,1,7.26
-256,PLAN,low,Necesito aumentar la cantidad de datos móviles de mi plan actual,20,2,9.71
-257,TECH,low,El técnico vino pero el problema de conexión sigue igual,3,0,17.34
-258,OTHR,medium,¿Como puedo actualizar mis datos de contacto?,13,6,1.47
-259,PLAN,low,Necesito bajar de plan porque el actual me queda muy caro,12,6,8.16
-260,PLAN,high,Necesito bajar de plan porque el actual me queda muy caro,14,5,2.81
-261,TECH,high,"Tengo pérdida de paquetes constante jugando online, revisen la señal por favor",15,3,5.99
-262,PLAN,medium,Quiero agregar una línea móvil adicional a mi plan familiar,14,5,6.38
-263,OTHR,high,¿Puedo pagar mi factura en efectivo en algún punto físico?,20,2,1.55
-264,CNCL,low,Quiero cancelar mi suscripción antes de la próxima facturación,13,3,10.2
-265,CNCL,low,solicito la baja definitiva de todos mis servicios contratados,6,0,8.92
-266,PLAN,low,¿Puedo combinar dos servicios en un solo plan con descuento?,9,2,3.02
-267,BILL,low,Quiero verificar si mi pago de ayer ya se refleja en el sistema,0,1,4.43
-268,TECH,high,"Mi router no enciende, ya lo reinicie varias veces y sigue sin funcionar",1,5,5.85
-269,CNCL,low,"Ya no puedo pagar el servicio, necesito darlo de baja este mes",3,1,5.98
-270,OTHR,high,Quisiera saber más sobre las políticas de privacidad de datos,1,6,1.36
-271,TECH,high,"no tengo conexión a internet, el router tiene la luz roja parpadeando",19,4,4.04
-272,TECH,medium,"Se me corta el wifi cada 20 minutos, es muy frustrante",11,1,6.43
-273,PLAN,medium,"Me interesa subir de velocidad, ¿qué opciones tienen sobre 300MB?",6,0,5.5
-274,BILL,high,"El descuento de la promoción no se aplicó en mi factura, sigo pagando el full",12,1,1.38
-275,PLAN,medium,Quiero información sobre los planes empresariales disponibles,7,0,4.66
-276,BILL,medium,el total de la factura no coincide con el valor de mi plan mensual,4,6,6.24
-277,CNCL,high,Llevo meses con problemas y ya decidí cancelar el servicio,1,2,4.16
-278,CNCL,low,"Me mudo fuera de Guayaquil y no hay cobertura, debo cancelar",10,1,7.12
-279,BILL,medium,"Me llegó un cobro duplicado en la factura de este mes, favor revisar",20,1,4.32
-280,PLAN,high,¿Como hago para cambiar de plan prepago a pospago?,9,6,2.24
-281,PLAN,low,Quiero agregar una línea móvil adicional a mi plan familiar,18,0,3.14
-282,BILL,medium,Solicito el desglose detallado de los cargos de mi factura,18,5,4.75
-283,PLAN,medium,Quisiera cambiar mi plan antes de que termine el contrato actual,20,5,6.61
-284,PLAN,low,"Me interesa subir de velocidad, ¿qué opciones tienen sobre 300MB?",15,2,9.39
-285,CNCL,low,¿Tiene costo cancelar antes de que termine el contrato de Combo TV+Internet?,7,2,9.4
-286,BILL,medium,"El descuento de la promoción no se aplicó en mi factura, sigo pagando el full",1,0,3.17
-287,OTHR,low,"Quiero felicitar al agente que me atendió, excelente servicio",5,6,4.0
-288,PLAN,high,"Quiero cambiar mi plan actual a Internet Hogar 100MB, ¿cuáles son los requisitos?",13,3,2.47
-289,BILL,low,No me ha llegado la factura electrónica de este mes a mi correo,20,0,4.7
-290,BILL,low,"El valor de mi plan subió sin previo aviso, quiero una explicación",21,1,5.15
-291,CNCL,medium,¿Cuál es el proceso para cancelar mi plan sin penalidad?,8,3,4.08
-292,OTHR,low,Necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,15,5,4.61
-293,TECH,high,"contraté fibra óptica pero la velocidad real es pésima, parece adsl",14,1,5.44
-294,OTHR,high,¿Tienen aplicación móvil para gestionar mi cuenta?,14,1,1.15
-295,PLAN,medium,¿Puedo hacer upgrade a Fibra 1GB sin pagar penalidad por cambio?,15,2,2.75
-296,TECH,low,"Mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",2,2,12.77
-297,TECH,medium,"Tengo pérdida de paquetes constante jugando online, revisen la señal por favor",2,3,10.39
-298,BILL,medium,No me ha llegado la factura electrónica de este mes a mi correo,11,2,2.8
-299,TECH,medium,No detecta la red wifi en ninguno de mis dispositivos desde ayer,22,5,10.8
-300,PLAN,high,¿Cómo hago para cambiar de plan prepago a pospago?,7,4,1.23
-301,TECH,medium,"No tengo conexión a internet, el router tiene la luz roja parpadeando",11,4,17.21
-302,CNCL,low,"no estoy conforme con la atención recibida, quiero terminar el contrato",19,1,5.23
-303,OTHR,medium,Necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,2,5,3.44
-304,OTHR,medium,¿Dónde queda la sucursal más cercana a mi domicilio?,17,6,1.85
-305,CNCL,low,"Ya no puedo pagar el servicio, necesito darlo de baja este mes",14,6,9.73
-306,CNCL,low,Quiero dar de baja el combo de TV pero mantener el internet,20,3,9.28
-307,CNCL,high,Deseo dar de baja mi línea porque me mudo de ciudad,3,5,4.16
-308,TECH,medium,"La luz del módem está en ámbar, no logro navegar",8,4,7.44
-309,PLAN,low,Necesito bajar de plan porque el actual me queda muy caro,7,6,5.79
-310,TECH,low,"Mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",14,3,24.1
-311,TECH,low,"Se me desconecta el internet apenas empieza a llover, necesito soporte técnico",12,2,14.54
-312,BILL,high,Quiero verificar si mi pago de ayer ya se refleja en el sistema,23,2,2.2
-313,OTHR,medium,Quiero saber si puedo transferir mi cuenta a otra persona,4,1,1.97
-314,CNCL,medium,¿Cuál es el proceso para cancelar mi plan sin penalidad?,11,0,6.26
-315,PLAN,low,quiero agregar una línea móvil adicional a mi plan familiar!!,23,2,8.44
-316,BILL,medium,Solicito el desglose detallado de los cargos de mi factura,23,0,2.58
-317,CNCL,medium,necesito cancelar el servicio a nombre de un familiar fallecido,4,4,3.61
-318,CNCL,medium,"No estoy conforme con la atención recibida, quiero terminar el contrato",23,1,4.91
-319,BILL,high,Solicito el desglose detallado de los cargos de mi factura,18,0,1.45
-320,OTHR,medium,¿Dónde queda la sucursal más cercana a mi domicilio?,18,0,1.24
-321,OTHR,medium,necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,0,5,2.33
-322,BILL,medium,Necesito cambiar mi método de pago de efectivo a débito automático,1,2,2.49
-323,OTHR,medium,Quiero saber si puedo transferir mi cuenta a otra persona,13,5,3.81
-324,CNCL,medium,Quiero cancelar mi suscripción antes de la próxima facturación,20,4,6.5
-325,TECH,medium,"No tengo conexión a internet, el router tiene la luz roja parpadeando",9,2,9.03
-326,TECH,medium,el técnico vino pero el problema de conexión sigue igual,14,5,13.33
-327,PLAN,low,Deseo conocer los beneficios de pasar de plan mes a mes a plan anual,6,5,6.18
-328,BILL,medium,quiero verificar si mi pago de ayer ya se refleja en el sistema,14,3,3.41
-329,CNCL,low,¿Tiene costo cancelar antes de que termine el contrato de Combo TV+Internet?,1,3,7.23
-330,PLAN,medium,¿Puedo hacer upgrade a Fibra 500MB sin pagar penalidad por cambio?,8,4,5.86
-331,PLAN,low,Necesito aumentar la cantidad de datos móviles de mi plan actual,1,4,9.31
-332,PLAN,high,Necesito aumentar la cantidad de datos móviles de mi plan actual,23,5,5.91
-333,PLAN,medium,¿Tienen promociones para migrar a Fibra 200MB este mes?!!,18,6,3.79
-334,CNCL,low,"Ya no puedo pagar el servicio, necesito darlo de baja este mes!!",14,2,6.55
-335,OTHR,low,¿Puedo pagar mi factura en efectivo en algún punto físico?!!,7,1,2.25
-336,PLAN,medium,"Quiero cambiar mi plan actual a Plan Ilimitado, ¿cuáles son los requisitos?",17,2,3.13
-337,PLAN,low,¿Tienen promociones para migrar a Combo TV+Internet este mes?,11,2,4.56
-338,TECH,low,"Se me desconecta el internet apenas empieza a llover, necesito soporte técnico",16,4,13.66
-339,BILL,high,Quiero saber la fecha límite de pago de mi factura actual,10,5,1.85
-340,TECH,low,"La luz del módem está en ámbar, no logro navegar",14,0,8.36
-341,BILL,high,Quisiera una copia de mi factura del mes pasado para mi contabilidad,23,1,1.7
-342,CNCL,medium,Quiero cancelar porque el precio subió demasiado,3,1,3.79
-343,OTHR,low,Quiero saber si puedo transferir mi cuenta a otra persona,18,3,2.22
-344,OTHR,low,tengo una consulta general sobre los servicios que ofrecen,3,6,6.13
-345,CNCL,low,"No estoy conforme con la atención recibida, quiero terminar el contrato",0,1,16.07
-346,PLAN,low,Quiero contratar el Combo TV+Internet para mi nueva casa en Loja!!,2,0,5.82
-347,OTHR,medium,¿Tienen aplicación móvil para gestionar mi cuenta?,5,4,3.44
-348,BILL,low,Quisiera una copia de mi factura del mes pasado para mi contabilidad,21,1,8.54
-349,BILL,low,Quiero verificar si mi pago de ayer ya se refleja en el sistema,7,0,5.77
-350,TECH,low,"Mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",5,6,9.64
-351,CNCL,high,Llevo meses con problemas y ya decidí cancelar el servicio,9,3,2.58
-352,PLAN,low,Quisiera cambiar mi plan antes de que termine el contrato actual,9,3,8.64
-353,CNCL,medium,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato,12,0,6.2
-354,BILL,medium,"El descuento de la promoción no se aplicó en mi factura, sigo pagando el full",23,1,4.8
-355,BILL,low,quisiera una copia de mi factura del mes pasado para mi contabilidad,18,1,4.13
-356,OTHR,medium,Tengo una duda sobre el proceso de portabilidad numérica,19,4,2.18
-357,PLAN,medium,¿Puedo hacer upgrade a Fibra 500MB sin pagar penalidad por cambio?,11,4,3.58
-358,TECH,medium,el técnico vino pero el problema de conexión sigue igual,16,2,11.4
-359,TECH,medium,"la luz del módem está en ámbar, no logro navegar",16,4,7.19
-360,PLAN,high,"Quiero cambiar mi plan actual a Plan Prepago Movil, ¿cuáles son los requisitos?",14,5,3.23
-361,OTHR,low,quisiera saber si tienen cobertura en el sector de Ambato,17,5,2.97
-362,BILL,medium,Me cobraron un servicio adicional que nunca contraté,16,5,2.93
-363,TECH,medium,"El internet está muy lento desde hace 1 días, no puedo ni hacer una videollamada",5,6,18.35
-364,CNCL,medium,¿Cual es el proceso para cancelar mi plan sin penalidad?!!,9,1,7.07
-365,BILL,medium,"Se me genero un cargo por mora que no deberia aplicar, ya pague a tiempo",6,0,2.83
-366,BILL,medium,quiero saber la fecha límite de pago de mi factura actual,20,2,3.96
-367,BILL,medium,Solicito el desglose detallado de los cargos de mi factura,9,0,4.23
-368,TECH,high,"No tengo conexión a internet, el router tiene la luz roja parpadeando",23,6,15.44
-369,OTHR,low,¿Que documentos necesito para abrir una cuenta nueva?!!,1,1,3.81
-370,TECH,low,"Tengo pérdida de paquetes constante jugando online, revisen la señal por favor",23,2,18.61
-371,TECH,medium,"Se me desconecta el internet apenas empieza a llover, necesito soporte técnico",21,2,13.22
-372,OTHR,low,¿Tienen aplicación móvil para gestionar mi cuenta?,23,0,4.39
-373,BILL,low,¿Por qué me cobraron $15 de más este mes en Cuenca?,23,4,2.93
-374,BILL,low,Solicito el desglose detallado de los cargos de mi factura,3,2,5.47
-375,TECH,medium,"No tengo conexion a internet, el router tiene la luz roja parpadeando",6,0,8.67
-376,OTHR,high,Quiero saber si puedo transferir mi cuenta a otra persona,17,1,0.89
-377,CNCL,medium,¿Cuál es el proceso para cancelar mi plan sin penalidad?,16,4,3.57
-378,OTHR,medium,tengo una consulta general sobre los servicios que ofrecen,14,5,2.13
-379,PLAN,low,Quiero contratar el Internet Hogar 100MB para mi nueva casa en Manta,14,3,8.57
-380,BILL,medium,Necesito cambiar mi método de pago de efectivo a débito automático,22,0,2.54
-381,CNCL,medium,Quiero cancelar porque el precio subió demasiado,7,5,8.53
-382,TECH,low,No carga ninguna página web desde esta mañana en Riobamba,16,6,24.22
-383,BILL,medium,Quiero saber la fecha límite de pago de mi factura actual,5,0,2.94
-384,OTHR,medium,"Consulta general, no encuentro la opción que busco en la app",21,3,3.86
-385,PLAN,low,Quiero agregar una línea móvil adicional a mi plan familiar!!,12,4,8.02
-386,PLAN,low,necesito bajar de plan porque el actual me queda muy caro,5,6,7.81
-387,BILL,medium,"Me llego un cobro duplicado en la factura de este mes, favor revisar",8,2,3.15
-388,BILL,low,Mi factura llego con un monto mayor al acordado en el contrato,17,4,3.25
-389,CNCL,medium,Solicito la baja definitiva de todos mis servicios contratados,16,5,6.28
-390,TECH,medium,El técnico vino pero el problema de conexión sigue igual,10,3,20.41
-391,OTHR,low,¿Ofrecen algún programa de referidos con beneficios?,17,1,2.88
-392,OTHR,medium,Tengo una duda sobre el proceso de portabilidad numérica,12,6,2.19
-393,OTHR,medium,necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,23,1,1.4
-394,CNCL,low,Llevo meses con problemas y ya decidí cancelar el servicio,9,3,7.93
-395,PLAN,medium,Necesito bajar de plan porque el actual me queda muy caro!!,8,0,2.95
-396,BILL,low,No reconozco un cargo de $15 en mi última factura,4,3,3.36
-397,CNCL,low,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato,8,3,7.87
-398,BILL,high,"Me llegó un cobro duplicado en la factura de este mes, favor revisar",7,6,1.8
-399,BILL,high,Necesito cambiar mi método de pago de efectivo a débito automático,4,1,2.87
-400,PLAN,low,¿Tienen promociones para migrar a Plan Ilimitado este mes?,14,2,3.19
-401,TECH,medium,No detecta la red wifi en ninguno de mis dispositivos desde ayer,5,5,15.09
-402,PLAN,medium,Quiero información sobre los planes empresariales disponibles,23,3,8.54
-403,PLAN,low,¿Puedo hacer upgrade a Plan Prepago Movil sin pagar penalidad por cambio?,3,1,7.81
-404,CNCL,high,Necesito cancelar el servicio a nombre de un familiar fallecido,22,1,4.89
-405,BILL,medium,El total de la factura no coincide con el valor de mi plan mensual,12,2,2.39
-406,BILL,low,El total de la factura no coincide con el valor de mi plan mensual,3,3,6.96
-407,OTHR,high,"Consulta general, no encuentro la opción que busco en la app",3,1,1.67
-408,OTHR,high,Quisiera saber si tienen cobertura en el sector de Ambato,11,5,1.65
-409,TECH,high,No puedo configurar el wifi de 5GHz en mi router nuevo,5,5,11.51
-410,TECH,medium,"Se me desconecta el internet apenas empieza a llover, necesito soporte técnico!!",13,4,9.91
-411,CNCL,medium,"Ya encontré otro proveedor, necesito cancelar mi cuenta cuanto antes",0,5,5.84
-412,PLAN,low,"Me interesa subir de velocidad, ¿qué opciones tienen sobre 100MB?",12,0,4.97
-413,TECH,high,El servicio de internet se cae todas las noches entre las 8 y las 10,4,2,9.67
-414,PLAN,high,¿Tienen promociones para migrar a Fibra 200MB este mes?,1,1,2.09
-415,OTHR,high,¿Cuál es el horario de atención de las oficinas en Cuenca?,9,0,0.87
-416,CNCL,low,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato,0,3,11.14
-417,OTHR,high,¿Cómo puedo actualizar mis datos de contacto?,0,1,1.26
-418,BILL,low,Quiero verificar si mi pago de ayer ya se refleja en el sistema,14,2,7.55
-419,BILL,medium,quiero saber la fecha límite de pago de mi factura actual,1,4,4.5
-420,PLAN,low,Quiero contratar el Plan Prepago Movil para mi nueva casa en Guayaquil,14,0,5.05
-421,CNCL,medium,Quiero dar de baja el combo de TV pero mantener el internet,4,3,6.95
-422,OTHR,medium,"Quiero felicitar al agente que me atendio, excelente servicio",5,2,1.92
-423,TECH,medium,Tengo alta latencia y ping inestable trabajando desde casa,12,5,19.96
-424,TECH,low,"Se me desconecta el internet apenas empieza a llover, necesito soporte técnico",22,0,14.42
-425,CNCL,high,¿Cuál es el proceso para cancelar mi plan sin penalidad?,12,5,3.62
-426,OTHR,medium,Quisiera saber si tienen cobertura en el sector de Loja,3,2,2.02
-427,BILL,high,El total de la factura no coincide con el valor de mi plan mensual!!,11,4,1.34
-428,CNCL,low,Quiero dar de baja el combo de TV pero mantener el internet,3,3,6.5
-429,TECH,medium,No detecta la red wifi en ninguno de mis dispositivos desde ayer,7,0,6.54
-430,CNCL,low,¿Cuál es el proceso para cancelar mi plan sin penalidad?,9,6,5.72
-431,OTHR,medium,¿Puedo pagar mi factura en efectivo en algun punto fisico?,3,5,2.81
-432,CNCL,low,Quiero dar de baja el combo de TV pero mantener el internet,8,1,6.68
-433,PLAN,medium,Necesito aumentar la cantidad de datos móviles de mi plan actual,6,0,5.6
-434,PLAN,medium,¿Puedo combinar dos servicios en un solo plan con descuento?,9,5,1.9
-435,OTHR,medium,"Quiero felicitar al agente que me atendió, excelente servicio",15,5,2.04
-436,TECH,medium,No puedo configurar el wifi de 5GHz en mi router nuevo,1,2,7.35
-437,PLAN,medium,¿Como hago para cambiar de plan prepago a pospago?,13,4,3.94
-438,TECH,low,"Se me corta el wifi cada 15 minutos, es muy frustrante",16,2,10.43
-439,PLAN,low,Quisiera agregar el servicio de TV por cable a mi plan de internet,23,3,7.62
-440,BILL,low,Quiero saber la fecha límite de pago de mi factura actual,1,3,2.91
-441,PLAN,low,¿Cómo hago para cambiar de plan prepago a pospago?,22,2,7.8
-442,TECH,low,"Se me desconecta el internet apenas empieza a llover, necesito soporte técnico",20,1,13.18
-443,BILL,low,Necesito cambiar mi método de pago de efectivo a débito automático!!,16,1,2.12
-444,OTHR,medium,¿Puedo pagar mi factura en efectivo en algún punto físico?,5,0,2.18
-445,BILL,high,mi factura llegó con un monto mayor al acordado en el contrato,10,2,2.34
-446,PLAN,medium,Quisiera agregar el servicio de TV por cable a mi plan de internet,12,3,4.09
-447,OTHR,medium,¿Cómo puedo actualizar mis datos de contacto?!!,12,4,1.88
-448,TECH,low,No detecta la red wifi en ninguno de mis dispositivos desde ayer,19,2,8.89
-449,PLAN,low,Necesito aumentar la cantidad de datos móviles de mi plan actual,22,4,3.87
-450,PLAN,low,¿Puedo hacer upgrade a Fibra 500MB sin pagar penalidad por cambio?,4,6,8.75
-451,BILL,low,No me ha llegado la factura electrónica de este mes a mi correo,7,1,5.93
-452,PLAN,low,Necesito aumentar la cantidad de datos móviles de mi plan actual,19,4,9.4
-453,TECH,low,"Mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",15,2,8.02
-454,CNCL,high,"Quiero cancelar mi servicio de internet, ya no lo necesito",3,2,3.72
-455,BILL,low,El total de la factura no coincide con el valor de mi plan mensual,3,1,5.3
-456,TECH,high,No detecta la red wifi en ninguno de mis dispositivos desde ayer!!,1,1,4.97
-457,BILL,high,"me llegó un cobro duplicado en la factura de este mes, favor revisar",15,2,2.56
-458,BILL,low,Quisiera una copia de mi factura del mes pasado para mi contabilidad,22,2,5.38
-459,BILL,low,¿Por qué me cobraron $25 de más este mes en Riobamba?!!,7,6,3.58
-460,OTHR,medium,Tengo una consulta general sobre los servicios que ofrecen,4,1,2.27
-461,PLAN,low,¿Cómo hago para cambiar de plan prepago a pospago?,22,5,11.62
-462,CNCL,high,"Ya encontré otro proveedor, necesito cancelar mi cuenta cuanto antes",12,2,2.04
-463,BILL,medium,quiero verificar si mi pago de ayer ya se refleja en el sistema,9,4,2.94
-464,CNCL,high,Llevo meses con problemas y ya decidí cancelar el servicio,3,2,3.62
-465,TECH,high,"mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",6,0,6.15
-466,TECH,low,"Se me corta el wifi cada 30 minutos, es muy frustrante",6,1,16.92
-467,PLAN,medium,Quiero contratar el Fibra 200MB para mi nueva casa en Riobamba,9,5,4.28
-468,CNCL,medium,"Ya encontré otro proveedor, necesito cancelar mi cuenta cuanto antes",4,0,10.8
-469,PLAN,medium,Quisiera cambiar mi plan antes de que termine el contrato actual,2,2,5.34
-470,PLAN,medium,Quiero información sobre los planes empresariales disponibles,8,6,10.61
-471,BILL,low,Solicito el desglose detallado de los cargos de mi factura,11,1,3.64
-472,TECH,low,No carga ninguna página web desde esta mañana en Guayaquil,20,2,15.99
-473,CNCL,low,Solicito la baja definitiva de todos mis servicios contratados,3,4,3.36
-474,BILL,high,Mi factura llegó con un monto mayor al acordado en el contrato,1,1,4.03
-475,PLAN,high,¿Puedo hacer upgrade a Fibra 500MB sin pagar penalidad por cambio?,9,1,2.72
-476,CNCL,medium,¿Tiene costo cancelar antes de que termine el contrato de Fibra 500MB?,11,3,4.32
-477,TECH,low,"El internet está muy lento desde hace 3 días, no puedo ni hacer una videollamada",15,5,8.97
-478,CNCL,medium,Necesito cancelar el servicio a nombre de un familiar fallecido!!,16,6,7.41
-479,BILL,medium,"El valor de mi plan subió sin previo aviso, quiero una explicación",0,6,3.9
-480,BILL,high,No me ha llegado la factura electrónica de este mes a mi correo,17,2,2.51
-481,TECH,medium,No carga ninguna página web desde esta mañana en Guayaquil,10,5,18.45
-482,TECH,medium,Tengo alta latencia y ping inestable trabajando desde casa,3,4,10.32
-483,PLAN,medium,Quiero agregar una línea móvil adicional a mi plan familiar,2,2,6.33
-484,BILL,high,Me cobraron un servicio adicional que nunca contraté,6,2,1.96
-485,CNCL,low,"Quiero cancelar mi servicio de internet, ya no lo necesito",18,3,3.35
-486,PLAN,medium,quisiera cambiar mi plan antes de que termine el contrato actual!!,15,0,4.68
-487,CNCL,high,Necesito cancelar el servicio a nombre de un familiar fallecido,21,1,4.6
-488,PLAN,low,Deseo conocer los beneficios de pasar de plan mes a mes a plan anual,23,0,6.15
-489,OTHR,medium,¿Cómo puedo actualizar mis datos de contacto?,14,3,1.19
-490,BILL,low,Quisiera una copia de mi factura del mes pasado para mi contabilidad,23,1,4.19
-491,TECH,low,"Tengo pérdida de paquetes constante jugando online, revisen la señal por favor!!",11,1,12.85
-492,CNCL,high,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato!!,3,0,3.25
-493,OTHR,low,Quisiera saber más sobre las políticas de privacidad de datos!!,22,0,3.17
-494,CNCL,medium,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato!!,11,1,8.33
-495,TECH,high,"El internet está muy lento desde hace 6 días, no puedo ni hacer una videollamada",16,2,5.41
-496,BILL,medium,quiero verificar si mi pago de ayer ya se refleja en el sistema,4,6,9.28
-497,BILL,medium,"Se me generó un cargo por mora que no debería aplicar, ya pagué a tiempo!!",18,0,1.92
-498,CNCL,low,"Ya encontre otro proveedor, necesito cancelar mi cuenta cuanto antes",1,6,6.55
-499,CNCL,medium,"Quiero cancelar mi servicio de internet, ya no lo necesito",7,2,6.2
-500,CNCL,high,¿Cual es el proceso para cancelar mi plan sin penalidad?,6,2,5.25
-501,OTHR,medium,¿Tienen aplicación móvil para gestionar mi cuenta?,2,3,2.93
-502,CNCL,medium,"ya no puedo pagar el servicio, necesito darlo de baja este mes",17,6,14.28
-503,OTHR,high,"Quiero felicitar al agente que me atendió, excelente servicio!!",5,1,2.44
-504,CNCL,medium,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato,15,2,7.56
-505,TECH,high,"Tengo pérdida de paquetes constante jugando online, revisen la señal por favor",3,5,5.89
-506,OTHR,low,"Consulta general, no encuentro la opción que busco en la app",16,5,2.77
-507,TECH,medium,El técnico vino pero el problema de conexión sigue igual,1,0,14.75
-508,OTHR,high,¿Qué documentos necesito para abrir una cuenta nueva?,2,3,1.35
-509,TECH,low,"se me desconecta el internet apenas empieza a llover, necesito soporte tecnico",2,0,18.45
-510,CNCL,low,Llevo meses con problemas y ya decidi cancelar el servicio,14,0,6.58
-511,BILL,medium,Me cobraron un servicio adicional que nunca contraté,20,0,2.05
-512,TECH,low,"Se me corta el wifi cada 5 minutos, es muy frustrante",8,2,17.77
-513,CNCL,low,"ya no puedo pagar el servicio, necesito darlo de baja este mes",22,6,13.74
-514,TECH,medium,"Se me corta el wifi cada 30 minutos, es muy frustrante",23,3,8.03
-515,OTHR,medium,"Quiero felicitar al agente que me atendió, excelente servicio!!",3,3,1.19
-516,OTHR,medium,¿Tienen aplicación móvil para gestionar mi cuenta?,17,4,3.88
-517,CNCL,low,quiero cancelar porque el precio subió demasiado,6,2,11.48
-518,BILL,low,No reconozco un cargo de $12 en mi última factura!!,22,6,8.43
-519,CNCL,medium,Quiero cancelar mi suscripción antes de la próxima facturación,1,5,10.9
-520,BILL,medium,Mi factura llegó con un monto mayor al acordado en el contrato,12,2,2.01
-521,TECH,medium,"Se me desconecta el internet apenas empieza a llover, necesito soporte técnico",4,4,16.29
-522,CNCL,low,Solicito la baja definitiva de todos mis servicios contratados,15,2,2.07
-523,PLAN,low,Estoy interesado en el combo de internet mas streaming!!,15,0,4.35
-524,PLAN,medium,Necesito aumentar la cantidad de datos móviles de mi plan actual,16,5,4.26
-525,BILL,medium,Quiero verificar si mi pago de ayer ya se refleja en el sistema,23,4,2.91
-526,TECH,medium,"La luz del módem está en ámbar, no logro navegar",9,0,7.82
-527,OTHR,medium,Necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,2,1,3.2
-528,PLAN,medium,necesito bajar de plan porque el actual me queda muy caro,5,5,4.17
-529,PLAN,medium,Quisiera cambiar mi plan antes de que termine el contrato actual,7,2,2.43
-530,OTHR,medium,¿Cómo puedo actualizar mis datos de contacto?,16,0,2.87
-531,OTHR,medium,¿Cuál es el horario de atención de las oficinas en Riobamba?,11,4,1.78
-532,OTHR,high,Quisiera saber mas sobre las politicas de privacidad de datos,16,6,1.24
-533,BILL,low,No reconozco un cargo de $12 en mi última factura,0,6,11.75
-534,OTHR,low,¿Dónde queda la sucursal más cercana a mi domicilio?!!,6,6,6.02
-535,OTHR,low,¿Cómo puedo actualizar mis datos de contacto?,5,3,2.61
-536,CNCL,high,necesito cancelar el servicio a nombre de un familiar fallecido,4,6,2.19
-537,OTHR,medium,Quisiera saber si tienen cobertura en el sector de Cuenca,15,3,2.16
-538,OTHR,medium,¿Cómo puedo actualizar mis datos de contacto?,0,4,1.88
-539,OTHR,high,Tengo una duda sobre el proceso de portabilidad numérica,21,2,1.96
-540,BILL,high,no reconozco un cargo de $15 en mi ultima factura,13,3,2.52
-541,OTHR,medium,¿Cuál es el horario de atención de las oficinas en Manta?!!,16,4,1.94
-542,TECH,high,"Se me desconecta el internet apenas empieza a llover, necesito soporte técnico",0,5,6.27
-543,CNCL,high,"Ya encontre otro proveedor, necesito cancelar mi cuenta cuanto antes",1,0,3.53
-544,CNCL,medium,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato,7,0,4.63
-545,OTHR,medium,Quisiera saber más sobre las políticas de privacidad de datos,22,0,2.86
-546,TECH,medium,Tengo alta latencia y ping inestable trabajando desde casa,16,2,7.98
-547,BILL,low,"El descuento de la promoción no se aplicó en mi factura, sigo pagando el full",15,4,5.05
-548,OTHR,medium,Tengo una consulta general sobre los servicios que ofrecen!!,22,3,2.27
-549,TECH,high,"No tengo conexión a internet, el router tiene la luz roja parpadeando",9,3,3.74
-550,PLAN,medium,"Me interesa subir de velocidad, ¿qué opciones tienen sobre 200MB?",4,0,5.13
-551,PLAN,low,Quiero información sobre los planes empresariales disponibles,21,2,5.52
-552,TECH,medium,"Se me corta el wifi cada 5 minutos, es muy frustrante",6,4,15.48
-553,TECH,high,No puedo configurar el wifi de 5GHz en mi router nuevo,9,1,5.58
-554,TECH,medium,"Contraté fibra óptica pero la velocidad real es pésima, parece adsl!!",12,5,8.35
-555,PLAN,low,Necesito bajar de plan porque el actual me queda muy caro,5,3,7.98
-556,OTHR,low,"Quiero felicitar al agente que me atendió, excelente servicio",22,2,4.01
-557,BILL,high,Mi factura llegó con un monto mayor al acordado en el contrato,10,0,2.0
-558,OTHR,high,Necesito hablar con un asesor sobre un tema que no es técnico ni de facturación!!,4,6,1.56
-559,CNCL,medium,"Ya no puedo pagar el servicio, necesito darlo de baja este mes!!",17,0,6.87
-560,TECH,low,No carga ninguna página web desde esta mañana en Quito,3,6,24.09
-561,OTHR,high,"Quiero felicitar al agente que me atendio, excelente servicio",11,5,1.2
-562,TECH,medium,No puedo configurar el wifi de 5GHz en mi router nuevo,2,0,6.54
-563,PLAN,low,Necesito aumentar la cantidad de datos móviles de mi plan actual!!,1,4,5.8
-564,BILL,medium,"Me llego un cobro duplicado en la factura de este mes, favor revisar",3,1,4.47
-565,BILL,medium,No me ha llegado la factura electrónica de este mes a mi correo,4,0,3.08
-566,CNCL,low,llevo meses con problemas y ya decidí cancelar el servicio,23,4,10.03
-567,CNCL,high,Llevo meses con problemas y ya decidí cancelar el servicio,12,4,4.12
-568,CNCL,low,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato,12,5,5.75
-569,BILL,medium,No me ha llegado la factura electrónica de este mes a mi correo,16,6,5.26
-570,BILL,medium,quisiera una copia de mi factura del mes pasado para mi contabilidad,4,0,3.49
-571,PLAN,medium,"Quiero cambiar mi plan actual a Combo TV+Internet, ¿cuáles son los requisitos?",13,3,8.07
-572,TECH,low,El servicio de internet se cae todas las noches entre las 8 y las 10,4,2,12.88
-573,CNCL,low,"quiero cancelar mi servicio de internet, ya no lo necesito",8,1,5.7
-574,OTHR,medium,quiero saber si puedo transferir mi cuenta a otra persona,18,0,2.29
-575,CNCL,medium,Necesito cancelar el servicio a nombre de un familiar fallecido,5,6,9.14
-576,CNCL,low,¿Cuál es el proceso para cancelar mi plan sin penalidad?,23,5,24.07
-577,TECH,low,El tecnico vino pero el problema de conexion sigue igual,11,1,10.15
-578,TECH,medium,"tengo pérdida de paquetes constante jugando online, revisen la señal por favor",10,6,9.92
-579,CNCL,low,Llevo meses con problemas y ya decidí cancelar el servicio,14,1,5.99
-580,OTHR,medium,Tengo una duda sobre el proceso de portabilidad numérica!!,4,2,2.6
-581,CNCL,low,Quiero dar de baja el combo de TV pero mantener el internet,17,1,6.67
-582,PLAN,high,Necesito bajar de plan porque el actual me queda muy caro,13,3,2.3
-583,PLAN,medium,Necesito bajar de plan porque el actual me queda muy caro,15,5,9.1
-584,PLAN,medium,Necesito bajar de plan porque el actual me queda muy caro,2,5,5.28
-585,BILL,high,El total de la factura no coincide con el valor de mi plan mensual!!,14,0,2.07
-586,TECH,medium,"Mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",20,4,16.32
-587,OTHR,high,¿Cuál es el horario de atención de las oficinas en Quito?,18,0,1.09
-588,TECH,low,"El internet está muy lento desde hace 2 días, no puedo ni hacer una videollamada",2,3,12.93
-589,OTHR,low,Quisiera saber si tienen cobertura en el sector de Riobamba,3,4,3.31
-590,BILL,medium,Quiero saber la fecha limite de pago de mi factura actual,7,4,2.1
-591,BILL,low,No me ha llegado la factura electronica de este mes a mi correo,11,0,3.91
-592,BILL,low,"Me llegó un cobro duplicado en la factura de este mes, favor revisar",2,4,3.46
-593,PLAN,low,¿Como hago para cambiar de plan prepago a pospago?,21,1,13.27
-594,TECH,medium,"tengo pérdida de paquetes constante jugando online, revisen la señal por favor",21,3,8.42
-595,BILL,medium,Quisiera una copia de mi factura del mes pasado para mi contabilidad,21,4,4.96
-596,BILL,high,No me ha llegado la factura electrónica de este mes a mi correo,20,4,2.32
-597,PLAN,medium,¿Puedo combinar dos servicios en un solo plan con descuento?,8,1,3.08
-598,BILL,medium,¿Por qué me cobraron $12 de más este mes en Cuenca?,18,4,2.77
-599,PLAN,low,Quisiera agregar el servicio de TV por cable a mi plan de internet,7,2,4.65
-600,OTHR,low,¿Qué documentos necesito para abrir una cuenta nueva?,4,0,2.67
-601,TECH,low,"No tengo conexion a internet, el router tiene la luz roja parpadeando",14,5,12.28
-602,PLAN,medium,Necesito aumentar la cantidad de datos móviles de mi plan actual,15,0,4.54
-603,CNCL,medium,¿Tiene costo cancelar antes de que termine el contrato de Plan Prepago Movil?,19,0,5.86
-604,CNCL,high,Quiero cancelar mi suscripcion antes de la proxima facturacion!!,19,1,3.47
-605,OTHR,low,¿Tienen aplicación móvil para gestionar mi cuenta?,19,4,3.18
-606,BILL,high,"El descuento de la promoción no se aplicó en mi factura, sigo pagando el full",18,3,2.1
-607,OTHR,medium,Tengo una duda sobre el proceso de portabilidad numerica,21,1,2.02
-608,CNCL,high,"Me mudo fuera de Cuenca y no hay cobertura, debo cancelar",15,3,3.74
-609,OTHR,low,Necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,13,3,2.18
-610,CNCL,medium,Quiero cancelar mi suscripción antes de la próxima facturación,6,2,5.16
-611,PLAN,low,Estoy interesado en el combo de internet más streaming,1,1,3.84
-612,OTHR,medium,¿Cuál es el horario de atención de las oficinas en Loja?,15,2,1.5
-613,CNCL,medium,"Quiero cancelar mi servicio de internet, ya no lo necesito!!",10,0,5.82
-614,BILL,medium,Me cobraron un servicio adicional que nunca contraté,1,0,4.35
-615,OTHR,medium,Tengo una consulta general sobre los servicios que ofrecen,21,5,4.64
-616,PLAN,low,Quisiera cambiar mi plan antes de que termine el contrato actual,12,6,5.54
-617,CNCL,low,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato,19,1,5.48
-618,TECH,medium,No detecta la red wifi en ninguno de mis dispositivos desde ayer,18,4,5.67
-619,BILL,medium,Solicito el desglose detallado de los cargos de mi factura,21,3,4.23
-620,OTHR,low,¿Tienen aplicación móvil para gestionar mi cuenta?,23,0,2.47
-621,CNCL,medium,Quiero cancelar porque el precio subió demasiado!!,19,4,7.36
-622,PLAN,low,quisiera cambiar mi plan antes de que termine el contrato actual,2,3,5.68
-623,BILL,low,El total de la factura no coincide con el valor de mi plan mensual,20,2,5.01
-624,CNCL,high,"Ya encontré otro proveedor, necesito cancelar mi cuenta cuanto antes",8,6,4.17
-625,BILL,low,"El descuento de la promoción no se aplicó en mi factura, sigo pagando el full!!",13,0,6.19
-626,PLAN,medium,"Quiero cambiar mi plan actual a Plan Ilimitado, ¿cuáles son los requisitos?",6,3,8.4
-627,OTHR,low,¿Tienen aplicación móvil para gestionar mi cuenta?,8,2,3.13
-628,PLAN,high,Quiero información sobre los planes empresariales disponibles,4,4,3.64
-629,BILL,medium,"Me llego un cobro duplicado en la factura de este mes, favor revisar",6,0,2.7
-630,CNCL,low,Llevo meses con problemas y ya decidi cancelar el servicio,13,3,11.76
-631,BILL,low,No reconozco un cargo de $8 en mi última factura!!,3,0,6.47
-632,PLAN,low,Quiero información sobre los planes empresariales disponibles,13,0,13.7
-633,PLAN,high,"Me interesa subir de velocidad, ¿qué opciones tienen sobre 50MB?!!",13,4,2.44
-634,BILL,medium,El total de la factura no coincide con el valor de mi plan mensual,3,3,2.81
-635,OTHR,low,Tengo una duda sobre el proceso de portabilidad numerica,3,0,3.04
-636,OTHR,medium,Quiero saber si puedo transferir mi cuenta a otra persona,3,2,3.5
-637,PLAN,high,Quiero agregar una línea móvil adicional a mi plan familiar,2,1,4.86
-638,PLAN,low,Quisiera cambiar mi plan antes de que termine el contrato actual,23,5,17.28
-639,CNCL,medium,¿Cuál es el proceso para cancelar mi plan sin penalidad?,1,6,6.23
-640,CNCL,medium,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato,7,6,4.25
-641,OTHR,medium,¿Cómo puedo actualizar mis datos de contacto?,9,4,1.95
-642,OTHR,low,Quiero saber si puedo transferir mi cuenta a otra persona,20,5,3.28
-643,OTHR,medium,¿Puedo pagar mi factura en efectivo en algún punto físico?,0,2,3.32
-644,CNCL,medium,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato,20,3,5.73
-645,OTHR,low,Necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,23,0,3.09
-646,OTHR,low,Tengo una duda sobre el proceso de portabilidad numérica,11,0,2.58
-647,OTHR,low,Quisiera saber si tienen cobertura en el sector de Loja,7,0,2.5
-648,CNCL,high,Quiero cancelar mi suscripción antes de la próxima facturación,17,6,2.55
-649,CNCL,high,"quiero cancelar mi servicio de internet, ya no lo necesito",15,6,2.99
-650,TECH,medium,"tengo pérdida de paquetes constante jugando online, revisen la señal por favor",2,2,12.25
-651,BILL,medium,¿Por qué me cobraron $35 de más este mes en Ambato?,5,6,3.38
-652,TECH,medium,"Se me corta el wifi cada 30 minutos, es muy frustrante",0,6,15.71
-653,CNCL,medium,Necesito cancelar el servicio a nombre de un familiar fallecido,16,2,5.28
-654,TECH,low,"El internet está muy lento desde hace 9 días, no puedo ni hacer una videollamada",13,3,16.38
-655,CNCL,high,Quiero dar de baja el combo de TV pero mantener el internet,0,1,3.67
-656,BILL,medium,"El valor de mi plan subió sin previo aviso, quiero una explicación",1,1,2.82
-657,OTHR,low,"Consulta general, no encuentro la opción que busco en la app",10,1,2.16
-658,OTHR,low,Quiero saber si puedo transferir mi cuenta a otra persona,2,2,2.0
-659,OTHR,high,"Consulta general, no encuentro la opción que busco en la app",3,4,1.15
-660,OTHR,low,¿Dónde queda la sucursal más cercana a mi domicilio?,15,5,3.43
-661,TECH,high,No carga ninguna página web desde esta mañana en Guayaquil,11,2,7.34
-662,CNCL,low,"Ya no puedo pagar el servicio, necesito darlo de baja este mes",18,2,8.95
-663,BILL,medium,¿Por qué me cobraron $35 de más este mes en Cuenca?!!,2,2,3.27
-664,CNCL,low,¿Cuál es el proceso para cancelar mi plan sin penalidad?,0,0,6.17
-665,PLAN,high,"Quiero cambiar mi plan actual a Fibra 200MB, ¿cuáles son los requisitos?",18,2,2.85
-666,CNCL,medium,"No estoy conforme con la atención recibida, quiero terminar el contrato",20,0,4.92
-667,OTHR,medium,Tengo una duda sobre el proceso de portabilidad numérica,19,1,1.48
-668,BILL,low,Necesito cambiar mi método de pago de efectivo a débito automático,21,1,6.01
-669,PLAN,medium,Quisiera agregar el servicio de TV por cable a mi plan de internet,20,1,3.68
-670,PLAN,low,necesito aumentar la cantidad de datos móviles de mi plan actual,16,3,7.57
-671,OTHR,low,Tengo una consulta general sobre los servicios que ofrecen,22,2,2.03
-672,BILL,high,No reconozco un cargo de $12 en mi última factura,20,3,1.65
-673,TECH,medium,Tengo alta latencia y ping inestable trabajando desde casa,9,4,6.02
-674,OTHR,medium,¿Cuál es el horario de atención de las oficinas en Riobamba?,3,1,3.14
-675,OTHR,medium,¿Tienen aplicación móvil para gestionar mi cuenta?,7,5,2.61
-676,CNCL,low,"Me mudo fuera de Quito y no hay cobertura, debo cancelar",3,5,14.16
-677,CNCL,medium,¿Cuál es el proceso para cancelar mi plan sin penalidad?,16,5,4.6
-678,TECH,high,tengo alta latencia y ping inestable trabajando desde casa,3,1,7.38
-679,CNCL,low,¿Tiene costo cancelar antes de que termine el contrato de Plan Prepago Movil?,11,2,8.66
-680,PLAN,medium,¿Puedo hacer upgrade a Combo TV+Internet sin pagar penalidad por cambio?!!,8,3,3.07
-681,CNCL,medium,Quiero dar de baja el combo de TV pero mantener el internet,1,1,4.73
-682,TECH,medium,"La luz del módem está en ámbar, no logro navegar",9,2,6.33
-683,TECH,medium,"Mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",11,1,14.51
-684,BILL,medium,Solicito el desglose detallado de los cargos de mi factura,22,5,4.58
-685,TECH,medium,El servicio de internet se cae todas las noches entre las 8 y las 10,20,1,6.55
-686,TECH,medium,"Se me corta el wifi cada 5 minutos, es muy frustrante",23,4,7.49
-687,OTHR,medium,"Consulta general, no encuentro la opcion que busco en la app",6,2,5.43
-688,BILL,medium,Quiero saber la fecha límite de pago de mi factura actual!!,7,3,3.16
-689,CNCL,medium,Quiero cancelar porque el precio subió demasiado,4,0,5.64
-690,PLAN,medium,Quiero agregar una linea movil adicional a mi plan familiar,20,2,2.89
-691,BILL,medium,"El valor de mi plan subió sin previo aviso, quiero una explicación",16,5,2.92
-692,PLAN,high,Deseo conocer los beneficios de pasar de plan mes a mes a plan anual,13,1,3.55
-693,OTHR,low,¿Tienen aplicacion movil para gestionar mi cuenta?,8,4,2.99
-694,PLAN,low,quiero agregar una línea móvil adicional a mi plan familiar,9,6,5.5
-695,CNCL,medium,Quiero dar de baja el combo de TV pero mantener el internet,1,4,13.11
-696,CNCL,high,Quiero cancelar porque el precio subió demasiado,5,2,3.82
-697,TECH,medium,"se me corta el wifi cada 15 minutos, es muy frustrante",13,3,19.41
-698,TECH,low,"La luz del módem está en ámbar, no logro navegar",14,1,7.95
-699,PLAN,low,¿Puedo combinar dos servicios en un solo plan con descuento?,10,2,3.64
-700,OTHR,low,¿Dónde queda la sucursal más cercana a mi domicilio?!!,14,4,2.73
-701,TECH,low,"Tengo pérdida de paquetes constante jugando online, revisen la señal por favor",3,5,10.57
-702,OTHR,low,Tengo una consulta general sobre los servicios que ofrecen,6,5,3.82
-703,CNCL,high,Quiero dar de baja el combo de TV pero mantener el internet,8,2,3.63
-704,TECH,low,"Se me corta el wifi cada 30 minutos, es muy frustrante",21,1,15.59
-705,TECH,low,La velocidad contratada es de 200MB pero el speedtest me marca menos de la mitad,8,1,11.79
-706,TECH,low,No carga ninguna página web desde esta mañana en Cuenca,6,5,13.28
-707,TECH,medium,"Contraté fibra óptica pero la velocidad real es pésima, parece adsl",8,0,10.91
-708,CNCL,low,Quiero cancelar porque el precio subió demasiado,6,1,7.88
-709,PLAN,low,quiero agregar una línea móvil adicional a mi plan familiar,0,4,3.31
-710,BILL,medium,"se me generó un cargo por mora que no debería aplicar, ya pagué a tiempo",6,2,2.61
-711,BILL,low,"El descuento de la promoción no se aplicó en mi factura, sigo pagando el full",10,4,3.05
-712,TECH,low,Tengo alta latencia y ping inestable trabajando desde casa,6,5,25.37
-713,PLAN,high,¿Cómo hago para cambiar de plan prepago a pospago?!!,16,1,1.74
-714,BILL,low,Quisiera una copia de mi factura del mes pasado para mi contabilidad,12,3,4.8
-715,OTHR,low,¿Ofrecen algún programa de referidos con beneficios?,10,0,1.55
-716,BILL,medium,"Se me genero un cargo por mora que no deberia aplicar, ya pague a tiempo",10,4,3.6
-717,PLAN,medium,"quiero cambiar mi plan actual a Internet Hogar 100MB, ¿cuáles son los requisitos?",17,2,2.39
-718,PLAN,high,Deseo conocer los beneficios de pasar de plan mes a mes a plan anual!!,14,1,3.44
-719,OTHR,medium,"Consulta general, no encuentro la opción que busco en la app",4,6,2.93
-720,BILL,medium,¿Por que me cobraron $12 de mas este mes en Manta?,2,3,4.66
-721,BILL,high,¿Por qué me cobraron $25 de más este mes en Quito?,8,2,1.66
-722,BILL,low,No me ha llegado la factura electrónica de este mes a mi correo,7,0,3.35
-723,CNCL,medium,Quiero dar de baja el combo de TV pero mantener el internet,0,1,3.53
-724,PLAN,low,Quiero información sobre los planes empresariales disponibles,22,4,3.58
-725,OTHR,high,Tengo una consulta general sobre los servicios que ofrecen,17,4,0.95
-726,PLAN,low,Quisiera agregar el servicio de TV por cable a mi plan de internet,14,2,5.53
-727,TECH,low,"Contraté fibra óptica pero la velocidad real es pésima, parece adsl!!",1,6,11.58
-728,CNCL,medium,Solicito la baja definitiva de todos mis servicios contratados,18,1,9.69
-729,PLAN,low,Estoy interesado en el combo de internet mas streaming,3,1,10.52
-730,TECH,medium,No puedo configurar el wifi de 5GHz en mi router nuevo,13,6,9.73
-731,OTHR,low,"Consulta general, no encuentro la opcion que busco en la app",0,1,5.54
-732,CNCL,medium,Necesito cancelar el servicio a nombre de un familiar fallecido,8,2,4.72
-733,TECH,low,Tengo alta latencia y ping inestable trabajando desde casa,1,5,11.65
-734,BILL,medium,No me ha llegado la factura electrónica de este mes a mi correo,11,2,2.68
-735,TECH,low,No detecta la red wifi en ninguno de mis dispositivos desde ayer,5,0,16.66
-736,CNCL,low,"Ya no puedo pagar el servicio, necesito darlo de baja este mes",10,6,6.93
-737,PLAN,low,quisiera agregar el servicio de TV por cable a mi plan de internet,5,4,11.81
-738,PLAN,medium,¿Puedo combinar dos servicios en un solo plan con descuento?,2,5,5.18
-739,PLAN,high,Deseo conocer los beneficios de pasar de plan mes a mes a plan anual,14,1,3.12
-740,TECH,medium,"Se me corta el wifi cada 15 minutos, es muy frustrante",17,2,7.33
-741,PLAN,low,"Quiero cambiar mi plan actual a Fibra 1GB, ¿cuáles son los requisitos?",11,1,4.14
-742,CNCL,high,Solicito la baja definitiva de todos mis servicios contratados,10,2,1.93
-743,PLAN,low,Quisiera agregar el servicio de TV por cable a mi plan de internet,20,1,9.1
-744,BILL,high,No me ha llegado la factura electrónica de este mes a mi correo,3,6,1.3
-745,TECH,medium,"Tengo pérdida de paquetes constante jugando online, revisen la señal por favor",3,6,13.74
-746,BILL,medium,El total de la factura no coincide con el valor de mi plan mensual,2,3,2.8
-747,CNCL,low,Quiero dar de baja el combo de TV pero mantener el internet,5,2,11.46
-748,PLAN,medium,¿Cómo hago para cambiar de plan prepago a pospago?,23,4,3.78
-749,BILL,low,Quiero verificar si mi pago de ayer ya se refleja en el sistema,19,4,4.54
-750,BILL,low,necesito cambiar mi método de pago de efectivo a débito automático,22,3,5.76
-751,OTHR,medium,¿Ofrecen algún programa de referidos con beneficios?!!,4,1,4.96
-752,OTHR,high,¿Cuál es el horario de atención de las oficinas en Cuenca?,23,0,2.9
-753,CNCL,low,¿Cuál es el proceso para cancelar mi plan sin penalidad?,0,0,6.65
-754,OTHR,low,¿Tienen aplicación móvil para gestionar mi cuenta?,2,5,3.21
-755,CNCL,low,Necesito cancelar el servicio a nombre de un familiar fallecido,18,6,9.52
-756,BILL,medium,Quiero saber la fecha límite de pago de mi factura actual,8,6,5.57
-757,CNCL,low,Quiero dar de baja el combo de TV pero mantener el internet,15,2,3.67
-758,CNCL,low,Deseo dar de baja mi línea porque me mudo de ciudad!!,1,3,15.14
-759,OTHR,medium,¿Puedo pagar mi factura en efectivo en algún punto físico?!!,16,1,1.7
-760,BILL,low,El total de la factura no coincide con el valor de mi plan mensual,13,2,5.91
-761,OTHR,high,¿Qué documentos necesito para abrir una cuenta nueva?,16,4,1.02
-762,PLAN,low,¿Cómo hago para cambiar de plan prepago a pospago?,15,5,12.57
-763,OTHR,low,Quisiera saber más sobre las políticas de privacidad de datos,21,2,2.85
-764,CNCL,medium,"No estoy conforme con la atención recibida, quiero terminar el contrato",3,0,7.55
-765,TECH,medium,No carga ninguna página web desde esta mañana en Ambato,6,6,12.41
-766,PLAN,high,"Quiero cambiar mi plan actual a Fibra 1GB, ¿cuáles son los requisitos?",18,4,1.58
-767,CNCL,low,Quiero cancelar porque el precio subió demasiado,0,4,7.01
-768,OTHR,medium,¿Tienen aplicacion movil para gestionar mi cuenta?,12,2,1.0
-769,BILL,low,"Me llegó un cobro duplicado en la factura de este mes, favor revisar",20,0,4.02
-770,TECH,medium,"La luz del módem está en ámbar, no logro navegar!!",5,0,10.83
-771,BILL,medium,Mi factura llegó con un monto mayor al acordado en el contrato,21,2,6.08
-772,PLAN,high,"Quiero cambiar mi plan actual a Fibra 500MB, ¿cuáles son los requisitos?",14,1,2.34
-773,BILL,medium,"me llego un cobro duplicado en la factura de este mes, favor revisar",5,2,8.57
-774,BILL,low,No me ha llegado la factura electrónica de este mes a mi correo,20,5,9.75
-775,BILL,high,Solicito el desglose detallado de los cargos de mi factura,7,4,1.35
-776,PLAN,high,Necesito bajar de plan porque el actual me queda muy caro,7,5,3.12
-777,PLAN,medium,Quisiera cambiar mi plan antes de que termine el contrato actual,20,4,5.81
-778,CNCL,low,"Ya encontré otro proveedor, necesito cancelar mi cuenta cuanto antes",9,3,6.0
-779,PLAN,high,¿Cómo hago para cambiar de plan prepago a pospago?,2,5,4.21
-780,OTHR,low,Quiero saber si puedo transferir mi cuenta a otra persona,19,6,2.95
-781,BILL,medium,"El valor de mi plan subió sin previo aviso, quiero una explicación",10,3,2.97
-782,OTHR,low,"Consulta general, no encuentro la opción que busco en la app",0,5,6.99
-783,TECH,medium,Tengo alta latencia y ping inestable trabajando desde casa,9,4,6.67
-784,OTHR,high,¿Cuál es el horario de atención de las oficinas en Cuenca?,22,3,0.86
-785,TECH,high,"Tengo pérdida de paquetes constante jugando online, revisen la señal por favor",16,4,9.84
-786,PLAN,low,Quiero contratar el Combo TV+Internet para mi nueva casa en Guayaquil,13,6,9.97
-787,TECH,low,No puedo configurar el wifi de 5GHz en mi router nuevo,14,2,13.31
-788,PLAN,low,Quisiera agregar el servicio de TV por cable a mi plan de internet,6,2,11.95
-789,PLAN,low,Necesito bajar de plan porque el actual me queda muy caro,7,1,7.86
-790,BILL,medium,El total de la factura no coincide con el valor de mi plan mensual,10,2,2.56
-791,PLAN,low,Quiero contratar el Plan Prepago Movil para mi nueva casa en Cuenca,2,6,17.8
-792,TECH,high,El servicio de internet se cae todas las noches entre las 8 y las 10,1,4,6.49
-793,CNCL,medium,Solicito la baja definitiva de todos mis servicios contratados,22,0,7.89
-794,TECH,medium,"Tengo perdida de paquetes constante jugando online, revisen la señal por favor",5,2,5.18
-795,OTHR,medium,Quisiera saber si tienen cobertura en el sector de Quito,19,2,1.38
-796,TECH,high,"Se me desconecta el internet apenas empieza a llover, necesito soporte técnico",22,5,4.82
-797,TECH,high,"Se me desconecta el internet apenas empieza a llover, necesito soporte técnico",1,6,4.72
-798,BILL,low,mi factura llegó con un monto mayor al acordado en el contrato,21,2,6.19
-799,PLAN,low,Quiero contratar el Fibra 200MB para mi nueva casa en Guayaquil,20,6,6.45
-800,TECH,medium,"No tengo conexión a internet, el router tiene la luz roja parpadeando",4,6,13.8
+1,OTHR,low,Necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,16,0,2.9
+2,OTHR,medium,"Quiero felicitar al agente que me atendió, excelente servicio",15,2,2.98
+3,TECH,medium,"Se me corta el wifi cada 5 minutos, es muy frustrante",12,1,9.8
+4,CNCL,medium,"Ya encontré otro proveedor, necesito cancelar mi cuenta cuanto antes",0,1,4.2
+5,TECH,high,"Tengo pérdida de paquetes constante jugando online, revisen la señal por favor",9,4,4.01
+6,CNCL,medium,Deseo dar de baja mi línea porque me mudo de ciudad!!,10,6,7.0
+7,PLAN,medium,Estoy interesado en el combo de internet más streaming,9,6,5.71
+8,CNCL,medium,Solicito la baja definitiva de todos mis servicios contratados,14,5,6.92
+9,OTHR,high,"Quiero felicitar al agente que me atendió, excelente servicio",14,5,1.71
+10,PLAN,high,Necesito bajar de plan porque el actual me queda muy caro!!,13,3,3.2
+11,TECH,medium,"Mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",23,1,6.99
+12,BILL,medium,No reconozco un cargo de $35 en mi ultima factura!!,15,0,3.71
+13,CNCL,medium,"Quiero cancelar mi servicio de internet, ya no lo necesito",23,1,7.88
+14,TECH,low,"Tengo pérdida de paquetes constante jugando online, revisen la señal por favor",20,6,15.07
+15,PLAN,medium,Quiero contratar el Fibra 1GB para mi nueva casa en Ambato,17,4,3.91
+16,PLAN,low,¿Puedo hacer upgrade a Fibra 1GB sin pagar penalidad por cambio?,15,2,6.18
+17,BILL,medium,"se me generó un cargo por mora que no debería aplicar, ya pagué a tiempo!!",9,5,3.13
+18,PLAN,medium,Quisiera cambiar mi plan antes de que termine el contrato actual,20,2,10.14
+19,CNCL,high,"Me mudo fuera de Loja y no hay cobertura, debo cancelar",10,6,4.55
+20,CNCL,high,¿Cuál es el proceso para cancelar mi plan sin penalidad?,20,3,4.76
+21,OTHR,medium,Quisiera saber más sobre las políticas de privacidad de datos!!,7,6,1.93
+22,CNCL,low,"Ya encontre otro proveedor, necesito cancelar mi cuenta cuanto antes",14,5,9.27
+23,CNCL,low,Deseo dar de baja mi línea porque me mudo de ciudad,21,6,10.14
+24,OTHR,medium,¿Dónde queda la sucursal más cercana a mi domicilio?,13,3,1.33
+25,PLAN,low,¿Puedo combinar dos servicios en un solo plan con descuento?,14,1,4.37
+26,TECH,high,No detecta la red wifi en ninguno de mis dispositivos desde ayer,8,3,6.32
+27,BILL,low,Quiero saber la fecha límite de pago de mi factura actual,2,4,4.8
+28,CNCL,high,Quiero dar de baja el combo de TV pero mantener el internet,20,4,4.14
+29,OTHR,high,Tengo una consulta general sobre los servicios que ofrecen!!,12,1,0.56
+30,CNCL,medium,quiero cancelar mi suscripción antes de la próxima facturación,8,2,4.04
+31,BILL,low,¿Por que me cobraron $25 de mas este mes en Guayaquil?,23,5,8.93
+32,TECH,low,"Contrate fibra optica pero la velocidad real es pesima, parece adsl",15,4,4.92
+33,CNCL,medium,Quiero cancelar porque el precio subió demasiado,3,1,6.14
+34,PLAN,low,Necesito aumentar la cantidad de datos móviles de mi plan actual,3,3,7.55
+35,TECH,medium,El servicio de internet se cae todas las noches entre las 8 y las 10,21,4,5.6
+36,TECH,medium,"Mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",9,2,7.22
+37,OTHR,low,Tengo una duda sobre el proceso de portabilidad numérica,9,4,2.44
+38,PLAN,low,Quiero información sobre los planes empresariales disponibles,5,0,7.26
+39,OTHR,low,¿Puedo pagar mi factura en efectivo en algún punto físico?,6,5,6.29
+40,OTHR,high,¿Dónde queda la sucursal más cercana a mi domicilio?,4,5,1.69
+41,TECH,low,No carga ninguna página web desde esta mañana en Cuenca,2,0,9.1
+42,BILL,medium,"Se me generó un cargo por mora que no debería aplicar, ya pagué a tiempo",14,3,2.08
+43,BILL,medium,El total de la factura no coincide con el valor de mi plan mensual,20,1,4.46
+44,PLAN,medium,"Me interesa subir de velocidad, ¿que opciones tienen sobre 50MB?",4,5,7.42
+45,CNCL,low,"Quiero cancelar mi servicio de internet, ya no lo necesito",8,3,5.53
+46,CNCL,low,"Quiero cancelar mi servicio de internet, ya no lo necesito",13,1,11.73
+47,PLAN,medium,"Me interesa subir de velocidad, ¿qué opciones tienen sobre 200MB?!!",12,5,8.93
+48,CNCL,low,Deseo dar de baja mi línea porque me mudo de ciudad,5,6,23.68
+49,CNCL,high,quiero cancelar porque el precio subió demasiado,16,1,2.54
+50,CNCL,high,¿Tiene costo cancelar antes de que termine el contrato de Fibra 500MB?,2,4,2.5
+51,BILL,medium,"El descuento de la promoción no se aplicó en mi factura, sigo pagando el full!!",11,1,2.95
+52,TECH,high,"La luz del módem está en ámbar, no logro navegar",16,5,7.03
+53,OTHR,medium,¿Puedo pagar mi factura en efectivo en algún punto físico?,17,4,1.28
+54,BILL,high,No reconozco un cargo de $15 en mi ultima factura,21,1,1.07
+55,PLAN,high,Quiero agregar una línea móvil adicional a mi plan familiar,23,0,5.93
+56,PLAN,medium,¿Tienen promociones para migrar a Fibra 200MB este mes?,19,0,6.22
+57,PLAN,low,¿Tienen promociones para migrar a Plan Ilimitado este mes?,15,5,6.36
+58,PLAN,low,Necesito aumentar la cantidad de datos móviles de mi plan actual,21,4,10.38
+59,BILL,medium,"el valor de mi plan subió sin previo aviso, quiero una explicación",23,5,8.31
+60,BILL,high,¿Por qué me cobraron $5 de más este mes en Ambato?,9,3,2.8
+61,CNCL,medium,¿Cuál es el proceso para cancelar mi plan sin penalidad?,12,0,3.0
+62,OTHR,medium,¿Dónde queda la sucursal más cercana a mi domicilio?,11,0,1.41
+63,OTHR,medium,¿Cómo puedo actualizar mis datos de contacto?,16,6,2.72
+64,BILL,medium,No me ha llegado la factura electrónica de este mes a mi correo,7,5,6.21
+65,BILL,medium,"Me llegó un cobro duplicado en la factura de este mes, favor revisar",15,6,5.49
+66,PLAN,medium,"Quiero cambiar mi plan actual a Fibra 500MB, ¿cuáles son los requisitos?",2,4,4.79
+67,TECH,low,"No tengo conexión a internet, el router tiene la luz roja parpadeando",7,1,11.36
+68,OTHR,low,Necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,12,6,3.93
+69,PLAN,low,Deseo conocer los beneficios de pasar de plan mes a mes a plan anual,22,4,6.34
+70,TECH,medium,La velocidad contratada es de 50MB pero el speedtest me marca menos de la mitad,15,1,12.85
+71,CNCL,low,"Ya encontré otro proveedor, necesito cancelar mi cuenta cuanto antes",10,3,11.11
+72,BILL,medium,"Me llegó un cobro duplicado en la factura de este mes, favor revisar",5,6,4.55
+73,OTHR,medium,¿Cómo puedo actualizar mis datos de contacto?,14,6,1.95
+74,TECH,low,El servicio de internet se cae todas las noches entre las 8 y las 10,17,4,18.71
+75,TECH,low,"Contraté fibra óptica pero la velocidad real es pésima, parece adsl!!",21,2,18.59
+76,BILL,medium,Quiero verificar si mi pago de ayer ya se refleja en el sistema,11,6,2.39
+77,PLAN,low,Quiero agregar una línea móvil adicional a mi plan familiar,17,0,3.8
+78,CNCL,low,Quiero cancelar porque el precio subió demasiado,9,0,6.7
+79,CNCL,low,¿Cuál es el proceso para cancelar mi plan sin penalidad?,0,5,9.94
+80,CNCL,high,¿Tiene costo cancelar antes de que termine el contrato de Internet Hogar 100MB?,19,5,4.91
+81,PLAN,low,¿Como hago para cambiar de plan prepago a pospago?,0,3,6.89
+82,TECH,medium,El servicio de internet se cae todas las noches entre las 8 y las 10,14,1,9.25
+83,TECH,low,Tengo alta latencia y ping inestable trabajando desde casa,4,5,15.93
+84,TECH,high,"Se me desconecta el internet apenas empieza a llover, necesito soporte técnico",17,4,4.18
+85,CNCL,medium,"No estoy conforme con la atención recibida, quiero terminar el contrato",23,3,6.63
+86,OTHR,low,Quisiera saber si tienen cobertura en el sector de Ambato,18,5,3.24
+87,OTHR,low,¿Como puedo actualizar mis datos de contacto?!!,7,5,3.61
+88,BILL,medium,No reconozco un cargo de $12 en mi última factura,18,6,4.86
+89,PLAN,high,¿Puedo combinar dos servicios en un solo plan con descuento?,16,1,6.95
+90,TECH,low,"se me desconecta el internet apenas empieza a llover, necesito soporte tecnico",19,3,10.09
+91,OTHR,medium,¿Qué documentos necesito para abrir una cuenta nueva?,3,1,3.98
+92,OTHR,low,"Quiero felicitar al agente que me atendió, excelente servicio",5,4,3.72
+93,BILL,low,El total de la factura no coincide con el valor de mi plan mensual,11,1,5.35
+94,PLAN,medium,Quisiera agregar el servicio de TV por cable a mi plan de internet,18,4,2.35
+95,CNCL,medium,Llevo meses con problemas y ya decidí cancelar el servicio,8,6,2.64
+96,CNCL,low,Necesito cancelar el servicio a nombre de un familiar fallecido,14,1,11.23
+97,OTHR,medium,"Quiero felicitar al agente que me atendió, excelente servicio",8,4,1.96
+98,OTHR,medium,"Consulta general, no encuentro la opción que busco en la app!!",17,0,1.48
+99,TECH,low,"El internet está muy lento desde hace 8 días, no puedo ni hacer una videollamada",21,4,8.23
+100,OTHR,medium,Quiero saber si puedo transferir mi cuenta a otra persona,21,2,3.43
+101,TECH,low,No carga ninguna página web desde esta mañana en Riobamba,6,2,10.71
+102,PLAN,high,¿Como hago para cambiar de plan prepago a pospago?,1,6,2.42
+103,TECH,low,No detecta la red wifi en ninguno de mis dispositivos desde ayer,14,3,6.86
+104,TECH,low,"El internet está muy lento desde hace 5 días, no puedo ni hacer una videollamada",7,2,11.36
+105,TECH,medium,Tengo alta latencia y ping inestable trabajando desde casa,5,4,11.57
+106,BILL,medium,"El descuento de la promocion no se aplico en mi factura, sigo pagando el full",18,4,2.99
+107,PLAN,medium,Estoy interesado en el combo de internet más streaming,12,0,3.99
+108,OTHR,medium,¿Dónde queda la sucursal más cercana a mi domicilio?,1,4,3.7
+109,BILL,low,"El valor de mi plan subió sin previo aviso, quiero una explicación!!",12,5,2.6
+110,PLAN,medium,Deseo conocer los beneficios de pasar de plan mes a mes a plan anual,6,3,4.45
+111,PLAN,medium,Quisiera agregar el servicio de TV por cable a mi plan de internet,2,0,5.61
+112,CNCL,medium,Quiero cancelar porque el precio subió demasiado,19,4,4.15
+113,TECH,medium,La velocidad contratada es de 500MB pero el speedtest me marca menos de la mitad,17,3,8.65
+114,TECH,high,El técnico vino pero el problema de conexión sigue igual,21,4,7.41
+115,OTHR,low,Necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,4,4,3.62
+116,TECH,low,"Se me corta el wifi cada 5 minutos, es muy frustrante",10,2,8.34
+117,CNCL,low,Llevo meses con problemas y ya decidí cancelar el servicio,0,1,4.84
+118,OTHR,medium,¿Dónde queda la sucursal más cercana a mi domicilio?,6,2,2.14
+119,BILL,low,Quiero verificar si mi pago de ayer ya se refleja en el sistema,8,0,6.02
+120,BILL,high,quiero verificar si mi pago de ayer ya se refleja en el sistema,12,1,0.65
+121,BILL,medium,"El descuento de la promoción no se aplicó en mi factura, sigo pagando el full",11,3,3.15
+122,PLAN,high,¿Cómo hago para cambiar de plan prepago a pospago?,8,0,1.81
+123,TECH,low,"Tengo pérdida de paquetes constante jugando online, revisen la señal por favor",1,3,22.86
+124,OTHR,low,¿Qué documentos necesito para abrir una cuenta nueva?,8,1,4.28
+125,BILL,medium,No me ha llegado la factura electrónica de este mes a mi correo,0,3,2.73
+126,BILL,high,"el descuento de la promoción no se aplicó en mi factura, sigo pagando el full",3,0,4.46
+127,CNCL,low,¿Cuál es el proceso para cancelar mi plan sin penalidad?,20,2,6.67
+128,TECH,low,El técnico vino pero el problema de conexión sigue igual,10,0,13.99
+129,BILL,high,Solicito el desglose detallado de los cargos de mi factura,19,1,2.08
+130,OTHR,medium,"Consulta general, no encuentro la opción que busco en la app",8,2,2.61
+131,OTHR,low,"Quiero felicitar al agente que me atendió, excelente servicio!!",23,5,2.95
+132,BILL,low,Mi factura llegó con un monto mayor al acordado en el contrato,21,3,5.76
+133,TECH,low,No puedo configurar el wifi de 5GHz en mi router nuevo,22,0,16.09
+134,OTHR,medium,"Consulta general, no encuentro la opción que busco en la app",11,5,2.25
+135,BILL,medium,"Me llegó un cobro duplicado en la factura de este mes, favor revisar",7,2,4.81
+136,CNCL,low,deseo dar de baja mi línea porque me mudo de ciudad,6,0,7.0
+137,OTHR,medium,¿Ofrecen algún programa de referidos con beneficios?,21,5,3.1
+138,BILL,medium,Mi factura llegó con un monto mayor al acordado en el contrato!!,8,2,1.73
+139,OTHR,low,¿Dónde queda la sucursal más cercana a mi domicilio?!!,13,1,3.33
+140,PLAN,high,Necesito aumentar la cantidad de datos móviles de mi plan actual,0,0,3.64
+141,BILL,low,El total de la factura no coincide con el valor de mi plan mensual,2,1,5.09
+142,CNCL,medium,quiero cancelar mi suscripción antes de la próxima facturación!!,0,5,4.7
+143,CNCL,low,"Ya encontré otro proveedor, necesito cancelar mi cuenta cuanto antes",13,4,7.31
+144,BILL,medium,Quisiera una copia de mi factura del mes pasado para mi contabilidad!!,16,4,2.53
+145,TECH,low,No puedo configurar el wifi de 5GHz en mi router nuevo,23,0,5.74
+146,PLAN,medium,Necesito bajar de plan porque el actual me queda muy caro,9,2,9.26
+147,TECH,high,el servicio de internet se cae todas las noches entre las 8 y las 10,13,3,3.77
+148,PLAN,medium,¿Puedo combinar dos servicios en un solo plan con descuento?,16,2,5.29
+149,OTHR,medium,¿Puedo pagar mi factura en efectivo en algún punto físico?,20,5,4.13
+150,CNCL,low,Quiero cancelar mi suscripción antes de la próxima facturación,13,3,7.3
+151,OTHR,medium,¿Tienen aplicación móvil para gestionar mi cuenta?,18,0,2.33
+152,TECH,high,No carga ninguna página web desde esta mañana en Riobamba,21,6,9.18
+153,OTHR,medium,"Quiero felicitar al agente que me atendio, excelente servicio",18,3,1.23
+154,OTHR,low,Necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,4,2,6.04
+155,CNCL,low,Quiero cancelar mi suscripción antes de la próxima facturación,12,5,8.91
+156,CNCL,medium,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato,21,6,6.44
+157,OTHR,high,¿Cómo puedo actualizar mis datos de contacto?,9,3,0.83
+158,OTHR,low,Necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,1,4,2.49
+159,CNCL,medium,Necesito cancelar el servicio a nombre de un familiar fallecido,8,3,8.48
+160,OTHR,low,¿Puedo pagar mi factura en efectivo en algun punto fisico?,6,3,6.31
+161,BILL,medium,El total de la factura no coincide con el valor de mi plan mensual,19,3,4.17
+162,CNCL,medium,Deseo dar de baja mi linea porque me mudo de ciudad,12,3,2.81
+163,PLAN,low,Quiero contratar el Combo TV+Internet para mi nueva casa en Ambato,23,0,4.68
+164,PLAN,medium,necesito bajar de plan porque el actual me queda muy caro,20,5,8.52
+165,PLAN,low,Quisiera agregar el servicio de TV por cable a mi plan de internet,6,1,3.39
+166,TECH,medium,"Se me corta el wifi cada 15 minutos, es muy frustrante",12,3,9.17
+167,TECH,medium,no detecta la red wifi en ninguno de mis dispositivos desde ayer,5,0,8.67
+168,PLAN,high,quisiera agregar el servicio de TV por cable a mi plan de internet,7,3,2.74
+169,PLAN,low,¿Puedo combinar dos servicios en un solo plan con descuento?,9,1,4.54
+170,PLAN,low,quisiera agregar el servicio de TV por cable a mi plan de internet!!,1,4,11.25
+171,BILL,low,Quisiera una copia de mi factura del mes pasado para mi contabilidad!!,22,4,14.58
+172,OTHR,low,Tengo una consulta general sobre los servicios que ofrecen,6,2,3.59
+173,TECH,medium,La velocidad contratada es de 100MB pero el speedtest me marca menos de la mitad,16,1,8.88
+174,PLAN,medium,Necesito bajar de plan porque el actual me queda muy caro,6,0,4.23
+175,BILL,low,¿Por que me cobraron $8 de mas este mes en Riobamba?,11,1,2.31
+176,OTHR,medium,Quisiera saber más sobre las políticas de privacidad de datos,16,6,1.77
+177,TECH,high,"No tengo conexion a internet, el router tiene la luz roja parpadeando",8,1,7.07
+178,OTHR,low,Quisiera saber más sobre las políticas de privacidad de datos,2,6,3.19
+179,CNCL,low,¿Cuál es el proceso para cancelar mi plan sin penalidad?,7,5,5.85
+180,CNCL,medium,¿Tiene costo cancelar antes de que termine el contrato de Plan Ilimitado?,15,3,8.25
+181,OTHR,high,"Quiero felicitar al agente que me atendió, excelente servicio",5,1,2.2
+182,CNCL,low,Quiero cancelar mi suscripción antes de la próxima facturación,13,3,10.48
+183,BILL,high,No me ha llegado la factura electrónica de este mes a mi correo,21,2,1.6
+184,OTHR,high,¿Tienen aplicación móvil para gestionar mi cuenta?,21,3,0.97
+185,OTHR,low,¿Qué documentos necesito para abrir una cuenta nueva?!!,23,3,4.89
+186,TECH,medium,"El internet esta muy lento desde hace 1 dias, no puedo ni hacer una videollamada",13,3,8.91
+187,CNCL,medium,¿Tiene costo cancelar antes de que termine el contrato de Plan Ilimitado?!!,9,1,2.6
+188,CNCL,medium,necesito cancelar el servicio a nombre de un familiar fallecido,9,5,4.33
+189,PLAN,low,¿Cómo hago para cambiar de plan prepago a pospago?,10,5,4.03
+190,CNCL,medium,Solicito la baja definitiva de todos mis servicios contratados,14,0,8.14
+191,PLAN,medium,deseo conocer los beneficios de pasar de plan mes a mes a plan anual,15,4,6.94
+192,PLAN,medium,Quisiera cambiar mi plan antes de que termine el contrato actual,23,3,3.34
+193,BILL,low,¿Por qué me cobraron $25 de más este mes en Riobamba?,23,0,3.64
+194,CNCL,low,¿Tiene costo cancelar antes de que termine el contrato de Plan Prepago Movil?,13,6,8.7
+195,CNCL,low,"Me mudo fuera de Riobamba y no hay cobertura, debo cancelar",0,3,14.05
+196,TECH,low,"el internet está muy lento desde hace 4 días, no puedo ni hacer una videollamada",4,2,18.81
+197,OTHR,medium,¿Puedo pagar mi factura en efectivo en algún punto físico?,3,2,3.05
+198,BILL,medium,Mi factura llegó con un monto mayor al acordado en el contrato!!,15,2,2.18
+199,OTHR,low,Necesito hablar con un asesor sobre un tema que no es tecnico ni de facturacion,10,3,2.3
+200,CNCL,high,"Quiero cancelar mi servicio de internet, ya no lo necesito",16,6,5.0
+201,BILL,high,"El valor de mi plan subió sin previo aviso, quiero una explicación",23,0,2.67
+202,TECH,high,"El internet está muy lento desde hace 8 días, no puedo ni hacer una videollamada",7,0,8.73
+203,TECH,low,"Mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",21,6,15.72
+204,CNCL,high,Deseo dar de baja mi línea porque me mudo de ciudad,14,6,3.72
+205,TECH,medium,el servicio de internet se cae todas las noches entre las 8 y las 10,1,1,16.41
+206,TECH,medium,"Se me corta el wifi cada 5 minutos, es muy frustrante!!",6,5,11.43
+207,TECH,low,El servicio de internet se cae todas las noches entre las 8 y las 10,6,5,17.99
+208,OTHR,medium,Necesito hablar con un asesor sobre un tema que no es tecnico ni de facturacion,3,6,4.37
+209,PLAN,medium,"me interesa subir de velocidad, ¿qué opciones tienen sobre 100MB?",16,0,1.64
+210,PLAN,high,"Me interesa subir de velocidad, ¿qué opciones tienen sobre 100MB?",9,0,2.7
+211,OTHR,low,Tengo una duda sobre el proceso de portabilidad numérica,21,3,3.46
+212,TECH,medium,No puedo configurar el wifi de 5GHz en mi router nuevo!!,10,6,13.69
+213,TECH,high,El tecnico vino pero el problema de conexion sigue igual,7,2,4.9
+214,BILL,low,No me ha llegado la factura electrónica de este mes a mi correo!!,9,2,3.99
+215,BILL,medium,necesito cambiar mi método de pago de efectivo a débito automático,13,4,4.09
+216,TECH,low,Tengo alta latencia y ping inestable trabajando desde casa,21,5,18.39
+217,PLAN,medium,¿Puedo combinar dos servicios en un solo plan con descuento?,6,4,6.72
+218,BILL,low,"Me llegó un cobro duplicado en la factura de este mes, favor revisar",7,3,3.87
+219,BILL,medium,Me cobraron un servicio adicional que nunca contraté,8,0,2.63
+220,OTHR,low,¿Cuál es el horario de atención de las oficinas en Cuenca?,22,0,6.13
+221,OTHR,low,¿Cuál es el horario de atención de las oficinas en Ambato?!!,1,1,2.18
+222,TECH,low,"Mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",13,2,15.92
+223,OTHR,low,Quisiera saber si tienen cobertura en el sector de Loja,16,0,3.67
+224,BILL,low,"Se me generó un cargo por mora que no debería aplicar, ya pagué a tiempo",3,6,4.98
+225,TECH,low,Tengo alta latencia y ping inestable trabajando desde casa,8,0,17.83
+226,PLAN,low,¿Puedo hacer upgrade a Plan Familiar sin pagar penalidad por cambio?,19,5,12.02
+227,TECH,medium,No carga ninguna pagina web desde esta mañana en Guayaquil!!,8,2,6.18
+228,OTHR,low,Quisiera saber mas sobre las politicas de privacidad de datos,20,6,2.72
+229,OTHR,high,Quisiera saber si tienen cobertura en el sector de Manta,8,0,0.72
+230,TECH,low,No detecta la red wifi en ninguno de mis dispositivos desde ayer,2,4,12.02
+231,CNCL,low,Deseo dar de baja mi linea porque me mudo de ciudad,21,2,7.1
+232,BILL,low,Necesito cambiar mi método de pago de efectivo a débito automático,19,4,3.79
+233,TECH,medium,El técnico vino pero el problema de conexión sigue igual,4,2,10.3
+234,BILL,medium,El total de la factura no coincide con el valor de mi plan mensual!!,19,0,2.51
+235,BILL,low,El total de la factura no coincide con el valor de mi plan mensual,5,1,5.77
+236,BILL,high,"El valor de mi plan subió sin previo aviso, quiero una explicación",8,1,3.15
+237,PLAN,high,Estoy interesado en el combo de internet más streaming,5,1,5.22
+238,PLAN,medium,¿Cómo hago para cambiar de plan prepago a pospago?,2,6,8.89
+239,TECH,low,"Contraté fibra óptica pero la velocidad real es pésima, parece adsl",9,2,8.61
+240,PLAN,high,Quisiera agregar el servicio de TV por cable a mi plan de internet,13,1,1.98
+241,PLAN,low,Deseo conocer los beneficios de pasar de plan mes a mes a plan anual,14,6,5.86
+242,CNCL,low,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato,23,0,6.8
+243,OTHR,low,Quisiera saber más sobre las políticas de privacidad de datos,8,0,3.16
+244,PLAN,high,Quiero información sobre los planes empresariales disponibles,2,6,3.45
+245,TECH,low,El servicio de internet se cae todas las noches entre las 8 y las 10,17,6,14.08
+246,CNCL,medium,Quiero dar de baja el combo de TV pero mantener el internet,23,6,4.78
+247,TECH,medium,La velocidad contratada es de 50MB pero el speedtest me marca menos de la mitad,20,1,13.26
+248,PLAN,low,Quiero agregar una linea movil adicional a mi plan familiar,16,1,4.66
+249,TECH,high,"Mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",7,5,6.93
+250,BILL,high,"El descuento de la promoción no se aplicó en mi factura, sigo pagando el full!!",4,6,2.36
+251,PLAN,medium,Quiero información sobre los planes empresariales disponibles,23,4,6.09
+252,CNCL,low,Solicito la baja definitiva de todos mis servicios contratados,22,1,9.91
+253,BILL,low,El total de la factura no coincide con el valor de mi plan mensual,15,4,2.78
+254,BILL,low,"El descuento de la promoción no se aplicó en mi factura, sigo pagando el full",8,6,5.06
+255,CNCL,medium,Quiero cancelar mi suscripción antes de la próxima facturación,0,0,6.78
+256,PLAN,low,Necesito aumentar la cantidad de datos móviles de mi plan actual,13,5,7.41
+257,TECH,low,El técnico vino pero el problema de conexión sigue igual,15,1,8.82
+258,OTHR,medium,¿Como puedo actualizar mis datos de contacto?,8,3,2.76
+259,PLAN,low,Necesito bajar de plan porque el actual me queda muy caro,18,6,9.34
+260,PLAN,high,Necesito bajar de plan porque el actual me queda muy caro,16,5,2.21
+261,TECH,high,"Tengo pérdida de paquetes constante jugando online, revisen la señal por favor",12,1,4.17
+262,PLAN,medium,Quiero agregar una línea móvil adicional a mi plan familiar,4,2,3.44
+263,OTHR,high,¿Puedo pagar mi factura en efectivo en algún punto físico?,22,3,1.52
+264,CNCL,low,Quiero cancelar mi suscripción antes de la próxima facturación,20,1,12.48
+265,CNCL,low,solicito la baja definitiva de todos mis servicios contratados,3,3,7.02
+266,PLAN,low,¿Puedo combinar dos servicios en un solo plan con descuento?,1,1,9.13
+267,BILL,low,Quiero verificar si mi pago de ayer ya se refleja en el sistema,22,5,7.22
+268,TECH,high,"Mi router no enciende, ya lo reinicie varias veces y sigue sin funcionar",20,1,3.92
+269,CNCL,low,"Ya no puedo pagar el servicio, necesito darlo de baja este mes",18,5,10.18
+270,OTHR,high,Quisiera saber más sobre las políticas de privacidad de datos,9,1,1.39
+271,TECH,high,"no tengo conexión a internet, el router tiene la luz roja parpadeando",4,2,5.2
+272,TECH,medium,"Se me corta el wifi cada 20 minutos, es muy frustrante",4,2,6.36
+273,PLAN,medium,"Me interesa subir de velocidad, ¿qué opciones tienen sobre 300MB?",7,6,5.67
+274,BILL,high,"El descuento de la promoción no se aplicó en mi factura, sigo pagando el full",21,3,2.22
+275,PLAN,medium,Quiero información sobre los planes empresariales disponibles,21,3,10.28
+276,BILL,medium,el total de la factura no coincide con el valor de mi plan mensual,10,1,4.0
+277,CNCL,high,Llevo meses con problemas y ya decidí cancelar el servicio,4,3,3.74
+278,CNCL,low,"Me mudo fuera de Guayaquil y no hay cobertura, debo cancelar",13,4,11.73
+279,BILL,medium,"Me llegó un cobro duplicado en la factura de este mes, favor revisar",9,0,3.96
+280,PLAN,high,¿Como hago para cambiar de plan prepago a pospago?,11,5,4.84
+281,PLAN,low,Quiero agregar una línea móvil adicional a mi plan familiar,9,2,6.58
+282,BILL,medium,Solicito el desglose detallado de los cargos de mi factura,19,4,2.45
+283,PLAN,medium,Quisiera cambiar mi plan antes de que termine el contrato actual,23,3,5.99
+284,PLAN,low,"Me interesa subir de velocidad, ¿qué opciones tienen sobre 300MB?",3,0,10.0
+285,CNCL,low,¿Tiene costo cancelar antes de que termine el contrato de Combo TV+Internet?,16,3,5.17
+286,BILL,medium,"El descuento de la promoción no se aplicó en mi factura, sigo pagando el full",5,5,8.57
+287,OTHR,low,"Quiero felicitar al agente que me atendió, excelente servicio",11,2,1.53
+288,PLAN,high,"Quiero cambiar mi plan actual a Internet Hogar 100MB, ¿cuáles son los requisitos?",3,6,3.68
+289,BILL,low,No me ha llegado la factura electrónica de este mes a mi correo,18,2,6.28
+290,BILL,low,"El valor de mi plan subió sin previo aviso, quiero una explicación",5,6,6.42
+291,CNCL,medium,¿Cuál es el proceso para cancelar mi plan sin penalidad?,20,2,4.79
+292,OTHR,low,Necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,5,0,4.18
+293,TECH,high,"contraté fibra óptica pero la velocidad real es pésima, parece adsl",7,0,4.51
+294,OTHR,high,¿Tienen aplicación móvil para gestionar mi cuenta?,6,1,1.07
+295,PLAN,medium,¿Puedo hacer upgrade a Fibra 1GB sin pagar penalidad por cambio?,10,3,3.86
+296,TECH,low,"Mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",17,3,15.17
+297,TECH,medium,"Tengo pérdida de paquetes constante jugando online, revisen la señal por favor",17,5,13.8
+298,BILL,medium,No me ha llegado la factura electrónica de este mes a mi correo,3,5,5.55
+299,TECH,medium,No detecta la red wifi en ninguno de mis dispositivos desde ayer,19,0,10.56
+300,PLAN,high,¿Cómo hago para cambiar de plan prepago a pospago?,21,2,1.87
+301,TECH,medium,"No tengo conexión a internet, el router tiene la luz roja parpadeando",3,1,13.22
+302,CNCL,low,"no estoy conforme con la atención recibida, quiero terminar el contrato",11,1,7.66
+303,OTHR,medium,Necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,13,5,3.54
+304,OTHR,medium,¿Dónde queda la sucursal más cercana a mi domicilio?,20,4,2.03
+305,CNCL,low,"Ya no puedo pagar el servicio, necesito darlo de baja este mes",21,0,5.38
+306,CNCL,low,Quiero dar de baja el combo de TV pero mantener el internet,9,5,6.81
+307,CNCL,high,Deseo dar de baja mi línea porque me mudo de ciudad,4,5,4.67
+308,TECH,medium,"La luz del módem está en ámbar, no logro navegar",9,2,8.34
+309,PLAN,low,Necesito bajar de plan porque el actual me queda muy caro,3,2,9.45
+310,TECH,low,"Mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",9,2,14.41
+311,TECH,low,"Se me desconecta el internet apenas empieza a llover, necesito soporte técnico",2,6,21.29
+312,BILL,high,Quiero verificar si mi pago de ayer ya se refleja en el sistema,16,2,1.22
+313,OTHR,medium,Quiero saber si puedo transferir mi cuenta a otra persona,14,0,2.19
+314,CNCL,medium,¿Cuál es el proceso para cancelar mi plan sin penalidad?,11,0,8.1
+315,PLAN,low,quiero agregar una línea móvil adicional a mi plan familiar!!,21,6,10.57
+316,BILL,medium,Solicito el desglose detallado de los cargos de mi factura,1,3,3.55
+317,CNCL,medium,necesito cancelar el servicio a nombre de un familiar fallecido,5,1,5.02
+318,CNCL,medium,"No estoy conforme con la atención recibida, quiero terminar el contrato",21,4,6.7
+319,BILL,high,Solicito el desglose detallado de los cargos de mi factura,19,0,2.05
+320,OTHR,medium,¿Dónde queda la sucursal más cercana a mi domicilio?,12,5,2.08
+321,OTHR,medium,necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,13,5,3.74
+322,BILL,medium,Necesito cambiar mi método de pago de efectivo a débito automático,4,5,5.43
+323,OTHR,medium,Quiero saber si puedo transferir mi cuenta a otra persona,17,6,2.63
+324,CNCL,medium,Quiero cancelar mi suscripción antes de la próxima facturación,21,6,7.04
+325,TECH,medium,"No tengo conexión a internet, el router tiene la luz roja parpadeando",15,5,9.48
+326,TECH,medium,el técnico vino pero el problema de conexión sigue igual,22,2,15.78
+327,PLAN,low,Deseo conocer los beneficios de pasar de plan mes a mes a plan anual,13,3,4.85
+328,BILL,medium,quiero verificar si mi pago de ayer ya se refleja en el sistema,23,0,3.4
+329,CNCL,low,¿Tiene costo cancelar antes de que termine el contrato de Combo TV+Internet?,16,1,4.11
+330,PLAN,medium,¿Puedo hacer upgrade a Fibra 500MB sin pagar penalidad por cambio?,1,3,7.19
+331,PLAN,low,Necesito aumentar la cantidad de datos móviles de mi plan actual,7,6,14.33
+332,PLAN,high,Necesito aumentar la cantidad de datos móviles de mi plan actual,8,4,4.61
+333,PLAN,medium,¿Tienen promociones para migrar a Fibra 200MB este mes?!!,8,5,3.34
+334,CNCL,low,"Ya no puedo pagar el servicio, necesito darlo de baja este mes!!",5,6,11.76
+335,OTHR,low,¿Puedo pagar mi factura en efectivo en algún punto físico?!!,18,5,6.4
+336,PLAN,medium,"Quiero cambiar mi plan actual a Plan Ilimitado, ¿cuáles son los requisitos?",10,6,9.47
+337,PLAN,low,¿Tienen promociones para migrar a Combo TV+Internet este mes?,1,4,12.85
+338,TECH,low,"Se me desconecta el internet apenas empieza a llover, necesito soporte técnico",23,5,29.22
+339,BILL,high,Quiero saber la fecha límite de pago de mi factura actual,17,4,1.39
+340,TECH,low,"La luz del módem está en ámbar, no logro navegar",17,0,9.5
+341,BILL,high,Quisiera una copia de mi factura del mes pasado para mi contabilidad,15,0,2.31
+342,CNCL,medium,Quiero cancelar porque el precio subió demasiado,17,4,4.95
+343,OTHR,low,Quiero saber si puedo transferir mi cuenta a otra persona,10,3,3.0
+344,OTHR,low,tengo una consulta general sobre los servicios que ofrecen,0,3,4.95
+345,CNCL,low,"No estoy conforme con la atención recibida, quiero terminar el contrato",22,0,9.5
+346,PLAN,low,Quiero contratar el Combo TV+Internet para mi nueva casa en Loja!!,5,4,7.83
+347,OTHR,medium,¿Tienen aplicación móvil para gestionar mi cuenta?,23,0,4.36
+348,BILL,low,Quisiera una copia de mi factura del mes pasado para mi contabilidad,20,1,8.14
+349,BILL,low,Quiero verificar si mi pago de ayer ya se refleja en el sistema,6,3,5.99
+350,TECH,low,"Mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",8,1,8.36
+351,CNCL,high,Llevo meses con problemas y ya decidí cancelar el servicio,23,3,4.87
+352,PLAN,low,Quisiera cambiar mi plan antes de que termine el contrato actual,10,6,6.46
+353,CNCL,medium,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato,7,4,8.31
+354,BILL,medium,"El descuento de la promoción no se aplicó en mi factura, sigo pagando el full",23,5,2.77
+355,BILL,low,quisiera una copia de mi factura del mes pasado para mi contabilidad,13,0,4.48
+356,OTHR,medium,Tengo una duda sobre el proceso de portabilidad numérica,23,1,3.98
+357,PLAN,medium,¿Puedo hacer upgrade a Fibra 500MB sin pagar penalidad por cambio?,0,6,7.24
+358,TECH,medium,el técnico vino pero el problema de conexión sigue igual,20,5,8.05
+359,TECH,medium,"la luz del módem está en ámbar, no logro navegar",12,2,5.9
+360,PLAN,high,"Quiero cambiar mi plan actual a Plan Prepago Movil, ¿cuáles son los requisitos?",9,0,2.52
+361,OTHR,low,quisiera saber si tienen cobertura en el sector de Ambato,2,6,5.24
+362,BILL,medium,Me cobraron un servicio adicional que nunca contraté,14,4,5.58
+363,TECH,medium,"El internet está muy lento desde hace 1 días, no puedo ni hacer una videollamada",21,4,11.07
+364,CNCL,medium,¿Cual es el proceso para cancelar mi plan sin penalidad?!!,2,1,10.37
+365,BILL,medium,"Se me genero un cargo por mora que no deberia aplicar, ya pague a tiempo",21,0,5.97
+366,BILL,medium,quiero saber la fecha límite de pago de mi factura actual,15,0,3.7
+367,BILL,medium,Solicito el desglose detallado de los cargos de mi factura,18,4,2.96
+368,TECH,high,"No tengo conexión a internet, el router tiene la luz roja parpadeando",4,0,5.49
+369,OTHR,low,¿Que documentos necesito para abrir una cuenta nueva?!!,4,6,3.04
+370,TECH,low,"Tengo pérdida de paquetes constante jugando online, revisen la señal por favor",14,1,7.22
+371,TECH,medium,"Se me desconecta el internet apenas empieza a llover, necesito soporte técnico",10,6,12.74
+372,OTHR,low,¿Tienen aplicación móvil para gestionar mi cuenta?,5,2,3.55
+373,BILL,low,¿Por qué me cobraron $15 de más este mes en Cuenca?,17,0,2.92
+374,BILL,low,Solicito el desglose detallado de los cargos de mi factura,13,1,6.34
+375,TECH,medium,"No tengo conexion a internet, el router tiene la luz roja parpadeando",20,0,8.53
+376,OTHR,high,Quiero saber si puedo transferir mi cuenta a otra persona,17,6,2.52
+377,CNCL,medium,¿Cuál es el proceso para cancelar mi plan sin penalidad?,22,5,4.91
+378,OTHR,medium,tengo una consulta general sobre los servicios que ofrecen,4,5,2.7
+379,PLAN,low,Quiero contratar el Internet Hogar 100MB para mi nueva casa en Manta,17,1,4.46
+380,BILL,medium,Necesito cambiar mi método de pago de efectivo a débito automático,3,2,4.55
+381,CNCL,medium,Quiero cancelar porque el precio subió demasiado,3,6,7.86
+382,TECH,low,No carga ninguna página web desde esta mañana en Riobamba,19,6,15.37
+383,BILL,medium,Quiero saber la fecha límite de pago de mi factura actual,18,6,6.38
+384,OTHR,medium,"Consulta general, no encuentro la opción que busco en la app",14,3,2.05
+385,PLAN,low,Quiero agregar una línea móvil adicional a mi plan familiar!!,18,5,5.36
+386,PLAN,low,necesito bajar de plan porque el actual me queda muy caro,12,5,8.83
+387,BILL,medium,"Me llego un cobro duplicado en la factura de este mes, favor revisar",16,5,3.34
+388,BILL,low,Mi factura llego con un monto mayor al acordado en el contrato,14,4,4.07
+389,CNCL,medium,Solicito la baja definitiva de todos mis servicios contratados,2,1,4.56
+390,TECH,medium,El técnico vino pero el problema de conexión sigue igual,10,0,7.59
+391,OTHR,low,¿Ofrecen algún programa de referidos con beneficios?,12,4,6.72
+392,OTHR,medium,Tengo una duda sobre el proceso de portabilidad numérica,18,6,4.27
+393,OTHR,medium,necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,11,0,1.18
+394,CNCL,low,Llevo meses con problemas y ya decidí cancelar el servicio,15,5,13.34
+395,PLAN,medium,Necesito bajar de plan porque el actual me queda muy caro!!,17,1,3.04
+396,BILL,low,No reconozco un cargo de $15 en mi última factura,10,2,4.38
+397,CNCL,low,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato,7,2,7.17
+398,BILL,high,"Me llegó un cobro duplicado en la factura de este mes, favor revisar",20,2,2.27
+399,BILL,high,Necesito cambiar mi método de pago de efectivo a débito automático,5,1,1.98
+400,PLAN,low,¿Tienen promociones para migrar a Plan Ilimitado este mes?,2,5,16.1
+401,TECH,medium,No detecta la red wifi en ninguno de mis dispositivos desde ayer,3,1,7.43
+402,PLAN,medium,Quiero información sobre los planes empresariales disponibles,0,4,3.04
+403,PLAN,low,¿Puedo hacer upgrade a Plan Prepago Movil sin pagar penalidad por cambio?,12,3,4.81
+404,CNCL,high,Necesito cancelar el servicio a nombre de un familiar fallecido,11,0,2.39
+405,BILL,medium,El total de la factura no coincide con el valor de mi plan mensual,17,4,3.2
+406,BILL,low,El total de la factura no coincide con el valor de mi plan mensual,12,0,7.23
+407,OTHR,high,"Consulta general, no encuentro la opción que busco en la app",17,2,0.75
+408,OTHR,high,Quisiera saber si tienen cobertura en el sector de Ambato,14,4,0.9
+409,TECH,high,No puedo configurar el wifi de 5GHz en mi router nuevo,22,4,9.32
+410,TECH,medium,"Se me desconecta el internet apenas empieza a llover, necesito soporte técnico!!",22,1,22.04
+411,CNCL,medium,"Ya encontré otro proveedor, necesito cancelar mi cuenta cuanto antes",2,4,6.76
+412,PLAN,low,"Me interesa subir de velocidad, ¿qué opciones tienen sobre 100MB?",8,6,5.38
+413,TECH,high,El servicio de internet se cae todas las noches entre las 8 y las 10,4,0,8.62
+414,PLAN,high,¿Tienen promociones para migrar a Fibra 200MB este mes?,20,6,2.71
+415,OTHR,high,¿Cuál es el horario de atención de las oficinas en Cuenca?,5,5,5.62
+416,CNCL,low,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato,10,0,5.53
+417,OTHR,high,¿Cómo puedo actualizar mis datos de contacto?,17,4,1.84
+418,BILL,low,Quiero verificar si mi pago de ayer ya se refleja en el sistema,7,3,3.97
+419,BILL,medium,quiero saber la fecha límite de pago de mi factura actual,13,5,3.27
+420,PLAN,low,Quiero contratar el Plan Prepago Movil para mi nueva casa en Guayaquil,22,5,14.29
+421,CNCL,medium,Quiero dar de baja el combo de TV pero mantener el internet,1,5,7.63
+422,OTHR,medium,"Quiero felicitar al agente que me atendio, excelente servicio",9,6,3.34
+423,TECH,medium,Tengo alta latencia y ping inestable trabajando desde casa,1,0,7.6
+424,TECH,low,"Se me desconecta el internet apenas empieza a llover, necesito soporte técnico",7,3,11.55
+425,CNCL,high,¿Cuál es el proceso para cancelar mi plan sin penalidad?,0,4,4.04
+426,OTHR,medium,Quisiera saber si tienen cobertura en el sector de Loja,11,2,0.92
+427,BILL,high,El total de la factura no coincide con el valor de mi plan mensual!!,0,5,4.47
+428,CNCL,low,Quiero dar de baja el combo de TV pero mantener el internet,12,3,4.79
+429,TECH,medium,No detecta la red wifi en ninguno de mis dispositivos desde ayer,12,6,9.91
+430,CNCL,low,¿Cuál es el proceso para cancelar mi plan sin penalidad?,15,4,6.89
+431,OTHR,medium,¿Puedo pagar mi factura en efectivo en algun punto fisico?,5,0,3.43
+432,CNCL,low,Quiero dar de baja el combo de TV pero mantener el internet,14,1,7.29
+433,PLAN,medium,Necesito aumentar la cantidad de datos móviles de mi plan actual,3,1,3.71
+434,PLAN,medium,¿Puedo combinar dos servicios en un solo plan con descuento?,9,0,3.05
+435,OTHR,medium,"Quiero felicitar al agente que me atendió, excelente servicio",12,2,3.06
+436,TECH,medium,No puedo configurar el wifi de 5GHz en mi router nuevo,10,2,7.42
+437,PLAN,medium,¿Como hago para cambiar de plan prepago a pospago?,22,0,7.0
+438,TECH,low,"Se me corta el wifi cada 15 minutos, es muy frustrante",11,0,14.2
+439,PLAN,low,Quisiera agregar el servicio de TV por cable a mi plan de internet,22,0,5.42
+440,BILL,low,Quiero saber la fecha límite de pago de mi factura actual,22,2,3.03
+441,PLAN,low,¿Cómo hago para cambiar de plan prepago a pospago?,23,6,15.02
+442,TECH,low,"Se me desconecta el internet apenas empieza a llover, necesito soporte técnico",2,4,15.88
+443,BILL,low,Necesito cambiar mi método de pago de efectivo a débito automático!!,20,0,3.87
+444,OTHR,medium,¿Puedo pagar mi factura en efectivo en algún punto físico?,22,2,2.33
+445,BILL,high,mi factura llegó con un monto mayor al acordado en el contrato,17,0,3.78
+446,PLAN,medium,Quisiera agregar el servicio de TV por cable a mi plan de internet,23,3,4.72
+447,OTHR,medium,¿Cómo puedo actualizar mis datos de contacto?!!,2,6,3.05
+448,TECH,low,No detecta la red wifi en ninguno de mis dispositivos desde ayer,2,3,16.98
+449,PLAN,low,Necesito aumentar la cantidad de datos móviles de mi plan actual,14,6,8.7
+450,PLAN,low,¿Puedo hacer upgrade a Fibra 500MB sin pagar penalidad por cambio?,12,1,3.26
+451,BILL,low,No me ha llegado la factura electrónica de este mes a mi correo,21,2,5.59
+452,PLAN,low,Necesito aumentar la cantidad de datos móviles de mi plan actual,7,5,11.79
+453,TECH,low,"Mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",19,3,6.07
+454,CNCL,high,"Quiero cancelar mi servicio de internet, ya no lo necesito",5,1,5.92
+455,BILL,low,El total de la factura no coincide con el valor de mi plan mensual,8,1,5.13
+456,TECH,high,No detecta la red wifi en ninguno de mis dispositivos desde ayer!!,0,1,9.95
+457,BILL,high,"me llegó un cobro duplicado en la factura de este mes, favor revisar",7,4,1.77
+458,BILL,low,Quisiera una copia de mi factura del mes pasado para mi contabilidad,12,6,5.84
+459,BILL,low,¿Por qué me cobraron $25 de más este mes en Riobamba?!!,17,5,3.65
+460,OTHR,medium,Tengo una consulta general sobre los servicios que ofrecen,14,1,1.79
+461,PLAN,low,¿Cómo hago para cambiar de plan prepago a pospago?,20,0,6.74
+462,CNCL,high,"Ya encontré otro proveedor, necesito cancelar mi cuenta cuanto antes",19,0,4.19
+463,BILL,medium,quiero verificar si mi pago de ayer ya se refleja en el sistema,7,1,2.86
+464,CNCL,high,Llevo meses con problemas y ya decidí cancelar el servicio,17,2,3.46
+465,TECH,high,"mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",17,2,5.84
+466,TECH,low,"Se me corta el wifi cada 30 minutos, es muy frustrante",22,4,17.99
+467,PLAN,medium,Quiero contratar el Fibra 200MB para mi nueva casa en Riobamba,3,1,5.21
+468,CNCL,medium,"Ya encontré otro proveedor, necesito cancelar mi cuenta cuanto antes",15,3,2.69
+469,PLAN,medium,Quisiera cambiar mi plan antes de que termine el contrato actual,11,5,5.54
+470,PLAN,medium,Quiero información sobre los planes empresariales disponibles,9,5,3.69
+471,BILL,low,Solicito el desglose detallado de los cargos de mi factura,2,0,7.81
+472,TECH,low,No carga ninguna página web desde esta mañana en Guayaquil,12,3,14.39
+473,CNCL,low,Solicito la baja definitiva de todos mis servicios contratados,4,0,10.25
+474,BILL,high,Mi factura llegó con un monto mayor al acordado en el contrato,10,3,2.88
+475,PLAN,high,¿Puedo hacer upgrade a Fibra 500MB sin pagar penalidad por cambio?,5,2,4.39
+476,CNCL,medium,¿Tiene costo cancelar antes de que termine el contrato de Fibra 500MB?,2,0,5.39
+477,TECH,low,"El internet está muy lento desde hace 3 días, no puedo ni hacer una videollamada",4,3,15.83
+478,CNCL,medium,Necesito cancelar el servicio a nombre de un familiar fallecido!!,21,4,5.68
+479,BILL,medium,"El valor de mi plan subió sin previo aviso, quiero una explicación",19,2,2.56
+480,BILL,high,No me ha llegado la factura electrónica de este mes a mi correo,18,5,2.66
+481,TECH,medium,No carga ninguna página web desde esta mañana en Guayaquil,12,2,7.9
+482,TECH,medium,Tengo alta latencia y ping inestable trabajando desde casa,17,3,12.34
+483,PLAN,medium,Quiero agregar una línea móvil adicional a mi plan familiar,7,5,4.21
+484,BILL,high,Me cobraron un servicio adicional que nunca contraté,9,5,3.07
+485,CNCL,low,"Quiero cancelar mi servicio de internet, ya no lo necesito",22,1,7.02
+486,PLAN,medium,quisiera cambiar mi plan antes de que termine el contrato actual!!,2,5,5.4
+487,CNCL,high,Necesito cancelar el servicio a nombre de un familiar fallecido,8,3,2.72
+488,PLAN,low,Deseo conocer los beneficios de pasar de plan mes a mes a plan anual,15,5,7.42
+489,OTHR,medium,¿Cómo puedo actualizar mis datos de contacto?,1,2,1.65
+490,BILL,low,Quisiera una copia de mi factura del mes pasado para mi contabilidad,5,2,4.18
+491,TECH,low,"Tengo pérdida de paquetes constante jugando online, revisen la señal por favor!!",6,0,14.4
+492,CNCL,high,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato!!,18,2,3.16
+493,OTHR,low,Quisiera saber más sobre las políticas de privacidad de datos!!,20,1,4.31
+494,CNCL,medium,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato!!,4,1,5.28
+495,TECH,high,"El internet está muy lento desde hace 6 días, no puedo ni hacer una videollamada",19,2,5.15
+496,BILL,medium,quiero verificar si mi pago de ayer ya se refleja en el sistema,13,0,4.03
+497,BILL,medium,"Se me generó un cargo por mora que no debería aplicar, ya pagué a tiempo!!",23,4,4.75
+498,CNCL,low,"Ya encontre otro proveedor, necesito cancelar mi cuenta cuanto antes",10,0,4.74
+499,CNCL,medium,"Quiero cancelar mi servicio de internet, ya no lo necesito",16,4,5.16
+500,CNCL,high,¿Cual es el proceso para cancelar mi plan sin penalidad?,4,1,5.62
+501,OTHR,medium,¿Tienen aplicación móvil para gestionar mi cuenta?,5,1,4.38
+502,CNCL,medium,"ya no puedo pagar el servicio, necesito darlo de baja este mes",14,2,6.31
+503,OTHR,high,"Quiero felicitar al agente que me atendió, excelente servicio!!",8,5,1.47
+504,CNCL,medium,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato,22,1,10.06
+505,TECH,high,"Tengo pérdida de paquetes constante jugando online, revisen la señal por favor",10,1,9.36
+506,OTHR,low,"Consulta general, no encuentro la opción que busco en la app",7,5,3.91
+507,TECH,medium,El técnico vino pero el problema de conexión sigue igual,19,4,8.24
+508,OTHR,high,¿Qué documentos necesito para abrir una cuenta nueva?,16,2,0.72
+509,TECH,low,"se me desconecta el internet apenas empieza a llover, necesito soporte tecnico",2,5,23.02
+510,CNCL,low,Llevo meses con problemas y ya decidi cancelar el servicio,0,5,9.33
+511,BILL,medium,Me cobraron un servicio adicional que nunca contraté,9,6,2.86
+512,TECH,low,"Se me corta el wifi cada 5 minutos, es muy frustrante",10,1,10.46
+513,CNCL,low,"ya no puedo pagar el servicio, necesito darlo de baja este mes",20,5,5.86
+514,TECH,medium,"Se me corta el wifi cada 30 minutos, es muy frustrante",4,2,8.77
+515,OTHR,medium,"Quiero felicitar al agente que me atendió, excelente servicio!!",11,5,1.97
+516,OTHR,medium,¿Tienen aplicación móvil para gestionar mi cuenta?,21,1,3.1
+517,CNCL,low,quiero cancelar porque el precio subió demasiado,22,0,8.31
+518,BILL,low,No reconozco un cargo de $12 en mi última factura!!,11,5,4.83
+519,CNCL,medium,Quiero cancelar mi suscripción antes de la próxima facturación,6,1,8.06
+520,BILL,medium,Mi factura llegó con un monto mayor al acordado en el contrato,12,0,2.76
+521,TECH,medium,"Se me desconecta el internet apenas empieza a llover, necesito soporte técnico",11,2,8.08
+522,CNCL,low,Solicito la baja definitiva de todos mis servicios contratados,14,6,10.49
+523,PLAN,low,Estoy interesado en el combo de internet mas streaming!!,14,2,6.28
+524,PLAN,medium,Necesito aumentar la cantidad de datos móviles de mi plan actual,14,3,3.02
+525,BILL,medium,Quiero verificar si mi pago de ayer ya se refleja en el sistema,7,2,4.08
+526,TECH,medium,"La luz del módem está en ámbar, no logro navegar",4,4,10.34
+527,OTHR,medium,Necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,11,4,3.2
+528,PLAN,medium,necesito bajar de plan porque el actual me queda muy caro,13,0,3.8
+529,PLAN,medium,Quisiera cambiar mi plan antes de que termine el contrato actual,20,2,5.26
+530,OTHR,medium,¿Cómo puedo actualizar mis datos de contacto?,6,2,2.64
+531,OTHR,medium,¿Cuál es el horario de atención de las oficinas en Riobamba?,17,3,1.77
+532,OTHR,high,Quisiera saber mas sobre las politicas de privacidad de datos,12,2,1.52
+533,BILL,low,No reconozco un cargo de $12 en mi última factura,16,0,3.43
+534,OTHR,low,¿Dónde queda la sucursal más cercana a mi domicilio?!!,12,1,3.59
+535,OTHR,low,¿Cómo puedo actualizar mis datos de contacto?,23,2,3.45
+536,CNCL,high,necesito cancelar el servicio a nombre de un familiar fallecido,3,1,3.29
+537,OTHR,medium,Quisiera saber si tienen cobertura en el sector de Cuenca,6,2,1.91
+538,OTHR,medium,¿Cómo puedo actualizar mis datos de contacto?,15,5,2.8
+539,OTHR,high,Tengo una duda sobre el proceso de portabilidad numérica,0,2,1.22
+540,BILL,high,no reconozco un cargo de $15 en mi ultima factura,15,5,2.35
+541,OTHR,medium,¿Cuál es el horario de atención de las oficinas en Manta?!!,20,5,2.1
+542,TECH,high,"Se me desconecta el internet apenas empieza a llover, necesito soporte técnico",19,1,8.37
+543,CNCL,high,"Ya encontre otro proveedor, necesito cancelar mi cuenta cuanto antes",11,1,2.24
+544,CNCL,medium,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato,12,6,8.99
+545,OTHR,medium,Quisiera saber más sobre las políticas de privacidad de datos,9,0,1.67
+546,TECH,medium,Tengo alta latencia y ping inestable trabajando desde casa,23,5,9.94
+547,BILL,low,"El descuento de la promoción no se aplicó en mi factura, sigo pagando el full",15,5,5.75
+548,OTHR,medium,Tengo una consulta general sobre los servicios que ofrecen!!,2,4,3.34
+549,TECH,high,"No tengo conexión a internet, el router tiene la luz roja parpadeando",6,6,4.16
+550,PLAN,medium,"Me interesa subir de velocidad, ¿qué opciones tienen sobre 200MB?",1,3,4.0
+551,PLAN,low,Quiero información sobre los planes empresariales disponibles,21,6,13.05
+552,TECH,medium,"Se me corta el wifi cada 5 minutos, es muy frustrante",2,3,9.54
+553,TECH,high,No puedo configurar el wifi de 5GHz en mi router nuevo,3,2,6.27
+554,TECH,medium,"Contraté fibra óptica pero la velocidad real es pésima, parece adsl!!",19,4,5.86
+555,PLAN,low,Necesito bajar de plan porque el actual me queda muy caro,4,0,9.57
+556,OTHR,low,"Quiero felicitar al agente que me atendió, excelente servicio",0,4,2.6
+557,BILL,high,Mi factura llegó con un monto mayor al acordado en el contrato,16,2,2.61
+558,OTHR,high,Necesito hablar con un asesor sobre un tema que no es técnico ni de facturación!!,15,4,2.1
+559,CNCL,medium,"Ya no puedo pagar el servicio, necesito darlo de baja este mes!!",16,4,5.13
+560,TECH,low,No carga ninguna página web desde esta mañana en Quito,12,4,13.01
+561,OTHR,high,"Quiero felicitar al agente que me atendio, excelente servicio",7,2,1.34
+562,TECH,medium,No puedo configurar el wifi de 5GHz en mi router nuevo,4,6,7.1
+563,PLAN,low,Necesito aumentar la cantidad de datos móviles de mi plan actual!!,1,0,5.25
+564,BILL,medium,"Me llego un cobro duplicado en la factura de este mes, favor revisar",20,2,3.8
+565,BILL,medium,No me ha llegado la factura electrónica de este mes a mi correo,6,1,3.56
+566,CNCL,low,llevo meses con problemas y ya decidí cancelar el servicio,17,0,8.07
+567,CNCL,high,Llevo meses con problemas y ya decidí cancelar el servicio,1,5,3.44
+568,CNCL,low,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato,4,2,5.2
+569,BILL,medium,No me ha llegado la factura electrónica de este mes a mi correo,6,2,3.27
+570,BILL,medium,quisiera una copia de mi factura del mes pasado para mi contabilidad,10,2,2.21
+571,PLAN,medium,"Quiero cambiar mi plan actual a Combo TV+Internet, ¿cuáles son los requisitos?",8,6,7.39
+572,TECH,low,El servicio de internet se cae todas las noches entre las 8 y las 10,22,4,10.08
+573,CNCL,low,"quiero cancelar mi servicio de internet, ya no lo necesito",19,0,6.72
+574,OTHR,medium,quiero saber si puedo transferir mi cuenta a otra persona,23,6,2.82
+575,CNCL,medium,Necesito cancelar el servicio a nombre de un familiar fallecido,18,3,3.8
+576,CNCL,low,¿Cuál es el proceso para cancelar mi plan sin penalidad?,20,2,8.55
+577,TECH,low,El tecnico vino pero el problema de conexion sigue igual,21,1,10.46
+578,TECH,medium,"tengo pérdida de paquetes constante jugando online, revisen la señal por favor",13,6,17.9
+579,CNCL,low,Llevo meses con problemas y ya decidí cancelar el servicio,9,5,9.02
+580,OTHR,medium,Tengo una duda sobre el proceso de portabilidad numérica!!,5,4,2.17
+581,CNCL,low,Quiero dar de baja el combo de TV pero mantener el internet,15,2,3.15
+582,PLAN,high,Necesito bajar de plan porque el actual me queda muy caro,2,4,2.06
+583,PLAN,medium,Necesito bajar de plan porque el actual me queda muy caro,22,0,6.98
+584,PLAN,medium,Necesito bajar de plan porque el actual me queda muy caro,15,1,3.28
+585,BILL,high,El total de la factura no coincide con el valor de mi plan mensual!!,17,0,1.46
+586,TECH,medium,"Mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",4,2,7.94
+587,OTHR,high,¿Cuál es el horario de atención de las oficinas en Quito?,3,5,1.11
+588,TECH,low,"El internet está muy lento desde hace 2 días, no puedo ni hacer una videollamada",20,3,11.3
+589,OTHR,low,Quisiera saber si tienen cobertura en el sector de Riobamba,6,1,2.09
+590,BILL,medium,Quiero saber la fecha limite de pago de mi factura actual,23,4,2.51
+591,BILL,low,No me ha llegado la factura electronica de este mes a mi correo,2,0,6.7
+592,BILL,low,"Me llegó un cobro duplicado en la factura de este mes, favor revisar",20,5,6.84
+593,PLAN,low,¿Como hago para cambiar de plan prepago a pospago?,11,1,3.13
+594,TECH,medium,"tengo pérdida de paquetes constante jugando online, revisen la señal por favor",12,1,7.94
+595,BILL,medium,Quisiera una copia de mi factura del mes pasado para mi contabilidad,23,2,2.02
+596,BILL,high,No me ha llegado la factura electrónica de este mes a mi correo,12,4,2.02
+597,PLAN,medium,¿Puedo combinar dos servicios en un solo plan con descuento?,17,6,5.68
+598,BILL,medium,¿Por qué me cobraron $12 de más este mes en Cuenca?,15,3,3.89
+599,PLAN,low,Quisiera agregar el servicio de TV por cable a mi plan de internet,18,3,4.68
+600,OTHR,low,¿Qué documentos necesito para abrir una cuenta nueva?,7,2,1.86
+601,TECH,low,"No tengo conexion a internet, el router tiene la luz roja parpadeando",6,5,16.16
+602,PLAN,medium,Necesito aumentar la cantidad de datos móviles de mi plan actual,11,6,5.25
+603,CNCL,medium,¿Tiene costo cancelar antes de que termine el contrato de Plan Prepago Movil?,10,0,5.02
+604,CNCL,high,Quiero cancelar mi suscripcion antes de la proxima facturacion!!,6,5,2.96
+605,OTHR,low,¿Tienen aplicación móvil para gestionar mi cuenta?,15,2,2.6
+606,BILL,high,"El descuento de la promoción no se aplicó en mi factura, sigo pagando el full",0,6,2.89
+607,OTHR,medium,Tengo una duda sobre el proceso de portabilidad numerica,19,6,3.41
+608,CNCL,high,"Me mudo fuera de Cuenca y no hay cobertura, debo cancelar",13,5,2.91
+609,OTHR,low,Necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,17,4,3.77
+610,CNCL,medium,Quiero cancelar mi suscripción antes de la próxima facturación,15,5,5.07
+611,PLAN,low,Estoy interesado en el combo de internet más streaming,9,1,4.25
+612,OTHR,medium,¿Cuál es el horario de atención de las oficinas en Loja?,17,6,1.38
+613,CNCL,medium,"Quiero cancelar mi servicio de internet, ya no lo necesito!!",3,4,6.36
+614,BILL,medium,Me cobraron un servicio adicional que nunca contraté,9,0,2.86
+615,OTHR,medium,Tengo una consulta general sobre los servicios que ofrecen,20,4,2.71
+616,PLAN,low,Quisiera cambiar mi plan antes de que termine el contrato actual,18,0,6.45
+617,CNCL,low,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato,4,1,8.28
+618,TECH,medium,No detecta la red wifi en ninguno de mis dispositivos desde ayer,21,3,10.2
+619,BILL,medium,Solicito el desglose detallado de los cargos de mi factura,1,5,2.78
+620,OTHR,low,¿Tienen aplicación móvil para gestionar mi cuenta?,3,3,6.89
+621,CNCL,medium,Quiero cancelar porque el precio subió demasiado!!,22,6,7.29
+622,PLAN,low,quisiera cambiar mi plan antes de que termine el contrato actual,21,4,7.2
+623,BILL,low,El total de la factura no coincide con el valor de mi plan mensual,13,5,6.51
+624,CNCL,high,"Ya encontré otro proveedor, necesito cancelar mi cuenta cuanto antes",21,4,4.22
+625,BILL,low,"El descuento de la promoción no se aplicó en mi factura, sigo pagando el full!!",23,3,2.67
+626,PLAN,medium,"Quiero cambiar mi plan actual a Plan Ilimitado, ¿cuáles son los requisitos?",8,5,3.43
+627,OTHR,low,¿Tienen aplicación móvil para gestionar mi cuenta?,21,2,3.28
+628,PLAN,high,Quiero información sobre los planes empresariales disponibles,9,6,3.76
+629,BILL,medium,"Me llego un cobro duplicado en la factura de este mes, favor revisar",11,5,4.87
+630,CNCL,low,Llevo meses con problemas y ya decidi cancelar el servicio,18,3,8.03
+631,BILL,low,No reconozco un cargo de $8 en mi última factura!!,9,6,5.05
+632,PLAN,low,Quiero información sobre los planes empresariales disponibles,18,0,4.51
+633,PLAN,high,"Me interesa subir de velocidad, ¿qué opciones tienen sobre 50MB?!!",11,4,3.58
+634,BILL,medium,El total de la factura no coincide con el valor de mi plan mensual,8,2,2.32
+635,OTHR,low,Tengo una duda sobre el proceso de portabilidad numerica,18,5,5.0
+636,OTHR,medium,Quiero saber si puedo transferir mi cuenta a otra persona,7,6,1.99
+637,PLAN,high,Quiero agregar una línea móvil adicional a mi plan familiar,23,1,3.08
+638,PLAN,low,Quisiera cambiar mi plan antes de que termine el contrato actual,23,4,8.87
+639,CNCL,medium,¿Cuál es el proceso para cancelar mi plan sin penalidad?,16,2,7.75
+640,CNCL,medium,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato,9,4,5.27
+641,OTHR,medium,¿Cómo puedo actualizar mis datos de contacto?,8,6,4.22
+642,OTHR,low,Quiero saber si puedo transferir mi cuenta a otra persona,11,2,2.32
+643,OTHR,medium,¿Puedo pagar mi factura en efectivo en algún punto físico?,1,4,2.64
+644,CNCL,medium,Estoy muy insatisfecho con el servicio y quiero cancelar el contrato,19,3,7.55
+645,OTHR,low,Necesito hablar con un asesor sobre un tema que no es técnico ni de facturación,3,5,3.02
+646,OTHR,low,Tengo una duda sobre el proceso de portabilidad numérica,12,4,2.55
+647,OTHR,low,Quisiera saber si tienen cobertura en el sector de Loja,6,2,4.81
+648,CNCL,high,Quiero cancelar mi suscripción antes de la próxima facturación,14,0,1.54
+649,CNCL,high,"quiero cancelar mi servicio de internet, ya no lo necesito",11,0,2.58
+650,TECH,medium,"tengo pérdida de paquetes constante jugando online, revisen la señal por favor",21,0,15.68
+651,BILL,medium,¿Por qué me cobraron $35 de más este mes en Ambato?,11,4,4.27
+652,TECH,medium,"Se me corta el wifi cada 30 minutos, es muy frustrante",2,6,14.8
+653,CNCL,medium,Necesito cancelar el servicio a nombre de un familiar fallecido,23,1,5.84
+654,TECH,low,"El internet está muy lento desde hace 9 días, no puedo ni hacer una videollamada",16,5,10.42
+655,CNCL,high,Quiero dar de baja el combo de TV pero mantener el internet,21,3,2.15
+656,BILL,medium,"El valor de mi plan subió sin previo aviso, quiero una explicación",18,4,2.49
+657,OTHR,low,"Consulta general, no encuentro la opción que busco en la app",0,5,5.55
+658,OTHR,low,Quiero saber si puedo transferir mi cuenta a otra persona,12,2,1.17
+659,OTHR,high,"Consulta general, no encuentro la opción que busco en la app",13,0,0.92
+660,OTHR,low,¿Dónde queda la sucursal más cercana a mi domicilio?,0,0,5.33
+661,TECH,high,No carga ninguna página web desde esta mañana en Guayaquil,23,6,6.79
+662,CNCL,low,"Ya no puedo pagar el servicio, necesito darlo de baja este mes",2,2,8.78
+663,BILL,medium,¿Por qué me cobraron $35 de más este mes en Cuenca?!!,11,0,3.99
+664,CNCL,low,¿Cuál es el proceso para cancelar mi plan sin penalidad?,1,5,21.37
+665,PLAN,high,"Quiero cambiar mi plan actual a Fibra 200MB, ¿cuáles son los requisitos?",8,3,4.49
+666,CNCL,medium,"No estoy conforme con la atención recibida, quiero terminar el contrato",1,2,10.85
+667,OTHR,medium,Tengo una duda sobre el proceso de portabilidad numérica,10,1,1.56
+668,BILL,low,Necesito cambiar mi método de pago de efectivo a débito automático,0,6,6.33
+669,PLAN,medium,Quisiera agregar el servicio de TV por cable a mi plan de internet,1,2,3.66
+670,PLAN,low,necesito aumentar la cantidad de datos móviles de mi plan actual,14,4,16.15
+671,OTHR,low,Tengo una consulta general sobre los servicios que ofrecen,14,4,4.33
+672,BILL,high,No reconozco un cargo de $12 en mi última factura,8,6,2.75
+673,TECH,medium,Tengo alta latencia y ping inestable trabajando desde casa,19,3,9.27
+674,OTHR,medium,¿Cuál es el horario de atención de las oficinas en Riobamba?,4,1,2.27
+675,OTHR,medium,¿Tienen aplicación móvil para gestionar mi cuenta?,3,5,2.57
+676,CNCL,low,"Me mudo fuera de Quito y no hay cobertura, debo cancelar",14,6,9.81
+677,CNCL,medium,¿Cuál es el proceso para cancelar mi plan sin penalidad?,16,5,9.06
+678,TECH,high,tengo alta latencia y ping inestable trabajando desde casa,21,0,2.89
+679,CNCL,low,¿Tiene costo cancelar antes de que termine el contrato de Plan Prepago Movil?,1,1,9.22
+680,PLAN,medium,¿Puedo hacer upgrade a Combo TV+Internet sin pagar penalidad por cambio?!!,0,3,7.27
+681,CNCL,medium,Quiero dar de baja el combo de TV pero mantener el internet,12,0,8.02
+682,TECH,medium,"La luz del módem está en ámbar, no logro navegar",21,3,21.02
+683,TECH,medium,"Mi router no enciende, ya lo reinicié varias veces y sigue sin funcionar",5,5,12.55
+684,BILL,medium,Solicito el desglose detallado de los cargos de mi factura,9,4,1.95
+685,TECH,medium,El servicio de internet se cae todas las noches entre las 8 y las 10,21,5,12.4
+686,TECH,medium,"Se me corta el wifi cada 5 minutos, es muy frustrante",21,0,9.33
+687,OTHR,medium,"Consulta general, no encuentro la opcion que busco en la app",4,4,1.58
+688,BILL,medium,Quiero saber la fecha límite de pago de mi factura actual!!,19,6,2.28
+689,CNCL,medium,Quiero cancelar porque el precio subió demasiado,21,2,5.41
+690,PLAN,medium,Quiero agregar una linea movil adicional a mi plan familiar,9,4,3.5
+691,BILL,medium,"El valor de mi plan subió sin previo aviso, quiero una explicación",22,4,2.68
+692,PLAN,high,Deseo conocer los beneficios de pasar de plan mes a mes a plan anual,21,3,3.14
+693,OTHR,low,¿Tienen aplicacion movil para gestionar mi cuenta?,6,3,2.69
+694,PLAN,low,quiero agregar una línea móvil adicional a mi plan familiar,17,6,4.0
+695,CNCL,medium,Quiero dar de baja el combo de TV pero mantener el internet,2,0,6.65
+696,CNCL,high,Quiero cancelar porque el precio subió demasiado,17,1,2.13
+697,TECH,medium,"se me corta el wifi cada 15 minutos, es muy frustrante",19,1,10.24
+698,TECH,low,"La luz del módem está en ámbar, no logro navegar",22,5,14.99
+699,PLAN,low,¿Puedo combinar dos servicios en un solo plan con descuento?,10,2,4.55
+700,OTHR,low,¿Dónde queda la sucursal más cercana a mi domicilio?!!,12,0,4.57
+701,TECH,low,"Tengo pérdida de paquetes constante jugando online, revisen la señal por favor",7,5,14.38
+702,OTHR,low,Tengo una consulta general sobre los servicios que ofrecen,19,4,4.28
+703,CNCL,high,Quiero dar de baja el combo de TV pero mantener el internet,14,0,2.06
+704,TECH,low,"Se me corta el wifi cada 30 minutos, es muy frustrante",8,5,11.4
+705,TECH,low,La velocidad contratada es de 200MB pero el speedtest me marca menos de la mitad,19,0,7.69
+706,TECH,low,No carga ninguna página web desde esta mañana en Cuenca,23,4,13.46
+707,TECH,medium,"Contraté fibra óptica pero la velocidad real es pésima, parece adsl",21,2,13.2
+708,CNCL,low,Quiero cancelar porque el precio subió demasiado,11,6,17.85
+709,PLAN,low,quiero agregar una línea móvil adicional a mi plan familiar,19,5,6.63
+710,BILL,medium,"se me generó un cargo por mora que no debería aplicar, ya pagué a tiempo",17,6,2.87
+711,BILL,low,"El descuento de la promoción no se aplicó en mi factura, sigo pagando el full",4,4,4.08
+712,TECH,low,Tengo alta latencia y ping inestable trabajando desde casa,23,1,24.23
+713,PLAN,high,¿Cómo hago para cambiar de plan prepago a pospago?!!,2,6,3.23
+714,BILL,low,Quisiera una copia de mi factura del mes pasado para mi contabilidad,20,0,5.45
+715,OTHR,low,¿Ofrecen algún programa de referidos con beneficios?,0,5,2.3
+716,BILL,medium,"Se me genero un cargo por mora que no deberia aplicar, ya pague a tiempo",17,2,2.51
+717,PLAN,medium,"quiero cambiar mi plan actual a Internet Hogar 100MB, ¿cuáles son los requisitos?",17,1,3.92
+718,PLAN,high,Deseo conocer los beneficios de pasar de plan mes a mes a plan anual!!,14,0,1.73
+719,OTHR,medium,"Consulta general, no encuentro la opción que busco en la app",1,5,2.26
+720,BILL,medium,¿Por que me cobraron $12 de mas este mes en Manta?,17,2,3.13
+721,BILL,high,¿Por qué me cobraron $25 de más este mes en Quito?,3,0,3.23
+722,BILL,low,No me ha llegado la factura electrónica de este mes a mi correo,5,5,6.27
+723,CNCL,medium,Quiero dar de baja el combo de TV pero mantener el internet,7,2,5.6
+724,PLAN,low,Quiero información sobre los planes empresariales disponibles,4,0,6.58
+725,OTHR,high,Tengo una consulta general sobre los servicios que ofrecen,9,0,1.29
+726,PLAN,low,Quisiera agregar el servicio de TV por cable a mi plan de internet,16,5,4.36
+727,TECH,low,"Contraté fibra óptica pero la velocidad real es pésima, parece adsl!!",9,6,18.75
+728,CNCL,medium,Solicito la baja definitiva de todos mis servicios contratados,19,6,6.32
+729,PLAN,low,Estoy interesado en el combo de internet mas streaming,0,5,10.31
+730,TECH,medium,No puedo configurar el wifi de 5GHz en mi router nuevo,12,4,12.42
+731,OTHR,low,"Consulta general, no encuentro la opcion que busco en la app",1,4,3.78
+732,CNCL,medium,Necesito cancelar el servicio a nombre de un familiar fallecido,3,1,6.6
+733,TECH,low,Tengo alta latencia y ping inestable trabajando desde casa,21,5,15.52
+734,BILL,medium,No me ha llegado la factura electrónica de este mes a mi correo,11,0,3.17
+735,TECH,low,No detecta la red wifi en ninguno de mis dispositivos desde ayer,15,6,12.75
+736,CNCL,low,"Ya no puedo pagar el servicio, necesito darlo de baja este mes",11,0,5.74
+737,PLAN,low,quisiera agregar el servicio de TV por cable a mi plan de internet,11,2,6.41
+738,PLAN,medium,¿Puedo combinar dos servicios en un solo plan con descuento?,0,6,5.34
+739,PLAN,high,Deseo conocer los beneficios de pasar de plan mes a mes a plan anual,5,5,3.56
+740,TECH,medium,"Se me corta el wifi cada 15 minutos, es muy frustrante",0,2,4.57
+741,PLAN,low,"Quiero cambiar mi plan actual a Fibra 1GB, ¿cuáles son los requisitos?",0,6,11.01
+742,CNCL,high,Solicito la baja definitiva de todos mis servicios contratados,7,2,2.73
+743,PLAN,low,Quisiera agregar el servicio de TV por cable a mi plan de internet,11,5,13.54
+744,BILL,high,No me ha llegado la factura electrónica de este mes a mi correo,8,6,1.33
+745,TECH,medium,"Tengo pérdida de paquetes constante jugando online, revisen la señal por favor",4,3,13.0
+746,BILL,medium,El total de la factura no coincide con el valor de mi plan mensual,15,1,2.51
+747,CNCL,low,Quiero dar de baja el combo de TV pero mantener el internet,22,0,15.55
+748,PLAN,medium,¿Cómo hago para cambiar de plan prepago a pospago?,2,0,2.82
+749,BILL,low,Quiero verificar si mi pago de ayer ya se refleja en el sistema,5,5,7.99
+750,BILL,low,necesito cambiar mi método de pago de efectivo a débito automático,1,6,3.87
+751,OTHR,medium,¿Ofrecen algún programa de referidos con beneficios?!!,23,4,1.87
+752,OTHR,high,¿Cuál es el horario de atención de las oficinas en Cuenca?,18,3,1.41
+753,CNCL,low,¿Cuál es el proceso para cancelar mi plan sin penalidad?,12,3,12.5
+754,OTHR,low,¿Tienen aplicación móvil para gestionar mi cuenta?,7,5,3.48
+755,CNCL,low,Necesito cancelar el servicio a nombre de un familiar fallecido,14,0,10.73
+756,BILL,medium,Quiero saber la fecha límite de pago de mi factura actual,0,6,4.14
+757,CNCL,low,Quiero dar de baja el combo de TV pero mantener el internet,18,5,6.55
+758,CNCL,low,Deseo dar de baja mi línea porque me mudo de ciudad!!,18,3,8.72
+759,OTHR,medium,¿Puedo pagar mi factura en efectivo en algún punto físico?!!,17,2,3.6
+760,BILL,low,El total de la factura no coincide con el valor de mi plan mensual,12,5,5.37
+761,OTHR,high,¿Qué documentos necesito para abrir una cuenta nueva?,3,0,0.78
+762,PLAN,low,¿Cómo hago para cambiar de plan prepago a pospago?,20,5,5.13
+763,OTHR,low,Quisiera saber más sobre las políticas de privacidad de datos,22,3,3.56
+764,CNCL,medium,"No estoy conforme con la atención recibida, quiero terminar el contrato",15,5,8.59
+765,TECH,medium,No carga ninguna página web desde esta mañana en Ambato,3,2,7.05
+766,PLAN,high,"Quiero cambiar mi plan actual a Fibra 1GB, ¿cuáles son los requisitos?",7,1,2.43
+767,CNCL,low,Quiero cancelar porque el precio subió demasiado,20,2,13.15
+768,OTHR,medium,¿Tienen aplicacion movil para gestionar mi cuenta?,22,2,5.39
+769,BILL,low,"Me llegó un cobro duplicado en la factura de este mes, favor revisar",23,5,5.18
+770,TECH,medium,"La luz del módem está en ámbar, no logro navegar!!",7,0,12.35
+771,BILL,medium,Mi factura llegó con un monto mayor al acordado en el contrato,12,6,3.27
+772,PLAN,high,"Quiero cambiar mi plan actual a Fibra 500MB, ¿cuáles son los requisitos?",23,6,3.59
+773,BILL,medium,"me llego un cobro duplicado en la factura de este mes, favor revisar",21,3,3.52
+774,BILL,low,No me ha llegado la factura electrónica de este mes a mi correo,2,4,3.7
+775,BILL,high,Solicito el desglose detallado de los cargos de mi factura,17,2,2.75
+776,PLAN,high,Necesito bajar de plan porque el actual me queda muy caro,8,1,2.47
+777,PLAN,medium,Quisiera cambiar mi plan antes de que termine el contrato actual,19,6,7.43
+778,CNCL,low,"Ya encontré otro proveedor, necesito cancelar mi cuenta cuanto antes",20,2,6.23
+779,PLAN,high,¿Cómo hago para cambiar de plan prepago a pospago?,21,6,3.98
+780,OTHR,low,Quiero saber si puedo transferir mi cuenta a otra persona,8,6,6.63
+781,BILL,medium,"El valor de mi plan subió sin previo aviso, quiero una explicación",12,0,5.31
+782,OTHR,low,"Consulta general, no encuentro la opción que busco en la app",2,6,3.91
+783,TECH,medium,Tengo alta latencia y ping inestable trabajando desde casa,21,0,10.46
+784,OTHR,high,¿Cuál es el horario de atención de las oficinas en Cuenca?,3,2,1.99
+785,TECH,high,"Tengo pérdida de paquetes constante jugando online, revisen la señal por favor",0,2,6.34
+786,PLAN,low,Quiero contratar el Combo TV+Internet para mi nueva casa en Guayaquil,5,0,9.39
+787,TECH,low,No puedo configurar el wifi de 5GHz en mi router nuevo,22,5,27.33
+788,PLAN,low,Quisiera agregar el servicio de TV por cable a mi plan de internet,14,1,5.41
+789,PLAN,low,Necesito bajar de plan porque el actual me queda muy caro,19,5,6.63
+790,BILL,medium,El total de la factura no coincide con el valor de mi plan mensual,22,3,3.2
+791,PLAN,low,Quiero contratar el Plan Prepago Movil para mi nueva casa en Cuenca,20,2,4.35
+792,TECH,high,El servicio de internet se cae todas las noches entre las 8 y las 10,13,2,3.36
+793,CNCL,medium,Solicito la baja definitiva de todos mis servicios contratados,18,5,3.86
+794,TECH,medium,"Tengo perdida de paquetes constante jugando online, revisen la señal por favor",9,5,11.5
+795,OTHR,medium,Quisiera saber si tienen cobertura en el sector de Quito,18,0,3.16
+796,TECH,high,"Se me desconecta el internet apenas empieza a llover, necesito soporte técnico",0,0,5.76
+797,TECH,high,"Se me desconecta el internet apenas empieza a llover, necesito soporte técnico",10,4,5.68
+798,BILL,low,mi factura llegó con un monto mayor al acordado en el contrato,20,1,2.54
+799,PLAN,low,Quiero contratar el Fibra 200MB para mi nueva casa en Guayaquil,23,6,8.48
+800,TECH,medium,"No tengo conexión a internet, el router tiene la luz roja parpadeando",5,5,32.4

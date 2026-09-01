@@ -66,3 +66,38 @@ def test_predict_resolution_time_validates_input(client, auth_headers):
     }, headers=auth_headers)
     assert resp.status_code == 422
     assert resp.json()["error"]["code"] == "VALIDATION_ERROR"
+
+
+def test_sentiment_does_not_flag_neutral_questions(client, auth_headers):
+    """Una pregunta informativa no debe marcarse como frustración.
+
+    Regresión: con el dataset anterior (124 textos únicos, vocabulario de 155
+    palabras) el modelo había aprendido que la palabra "una" implicaba enfado
+    —aparecía solo en frases negativas— y clasificaba "Una última cosa, ¿cuál es
+    el horario?" como negative con confianza 1.0, disparando un escalamiento.
+    """
+    for texto in ("Una última cosa, ¿cuál es el horario de atención de las oficinas?",
+                  "Quiero saber cuánto tarda el cambio de plan",
+                  "Necesito la factura del mes pasado en pdf"):
+        resp = client.post("/api/v1/ml/analyze-sentiment", json={"text": texto},
+                            headers=auth_headers)
+        assert resp.status_code == 200
+        assert resp.json()["is_frustrated"] is False, f"falso positivo con: {texto}"
+
+
+def test_sentiment_still_detects_real_frustration(client, auth_headers):
+    """El arreglo anterior no debe costar sensibilidad ante enfado real."""
+    for texto in ("Esto es inaceptable, llevo tres días sin internet y nadie resuelve nada",
+                  "Estoy harto de este servicio, es pésimo"):
+        body = client.post("/api/v1/ml/analyze-sentiment", json={"text": texto},
+                            headers=auth_headers).json()
+        assert body["sentiment"] == "negative"
+        assert body["is_frustrated"] is True
+
+
+def test_calm_fault_report_is_not_frustration(client, auth_headers):
+    """Reportar una avería con calma no es estar enfadado: no debe escalar."""
+    body = client.post("/api/v1/ml/analyze-sentiment", json={
+        "text": "El internet se corta cada media hora desde el lunes, ya reinicié el router"
+    }, headers=auth_headers).json()
+    assert body["is_frustrated"] is False

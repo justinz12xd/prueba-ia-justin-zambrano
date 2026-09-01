@@ -234,36 +234,130 @@ def build_customers(n: int = 2000) -> pd.DataFrame:
 # 3) interactions.csv — sentimiento (Parte 2.1)
 # ---------------------------------------------------------------------------
 
-POSITIVE_MSGS = [
-    "Muchas gracias, quedó todo resuelto perfectamente",
-    "Excelente atención, el problema se solucionó muy rápido",
-    "Genial, ya funciona el internet, gracias por la ayuda",
-    "Muy buen servicio, el agente fue muy amable y resolvió todo",
-    "Perfecto, eso era justo lo que necesitaba, gracias",
-    "Quedé muy satisfecho con la solución que me dieron",
-    "Todo excelente, seguiré siendo cliente sin duda",
-    "Me encantó la rapidez con la que atendieron mi caso",
+# Los mensajes se componen de: apertura + núcleo + cierre.
+#
+# Las aperturas y los cierres son COMPARTIDOS por las tres clases a propósito. En la
+# versión anterior cada clase tenía 8 frases fijas, y con tan poca variedad el modelo
+# aprendió atajos: la palabra "una" aparecía solo en frases negativas ("esperando una
+# respuesta"), así que cualquier mensaje con "una" se clasificaba como negativo con
+# confianza 1.0 — incluido "Una última cosa, ¿cuál es el horario de atención?".
+# Repartiendo las palabras funcionales entre las tres clases, la señal tiene que venir
+# del contenido y no del relleno.
+APERTURAS = [
+    "", "", "", "Hola, ", "Buenas, ", "Buenos días, ", "Buenas tardes, ",
+    "Una consulta, ", "Una última cosa, ", "Disculpe, ", "Por favor, ",
+    "Hola de nuevo, ", "Buenas noches, ", "Estimados, ", "Una cosa más, ",
 ]
-NEUTRAL_MSGS = [
-    "Ok, entendido, voy a revisar la información enviada",
-    "¿Podrían confirmarme el horario de atención mañana?",
-    "Necesito más información sobre el proceso, por favor",
-    "Está bien, quedo pendiente de la respuesta",
-    "¿Cuánto tiempo tarda en aplicarse este cambio?",
-    "Solo quería confirmar el estado de mi solicitud",
-    "De acuerdo, esperaré la llamada del técnico",
-    "Entiendo, gracias por la información proporcionada",
+CIERRES = [
+    "", "", "", ", gracias", ", muchas gracias", ", por favor", ", quedo atento",
+    ", saludos", ", espero su respuesta", ", agradezco su ayuda", ". Gracias de antemano",
 ]
-NEGATIVE_MSGS = [
-    "Esto es inaceptable, llevo tres días sin internet y nadie resuelve nada",
-    "Estoy muy molesto, ya es la tercera vez que reporto lo mismo",
-    "Pésimo servicio, quiero hablar con un supervisor urgente",
-    "No puede ser que sigan cobrando mal después de tantos reclamos",
-    "Estoy realmente frustrado, nadie me da una solución definitiva",
-    "Es indignante el tiempo que llevo esperando una respuesta",
-    "Ya no aguanto más este servicio, quiero cancelar ya mismo",
-    "Es la peor experiencia que he tenido con un proveedor de internet",
+
+POSITIVE_CORES = [
+    "quedó todo resuelto perfectamente",
+    "excelente atención, el problema se solucionó muy rápido",
+    "ya funciona el internet y estoy muy contento con el resultado",
+    "muy buen servicio, el agente fue amable y resolvió todo",
+    "eso era justo lo que necesitaba y quedó impecable",
+    "quedé muy satisfecho con la solución que me dieron",
+    "todo excelente, seguiré siendo cliente sin duda",
+    "me encantó la rapidez con la que atendieron mi caso",
+    "el técnico llegó puntual y dejó la instalación perfecta",
+    "felicito al equipo por la atención recibida",
+    "la velocidad del plan {plan} mejoró muchísimo",
+    "resolvieron el cobro en menos de {dias} días, muy eficientes",
+    "estoy encantado con el cambio a {mb} megas",
+    "la persona que me atendió explicó todo con mucha claridad",
+    "gracias por la gestión, superó mis expectativas",
+    "el servicio en {ciudad} funciona mejor que nunca",
+    "valió la pena esperar, quedó todo funcionando bien",
+    "muy conforme con el descuento de {monto} dólares aplicado",
+    "recomendaré su servicio a mis conocidos",
+    "el acompañamiento durante todo el proceso fue excelente",
+    "quedó resuelto al primer intento, sin complicaciones",
+    "la atención por chat fue rápida y efectiva",
+    "agradezco la solución, superaron lo que esperaba",
+    "todo perfecto con la instalación del nuevo router",
 ]
+NEUTRAL_CORES = [
+    "quisiera confirmar el estado de mi solicitud",
+    "necesito saber el horario de atención de las oficinas",
+    "¿cuál es el procedimiento para actualizar mis datos?",
+    "¿cuánto tiempo tarda en aplicarse este cambio?",
+    "quedo pendiente de la respuesta del área técnica",
+    "voy a revisar la información que me enviaron",
+    "esperaré la llamada del técnico en el horario indicado",
+    "¿me pueden indicar en qué fecha se emite la factura?",
+    "necesito más información sobre el proceso de instalación",
+    "¿el plan {plan} incluye instalación sin costo?",
+    "quisiera saber si atienden los sábados en {ciudad}",
+    "¿dónde puedo descargar mi comprobante de pago?",
+    "consulto por los requisitos para contratar {mb} megas",
+    "¿cuál es el número de contacto del área de soporte?",
+    "quiero confirmar la dirección registrada en mi cuenta",
+    "¿en cuántos días hábiles se procesa la solicitud?",
+    "necesito el detalle de los cargos de este mes",
+    "¿puedo cambiar la fecha de pago a fin de mes?",
+    "me gustaría conocer las opciones disponibles",
+    "¿qué documentos debo presentar para el trámite?",
+    "solicito información sobre la cobertura en mi zona",
+    "¿el cambio se aplica de inmediato o el próximo ciclo?",
+    "quisiera agendar la visita técnica para la próxima semana",
+    "de acuerdo, entendido, procedo como me indicaron",
+    "¿cuál es el costo mensual del plan de {mb} megas?",
+    "necesito verificar si mi pago de {monto} dólares fue registrado",
+    "consulto el estado del ticket que abrí hace {dias} días",
+    "¿hay alguna oficina de atención cerca de {ciudad}?",
+    # Reportes de avería en tono CALMADO. Comparten vocabulario con la clase negativa
+    # ("se corta", "no funciona", "sin señal") pero sin carga emocional: sin ellos el
+    # modelo aprende que hablar de una avería es estar enfadado, y el agente termina
+    # escalando a un humano cualquier reporte técnico normal.
+    "el internet se corta cada media hora desde hace {dias} días",
+    "reporto que el router no da señal desde ayer por la noche",
+    "les comento que la conexión viene intermitente esta semana",
+    "informo que no tengo servicio desde esta mañana",
+    "la velocidad está por debajo de los {mb} megas contratados",
+    "adjunto el detalle del cobro de {monto} dólares que quiero revisar",
+    "el módem enciende la luz roja y no navega",
+    "aviso que se cortó el servicio en {ciudad} desde el mediodía",
+    "ya reinicié el router y el problema continúa",
+    "les escribo para reportar una falla en la línea",
+    "el servicio funciona lento en las horas de la tarde",
+    "quisiera reportar que la señal se pierde por momentos",
+]
+NEGATIVE_CORES = [
+    "esto es inaceptable, llevo {dias} días sin internet y nadie resuelve nada",
+    "estoy muy molesto, ya es la tercera vez que reporto lo mismo",
+    "pésimo servicio, quiero hablar con un supervisor urgente",
+    "no puede ser que sigan cobrando mal después de tantos reclamos",
+    "estoy realmente frustrado, nadie me da respuestas concretas",
+    "es indignante el tiempo que llevo esperando",
+    "ya no aguanto más este servicio, quiero cancelar ya mismo",
+    "es la peor experiencia que he tenido con un proveedor",
+    "me cobraron {monto} dólares de más y nadie me responde",
+    "llevo {dias} días esperando al técnico que nunca llega",
+    "estoy harto de repetir el mismo problema cada semana",
+    "el servicio en {ciudad} es lamentable, se cae todo el tiempo",
+    "me prometieron {mb} megas y no llegan ni a la mitad",
+    "esto es una falta de respeto hacia el cliente",
+    "estoy furioso, me cortaron el servicio sin aviso",
+    "qué vergüenza de atención, nadie se hace responsable",
+    "es inadmisible que el plan {plan} funcione tan mal",
+    "estoy cansado de que me pasen de un área a otra",
+    "un desastre, perdí toda la mañana esperando",
+    "me siento estafado con lo que estoy pagando",
+    "esto ya es el colmo, exijo una compensación",
+    "muy decepcionado, esperaba mucho más de ustedes",
+    "es intolerable la cantidad de cortes que tengo",
+    "estoy indignado, cancelen mi contrato de inmediato",
+]
+
+SENTIMENT_CORES = {
+    "positive": POSITIVE_CORES,
+    "neutral": NEUTRAL_CORES,
+    "negative": NEGATIVE_CORES,
+}
+
 AGENT_RESPONSES = [
     "Entiendo su situación, permítame revisar su cuenta para ayudarle.",
     "Gracias por contactarnos, en un momento verifico la información.",
@@ -271,29 +365,60 @@ AGENT_RESPONSES = [
     "Con gusto le ayudo, ¿me confirma su número de cliente?",
     "Ya generé la solicitud, un técnico se comunicará en las próximas horas.",
     "Su pago fue verificado correctamente, no hay ninguna irregularidad.",
+    "Registré su consulta, le responderemos por este mismo medio.",
+    "Le comparto la información solicitada en el correo registrado.",
 ]
 
-SENTIMENT_POOL = (
-    [(m, "positive") for m in POSITIVE_MSGS] +
-    [(m, "neutral") for m in NEUTRAL_MSGS] +
-    [(m, "negative") for m in NEGATIVE_MSGS]
-)
+# Generador propio: así los mensajes de sentimiento pueden cambiar sin alterar los
+# demás datasets, que dependen del flujo del generador global.
+rng_msgs = np.random.default_rng(SEED + 1)
 
 
-def build_interactions(n: int = 1800) -> pd.DataFrame:
+def _componer_mensaje(sentiment: str) -> str:
+    """Apertura + núcleo + cierre, con las variables del núcleo rellenadas."""
+    cores = SENTIMENT_CORES[sentiment]
+    nucleo = cores[rng_msgs.integers(0, len(cores))]
+    nucleo = nucleo.format(
+        dias=rng_msgs.integers(2, 15),
+        mb=rng_msgs.choice([50, 100, 200, 300, 500, 1000]),
+        monto=rng_msgs.choice([5, 8, 12, 15, 20, 25, 35, 40]),
+        plan=rng_msgs.choice(PLANES),
+        ciudad=rng_msgs.choice(CIUDADES),
+    )
+    apertura = APERTURAS[rng_msgs.integers(0, len(APERTURAS))]
+    cierre = CIERRES[rng_msgs.integers(0, len(CIERRES))]
+    if not apertura:
+        nucleo = nucleo[0].upper() + nucleo[1:]
+    return f"{apertura}{nucleo}{cierre}"
+
+
+def build_interactions(n: int = 2400) -> pd.DataFrame:
+    clases = list(SENTIMENT_CORES)
     rows = []
     for i in range(1, n + 1):
-        msg, sentiment = SENTIMENT_POOL[rng.integers(0, len(SENTIMENT_POOL))]
-        msg = _add_noise(msg)
+        sentiment = clases[i % len(clases)]  # clases balanceadas
+        msg = _add_noise_msgs(_componer_mensaje(sentiment))
         rows.append({
             "interaction_id": i,
-            "ticket_id": int(rng.integers(1, 800)),
-            "agent_response": rng.choice(AGENT_RESPONSES),
+            "ticket_id": int(rng_msgs.integers(1, 800)),
+            "agent_response": AGENT_RESPONSES[rng_msgs.integers(0, len(AGENT_RESPONSES))],
             "customer_msg": msg,
             "sentiment": sentiment,
-            "resolution_time": round(float(rng.exponential(6) + 0.5), 2),
+            "resolution_time": round(float(rng_msgs.exponential(6) + 0.5), 2),
         })
     return pd.DataFrame(rows)
+
+
+def _add_noise_msgs(text: str) -> str:
+    """Igual que _add_noise pero con el generador propio de los mensajes."""
+    if rng_msgs.random() < 0.15:
+        text = (text.replace("á", "a").replace("é", "e").replace("í", "i")
+                     .replace("ó", "o").replace("ú", "u"))
+    if rng_msgs.random() < 0.10:
+        text = text[0].lower() + text[1:]
+    if rng_msgs.random() < 0.10:
+        text = text + "!!"
+    return text
 
 
 # ---------------------------------------------------------------------------
@@ -304,16 +429,22 @@ BASE_HOURS = {"TECH": 8.0, "BILL": 3.0, "PLAN": 4.0, "CNCL": 5.0, "OTHR": 2.0}
 PRIORITY_MULT = {"low": 1.4, "medium": 1.0, "high": 0.6}
 
 
+# Generador propio, para que este dataset no dependa de cuántos números hayan
+# consumido los anteriores: así cambiar los mensajes de sentimiento no altera los
+# tiempos de resolución.
+rng_res = np.random.default_rng(SEED + 2)
+
+
 def build_resolution(tickets_df: pd.DataFrame) -> pd.DataFrame:
     rows = []
     for _, t in tickets_df.iterrows():
-        hour = int(rng.integers(0, 24))
-        weekday = int(rng.integers(0, 7))
+        hour = int(rng_res.integers(0, 24))
+        weekday = int(rng_res.integers(0, 7))
         base = BASE_HOURS[t["category"]] * PRIORITY_MULT[t["priority"]]
         weekend_penalty = 1.3 if weekday >= 5 else 1.0
         night_penalty = 1.2 if hour >= 20 or hour <= 6 else 1.0
         resolution_hours = max(0.25, base * weekend_penalty * night_penalty *
-                                float(rng.lognormal(mean=0, sigma=0.35)))
+                                float(rng_res.lognormal(mean=0, sigma=0.35)))
         rows.append({
             "ticket_id": t["ticket_id"],
             "category": t["category"],

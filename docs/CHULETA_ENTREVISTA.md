@@ -46,7 +46,7 @@ dl_training/       Parte 2 — TensorFlow/Keras
 saved_models/      artefactos entrenados + reportes JSON + gráficas
 sql/init.sql       DDL + 1 función + 1 stored procedure PL/pgSQL
 static/            portal del cliente (/portal) y panel técnico (/demo)
-tests/             46 tests (pytest + TestClient + SQLite)
+tests/             52 tests (pytest + TestClient + SQLite)
 ```
 
 **La frase para explicar la arquitectura en una línea:**
@@ -139,7 +139,7 @@ Tokenizer con `num_words=10000`, `pad_sequences(maxlen=200)`, y los tres callbac
 **2.2 Tiempo de resolución** (`dl_training/train_resolution_time_model.py`): API funcional con
 5 entradas — texto (Embedding + GlobalAveragePooling), categoría one-hot, prioridad one-hot,
 y hora/día en **codificación cíclica** (`sin`/`cos`). Salida `Dense(1, linear)`, pérdida MSE.
-MAE ≈ 1.75 h, RMSE ≈ 2.53 h, R² ≈ 0.58.
+MAE ≈ 1.68 h, RMSE ≈ 2.54 h, R² ≈ 0.63.
 
 **Preguntas probables**
 
@@ -153,7 +153,7 @@ MAE ≈ 1.75 h, RMSE ≈ 2.53 h, R² ≈ 0.58.
   pedía "al menos una capa LSTM o GRU, o CNN para texto".
 - *¿Por qué el modelo de resolución tiene peor R² que el de sentimiento accuracy?* Porque le
   inyecté ruido log-normal al generar los tiempos: un tiempo de resolución real no es
-  determinista. Un R² de 0.58 sobre datos ruidosos es honesto.
+  determinista. Un R² de 0.63 sobre datos ruidosos es honesto.
 - *¿Dónde se usa el 2.2?* En `POST /api/v1/ml/predict-resolution-time`, en la tool MCP
   `predict_resolution_time`, y en el panel correspondiente del demo.
 
@@ -248,7 +248,7 @@ de la sesión: el JWT solo lleva email y rol) y `GET /tickets/queue` (la bandeja
 
 - *¿Por qué Postgres y no SQLite?* Porque el requisito de stored procedure pedía PL/pgSQL
   real. Los tests sí usan SQLite, por velocidad y para no depender de infraestructura.
-- *¿Los tests cubren qué?* 46 tests sobre los endpoints críticos: auth (incluido rechazo de
+- *¿Los tests cubren qué?* 52 tests sobre los endpoints críticos: auth (incluido rechazo de
   refresh token como access), CRUD de clientes con sus validaciones, tickets, los 4 modelos,
   el agente (incluidos 401 y 403 por rol) y MCP.
 - *¿Cómo garantizas que el modelo carga en producción?* `ml_runtime` cachea con `lru_cache`
@@ -278,6 +278,16 @@ Reconocer un límite con la solución al lado suma; que te lo descubran, resta.
    silencioso: `get_customer_info` caía siempre en "sin sesión de base de datos" y el
    agente nunca leía datos del cliente. Corregido anotando `config: RunnableConfig`.
    **Si preguntan por un bug difícil que hayas encontrado, cuenta este.**
+
+   El otro que vale la pena contar: el modelo de sentimiento marcaba como frustrado
+   *"Una última cosa, ¿cuál es el horario?"* con **confianza 1.0**. Descarté subir el
+   umbral demostrando que no servía —el error era *más* confiado que los aciertos
+   reales— y aislé el token culpable probando la frase con y sin prefijo: la palabra
+   *"una"* aparecía en el **100 %** de los mensajes negativos del dataset y en ninguno
+   de las otras clases, porque las plantillas eran *"esperando una respuesta"* y
+   *"nadie me da una solución"*. Con 124 textos únicos y 155 palabras de vocabulario,
+   el modelo se agarró a un artículo indefinido. La solución fue rehacer el generador
+   de forma composicional para que las palabras funcionales se repartan entre clases.
 4. **Sin Alembic.** Las tablas se crean con `Base.metadata.create_all`; para producción haría
    falta migraciones versionadas.
 5. **Sin checkpointer de LangGraph** (decisión consciente, ver sección 5).
@@ -334,8 +344,8 @@ la función `_tool_x`, y la entrada en `TOOL_HANDLERS`.
 
 - Clasificador: F1-macro CV 5-fold 0.998; accuracy test 1.00 *(dataset sintético)*.
 - Churn: AUC-ROC 0.731, AP 0.273; top feature `charge_per_tenure` (0.24).
-- Sentimiento: accuracy test 1.00 *(sintético)*.
-- Resolución: MAE 1.75 h, RMSE 2.53 h, R² 0.58.
+- Sentimiento: accuracy test 1.00 *(sintético)*; 10/10 en frases nuevas escritas a mano.
+- Resolución: MAE 1.68 h, RMSE 2.54 h, R² 0.63.
 
 **Si piden probar el clasificador en vivo** — no muestres el 100 % del CSV, muestra esto:
 
@@ -357,7 +367,7 @@ convincente, porque el ejemplo no lo elegiste tú.
 
 ```bash
 docker compose up --build              # stack completo
-pytest tests/ -v                       # 46 tests
+pytest tests/ -v                       # 52 tests
 python ml_training/train_churn_model.py    # reentrenar
 docker exec -it telecom_support_db psql -U postgres -d telecom_support \
   -c "SELECT * FROM fn_customer_churn_summary(1);"   # demostrar la función SQL

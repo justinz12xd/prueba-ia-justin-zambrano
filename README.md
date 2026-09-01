@@ -49,7 +49,7 @@ data/            datasets sintéticos generados (scripts/generate_synthetic_data
 sql/init.sql     DDL + función y stored procedure PL/pgSQL
 static/          portal del cliente (/portal) y panel técnico (/demo)
 docs/            chuleta de defensa oral para la entrevista
-tests/           pytest (46 tests) con TestClient + SQLite
+tests/           pytest (52 tests) con TestClient + SQLite
 ```
 
 ## 3. Cómo ejecutar
@@ -121,7 +121,7 @@ aunque la intención sea otra.
 ### Tests
 
 ```bash
-pytest tests/ -v      # 46 tests, corren contra SQLite en un archivo temporal
+pytest tests/ -v      # 52 tests, corren contra SQLite en un archivo temporal
 ```
 
 ## 4. Credenciales de prueba
@@ -205,10 +205,19 @@ sesión (el JWT solo transporta email y rol).
 Top features por importancia: `charge_per_tenure` (0.24), `avg_satisfaction` (0.20),
 `total_charges` (0.14), `tickets_per_tenure` (0.14), `monthly_charge` (0.11).
 
-**2.1 Sentimiento (LSTM):** accuracy de test 1.00 (dataset sintético con
-mensajes bien diferenciados por polaridad).
+**2.1 Sentimiento (LSTM):** accuracy de test 1.00 sobre el conjunto apartado. El
+número es alto porque los datos son sintéticos, pero el dataset se rehízo tras
+detectar un problema real: la primera versión tenía 1800 filas con solo **124
+textos únicos** (vocabulario de 155 palabras), y con tan poco material el modelo
+aprendió atajos —la palabra *"una"* aparecía únicamente en frases negativas, así que
+*"Una última cosa, ¿cuál es el horario?"* salía **negative con confianza 1.0** y
+disparaba un escalamiento. Ahora los mensajes se componen de apertura + núcleo +
+cierre, con aperturas y cierres **compartidos entre las tres clases**, de modo que las
+palabras funcionales no puedan llevar señal: 2400 filas, **2205 textos únicos**,
+vocabulario de 411 palabras. La clase neutra incluye además reportes de avería en tono
+calmado, para que describir un problema no se confunda con estar enfadado.
 
-**2.2 Tiempo de resolución (red multi-input):** MAE ≈ 1.75h, RMSE ≈ 2.53h, R² ≈ 0.58
+**2.2 Tiempo de resolución (red multi-input):** MAE ≈ 1.68 h, RMSE ≈ 2.54 h, R² ≈ 0.63
 sobre datos con ruido log-normal inyectado deliberadamente.
 
 Gráficas y reportes completos en `saved_models/ml/*.png|json` y `saved_models/dl/*.png|json`.
@@ -299,14 +308,12 @@ Gráficas y reportes completos en `saved_models/ml/*.png|json` y `saved_models/d
 - No se implementaron migraciones (Alembic incluido en `requirements.txt` pero
   no configurado); las tablas se crean con `Base.metadata.create_all` al
   arrancar, más `sql/init.sql` como documentación/alternativa manual.
-- **Sentimiento sobre descripciones factuales:** el modelo se entrenó con mensajes
-  emocionales de `interactions.csv`, así que sobre una descripción neutra su salida es
-  poco informativa (llegaba a etiquetar como "positivo" un reporte de avería). La bandeja
-  del agente por eso **solo muestra la señal cuando el modelo detecta frustración con
-  confianza** (`is_frustrated`, umbral 0.6), que es el caso en el que acierta y en el que
-  el dato sirve para priorizar; el resto del tiempo no se muestra nada en vez de mostrar
-  una etiqueta engañosa. La solución de fondo sería entrenarlo también con descripciones
-  de tickets, o evaluar el último mensaje de la conversación en lugar de la descripción.
+- **Sentimiento:** el modelo ya distingue una consulta informativa, un reporte de avería
+  en calma y un cliente enfadado (10/10 en frases escritas a mano fuera del generador),
+  pero sigue entrenado con datos sintéticos: con mensajes reales, llenos de ironía,
+  jerga y errores de tipeo, cabe esperar bastante menos. La bandeja del agente muestra la
+  etiqueta solo cuando `is_frustrated` es verdadero (negativo con confianza > 0.6), para
+  no llenar la vista de datos poco accionables.
 - El checkpointer de LangGraph no se usó explícitamente: el historial de la
   conversación se reconstruye en cada turno desde `agent_session` (Postgres),
   que es la fuente de verdad pedida por el esquema de datos.

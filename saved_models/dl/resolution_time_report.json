@@ -1,8 +1,8 @@
 {
   "model_version": "1.0.0",
-  "mae_hours": 1.7527724538743494,
-  "rmse_hours": 2.531811084049974,
-  "r2": 0.5843315309020194,
+  "mae_hours": 1.6822026771008969,
+  "rmse_hours": 2.5394675342981072,
+  "r2": 0.6253760256972103,
   "categories": [
     "TECH",
     "BILL",
@@ -15,5 +15,5 @@
     "medium",
     "high"
   ],
-  "epochs_trained": 19
+  "epochs_trained": 14
 }
