@@ -28,6 +28,11 @@ class Ticket(Base):
     status: Mapped[str] = mapped_column(String(20), nullable=False, default="open")
     satisfaction: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
+    # Conversación de la que nació el ticket. Permite que un asesor humano entre al
+    # chat desde la bandeja y siga hablando con el cliente en el mismo hilo.
+    agent_session_id: Mapped[str | None] = mapped_column(
+        ForeignKey("agent_session.session_id"), nullable=True)
+
     is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     deleted_at: Mapped[dt.datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 

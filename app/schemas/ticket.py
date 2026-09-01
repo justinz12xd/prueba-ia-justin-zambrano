@@ -102,3 +102,29 @@ class TicketQueueItem(BaseModel):
     churn_probability: float | None = None
     churn_risk: str | None = None
     estimated_hours: float | None = None
+    agent_session_id: str | None = Field(
+        None, description="Si no es null, el asesor puede abrir el chat desde la bandeja")
+
+
+class ConversationMessage(BaseModel):
+    role: str = Field(..., description="user | assistant | agent_human")
+    content: str
+
+
+class TicketConversation(BaseModel):
+    """Hilo completo de la conversación que originó el ticket."""
+
+    ticket_id: int
+    customer_id: int
+    customer_name: str | None = None
+    session_id: str | None = Field(
+        None, description="Null si el ticket no nació de una conversación (p. ej. creado por API)"
+    )
+    status: TicketStatus
+    category: TicketCategoryLiteral
+    messages: list[ConversationMessage] = []
+
+
+class AgentReplyRequest(BaseModel):
+    message: str = Field(..., min_length=2, max_length=1000,
+                          examples=["Hola, soy Ana del equipo técnico. Ya estoy revisando su caso."])

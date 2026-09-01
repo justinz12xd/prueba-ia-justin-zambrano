@@ -43,6 +43,9 @@ CREATE TABLE IF NOT EXISTS ticket (
     priority        VARCHAR(10) NOT NULL DEFAULT 'medium',
     status          VARCHAR(20) NOT NULL DEFAULT 'open',
     satisfaction    INTEGER,
+    -- Conversacion de la que nacio el ticket: permite que un asesor humano entre
+    -- al chat desde la bandeja de soporte y continue el mismo hilo con el cliente.
+    agent_session_id VARCHAR(36),  -- FK añadida más abajo: agent_session se crea después
     is_active       BOOLEAN NOT NULL DEFAULT TRUE,
     deleted_at      TIMESTAMPTZ,
     created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -87,7 +90,19 @@ CREATE TABLE IF NOT EXISTS user_account (
     created_at      TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+-- La clave foránea se declara aquí y no en el CREATE TABLE porque `ticket` se crea
+-- antes que `agent_session`. DO $$ ... $$ la hace idempotente al re-ejecutar el script.
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fk_ticket_agent_session') THEN
+        ALTER TABLE ticket
+            ADD CONSTRAINT fk_ticket_agent_session
+            FOREIGN KEY (agent_session_id) REFERENCES agent_session(session_id);
+    END IF;
+END $$;
+
 CREATE INDEX IF NOT EXISTS idx_ticket_customer_id ON ticket(customer_id);
+CREATE INDEX IF NOT EXISTS idx_ticket_agent_session ON ticket(agent_session_id);
 CREATE INDEX IF NOT EXISTS idx_interaction_ticket_id ON interaction(ticket_id);
 CREATE INDEX IF NOT EXISTS idx_prediction_customer_id ON prediction(customer_id);
 

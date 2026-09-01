@@ -32,7 +32,10 @@ class AgentService:
             "response": None,
             "error": None,
         }
-        result = graph.invoke(initial_state, config={"configurable": {"db": self.db}})
+        # session_id viaja en el config para que el nodo que abre el ticket pueda
+        # enlazarlo con esta conversación, y un asesor humano pueda retomarla.
+        result = graph.invoke(initial_state, config={"configurable": {
+            "db": self.db, "session_id": session.session_id}})
 
         assistant_message = {"role": "assistant", "content": result.get("response", "")}
         approx_tokens = len(data.message.split()) + len(assistant_message["content"].split())

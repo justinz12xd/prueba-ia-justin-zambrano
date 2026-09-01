@@ -46,7 +46,7 @@ dl_training/       Parte 2 — TensorFlow/Keras
 saved_models/      artefactos entrenados + reportes JSON + gráficas
 sql/init.sql       DDL + 1 función + 1 stored procedure PL/pgSQL
 static/            portal del cliente (/portal) y panel técnico (/demo)
-tests/             53 tests (pytest + TestClient + SQLite)
+tests/             56 tests (pytest + TestClient + SQLite)
 ```
 
 **La frase para explicar la arquitectura en una línea:**
@@ -75,7 +75,12 @@ SQLAlchemy; aquí las entidades SQLAlchemy sí son el modelo.
 5. Salir y entrar con `agente@telecom.com` / `Agente123!` → **la misma URL muestra otra
    cosa**: la bandeja de soporte, con ese ticket ya clasificado y etiquetado con
    riesgo de churn y tiempo estimado. Tomar el caso o resolverlo.
-6. `/demo` para la vista técnica (probabilidades por clase, MCP con su sobre JSON-RPC).
+6. **El traspaso a humano** (lo más vistoso): en la bandeja, *Abrir chat con el cliente*
+   muestra el hilo completo que tuvo con el bot. Escribe una respuesta como asesor y
+   **vuelve a la pestaña del cliente sin recargarla**: el mensaje aparece solo, en una
+   burbuja verde marcada "Asesor". Es el circuito cerrado: el bot atiende, clasifica y
+   abre el ticket; cuando no puede, una persona entra al mismo hilo.
+7. `/demo` para la vista técnica (probabilidades por clase, MCP con su sobre JSON-RPC).
 
 > **El punto que hay que dejar claro:** un solo mensaje del cliente activa los cuatro
 > modelos. El clasificador decide la categoría y el equipo, el de sentimiento decide la
@@ -248,7 +253,7 @@ de la sesión: el JWT solo lleva email y rol) y `GET /tickets/queue` (la bandeja
 
 - *¿Por qué Postgres y no SQLite?* Porque el requisito de stored procedure pedía PL/pgSQL
   real. Los tests sí usan SQLite, por velocidad y para no depender de infraestructura.
-- *¿Los tests cubren qué?* 53 tests sobre los endpoints críticos: auth (incluido rechazo de
+- *¿Los tests cubren qué?* 56 tests sobre los endpoints críticos: auth (incluido rechazo de
   refresh token como access), CRUD de clientes con sus validaciones, tickets, los 4 modelos,
   el agente (incluidos 401 y 403 por rol) y MCP.
 - *¿Cómo garantizas que el modelo carga en producción?* `ml_runtime` cachea con `lru_cache`
@@ -371,7 +376,7 @@ convincente, porque el ejemplo no lo elegiste tú.
 
 ```bash
 docker compose up --build              # stack completo
-pytest tests/ -v                       # 53 tests
+pytest tests/ -v                       # 56 tests
 python ml_training/train_churn_model.py    # reentrenar
 docker exec -it telecom_support_db psql -U postgres -d telecom_support \
   -c "SELECT * FROM fn_customer_churn_summary(1);"   # demostrar la función SQL
@@ -510,6 +515,7 @@ el código actual.
 | `GET/POST /customers`, `GET/PUT/DELETE /customers/{id}` | `app/api/v1/customers.py:16,34,26,41,49` |
 | `GET /customers/{id}/churn-prediction` | `app/api/v1/customers.py:57` |
 | `GET/POST /tickets`, `GET/PUT /tickets/{id}` | `app/api/v1/tickets.py:15,43,36,52` |
+| *(extra)* `GET /tickets/{id}/conversation`, `POST /tickets/{id}/reply` | traspaso a asesor humano |
 | `POST /tickets/classify` | `app/api/v1/tickets.py:60` |
 | `POST /ml/predict-churn` · `classify-ticket` · `analyze-sentiment` · `GET /ml/models/info` | `app/api/v1/ml.py:16,24,32,53` |
 | `POST /agent/chat` · `GET/DELETE /agent/sessions/{id}` | `app/api/v1/agent.py:14,23,32` |

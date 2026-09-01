@@ -4,9 +4,11 @@ from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
-from app.core.security import require_roles
-from app.schemas.ticket import (TicketClassifyRequest, TicketClassifyResponse, TicketCreate,
-                                 TicketQueueItem, TicketResponse, TicketUpdate)
+from app.core.security import TokenPayload, get_current_user, require_roles
+from app.schemas.ticket import (AgentReplyRequest, TicketClassifyRequest,
+                                 TicketClassifyResponse, TicketConversation,
+                                 TicketCreate, TicketQueueItem, TicketResponse,
+                                 TicketUpdate)
 from app.services.ticket_service import TicketService
 
 router = APIRouter(prefix="/api/v1/tickets", tags=["Tickets"])
@@ -64,3 +66,25 @@ def update_ticket(ticket_id: int, data: TicketUpdate,
              dependencies=[Depends(require_roles("admin", "agent", "customer"))])
 def classify_ticket(data: TicketClassifyRequest, db: Session = Depends(get_db)) -> TicketClassifyResponse:
     return TicketService(db).classify(data.description)
+
+
+@router.get("/{ticket_id}/conversation", response_model=TicketConversation,
+            summary="Conversación que originó el ticket",
+            description="Devuelve el hilo completo con el cliente para que un asesor pueda "
+                        "retomarlo desde la bandeja. Los mensajes traen su rol: 'user' el "
+                        "cliente, 'assistant' el agente virtual y 'agent_human' un asesor.",
+            dependencies=[Depends(require_roles("admin", "agent"))])
+def ticket_conversation(ticket_id: int, db: Session = Depends(get_db)) -> TicketConversation:
+    return TicketService(db).conversation(ticket_id)
+
+
+@router.post("/{ticket_id}/reply", response_model=TicketConversation,
+             summary="Responder al cliente como asesor humano",
+             description="Añade un mensaje del asesor a la conversación del cliente, lo "
+                         "registra en `interaction` y pasa el ticket a 'en proceso'. "
+                         "Devuelve 409 si el ticket no nació de una conversación.",
+             dependencies=[Depends(require_roles("admin", "agent"))])
+def ticket_reply(ticket_id: int, data: AgentReplyRequest,
+                  user: TokenPayload = Depends(get_current_user),
+                  db: Session = Depends(get_db)) -> TicketConversation:
+    return TicketService(db).reply_as_human(ticket_id, data.message, autor=user.sub)

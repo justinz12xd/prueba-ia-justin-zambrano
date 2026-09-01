@@ -229,7 +229,9 @@ def _open_ticket(state: AgentState, config: RunnableConfig | None, context: dict
 
     Es best-effort: cualquier fallo queda en el contexto y la conversación sigue.
     """
-    db = (config or {}).get("configurable", {}).get("db") if config else None
+    configurable = (config or {}).get("configurable", {}) if config else {}
+    db = configurable.get("db")
+    session_id = configurable.get("session_id")
     customer_id = state.get("customer_id")
     text = _last_user_message(state).strip()
     category = context.get("predicted_category")
@@ -244,9 +246,16 @@ def _open_ticket(state: AgentState, config: RunnableConfig | None, context: dict
         existing = repo.find_open_by_category(customer_id, category)
         if existing is not None:
             ticket, is_new = existing, False
+            # Si el ticket venía sin conversación (creado por API, o en una sesión
+            # anterior ya cerrada), se engancha a la actual: así el asesor humano
+            # siempre tiene un chat que retomar desde la bandeja.
+            if session_id and not existing.agent_session_id:
+                existing.agent_session_id = session_id
+                db.commit()
         else:
             ticket = repo.create(customer_id, category, text[:500],
-                                 _priority_from_context(context))
+                                 _priority_from_context(context),
+                                 agent_session_id=session_id)
             is_new = True
 
         estimated_hours = None

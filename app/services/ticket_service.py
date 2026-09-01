@@ -7,11 +7,13 @@ from sqlalchemy.orm import Session
 
 from app.ml_runtime import (churn_model, resolution_time_model, sentiment_model,
                             ticket_classifier)
+from app.models.agent_session import AgentSession
 from app.models.interaction import Interaction
 from app.models.ticket import Ticket
 from app.repositories.customer_repository import CustomerRepository
 from app.repositories.ticket_repository import TicketRepository
-from app.schemas.ticket import (TicketClassifyResponse, TicketCreate, TicketQueueItem,
+from app.schemas.ticket import (ConversationMessage, TicketClassifyResponse,
+                                TicketConversation, TicketCreate, TicketQueueItem,
                                 TicketUpdate)
 
 
@@ -34,6 +36,9 @@ class TicketService:
             .order_by(Interaction.ticket_id, Interaction.interaction_id)
         ).all()
         # Al ir ordenadas de forma ascendente, la última asignación de cada ticket gana.
+        # Se descartan los mensajes vacíos a propósito: las respuestas de un asesor
+        # humano se guardan con customer_msg="" y no deben contar como texto del
+        # cliente al evaluar su estado de ánimo.
         return {ticket_id: mensaje for ticket_id, mensaje in filas if mensaje}
 
     def queue(self, limit: int = 20, only_open: bool = True) -> list[TicketQueueItem]:
@@ -59,6 +64,7 @@ class TicketService:
                 status=ticket.status,
                 description=ticket.description,
                 created_at=ticket.created_at,
+                agent_session_id=ticket.agent_session_id,
             )
             # El sentimiento se evalúa sobre el ÚLTIMO mensaje del cliente en esa
             # conversación, no sobre la descripción del ticket. La descripción es el
@@ -125,6 +131,53 @@ class TicketService:
         if category is None:
             category, _ = ticket_classifier.classify_ticket(data.description)
         return self.repo.create(data.customer_id, category, data.description, data.priority)
+
+    # ------------------------------------------------------------------
+    # Traspaso a un asesor humano
+    # ------------------------------------------------------------------
+
+    def conversation(self, ticket_id: int) -> TicketConversation:
+        """Hilo del que nació el ticket, para que un asesor pueda retomarlo."""
+        ticket = self.get_ticket_or_404(ticket_id)
+        session = (self.db.get(AgentSession, ticket.agent_session_id)
+                   if ticket.agent_session_id else None)
+        mensajes = [ConversationMessage(**m) for m in (session.conversation or [])] if session else []
+        return TicketConversation(
+            ticket_id=ticket.ticket_id,
+            customer_id=ticket.customer_id,
+            customer_name=ticket.customer.name if ticket.customer else None,
+            session_id=ticket.agent_session_id,
+            status=ticket.status,
+            category=ticket.category,
+            messages=mensajes,
+        )
+
+    def reply_as_human(self, ticket_id: int, mensaje: str, autor: str) -> TicketConversation:
+        """Añade la respuesta de un asesor a la conversación del cliente.
+
+        El mensaje se guarda en `agent_session.conversation` con el rol
+        `agent_human`, para que el portal del cliente lo distinga del bot, y queda
+        registrado en `interaction`. El ticket pasa a "en proceso": alguien lo tomó.
+        """
+        ticket = self.get_ticket_or_404(ticket_id)
+        if not ticket.agent_session_id:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Este ticket no nació de una conversación, no hay chat que retomar",
+            )
+        session = self.db.get(AgentSession, ticket.agent_session_id)
+        if session is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                 detail="La conversación asociada ya no existe")
+
+        session.conversation = [*(session.conversation or []),
+                                {"role": "agent_human", "content": mensaje, "author": autor}]
+        self.db.add(Interaction(ticket_id=ticket.ticket_id, customer_msg="",
+                                 agent_response=mensaje))
+        if ticket.status == "open":
+            ticket.status = "in_progress"
+        self.db.commit()
+        return self.conversation(ticket_id)
 
     def update(self, ticket_id: int, data: TicketUpdate) -> Ticket:
         ticket = self.get_ticket_or_404(ticket_id)

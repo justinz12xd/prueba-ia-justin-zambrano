@@ -98,3 +98,58 @@ def test_queue_uses_last_message_not_the_description(client, auth_headers):
     assert fila["sentiment_source"] == "last_message"
     assert fila["sentiment"] == "negative"
     assert fila["is_frustrated"] is True
+
+
+def test_agent_can_open_and_reply_to_the_conversation(client, auth_headers):
+    """Un asesor humano puede retomar el chat desde el ticket y responder al cliente."""
+    # Cliente propio: el agente reutiliza tickets abiertos del mismo tipo, así que
+    # compartir el cliente demo haría que este test dependiera del orden de ejecución.
+    cliente = client.post("/api/v1/customers", json={
+        "name": "Handoff Test", "email": "handoff.test@example.com", "phone": "0995550002",
+        "plan_type": "Fibra 100MB", "monthly_charge": 30.0,
+    }, headers=auth_headers).json()
+
+    chat = client.post("/api/v1/agent/chat", json={
+        "message": "El internet se corta cada media hora desde el lunes y ya reinicie el router",
+        "customer_id": cliente["customer_id"],
+    }, headers=auth_headers).json()
+    ticket_id, session_id = chat["ticket"]["ticket_id"], chat["session_id"]
+
+    hilo = client.get(f"/api/v1/tickets/{ticket_id}/conversation", headers=auth_headers).json()
+    assert hilo["session_id"] == session_id, "el ticket debe recordar de qué chat nació"
+    assert [m["role"] for m in hilo["messages"]] == ["user", "assistant"]
+
+    respuesta = client.post(f"/api/v1/tickets/{ticket_id}/reply", json={
+        "message": "Hola, soy Ana del equipo técnico. Ya estoy revisando su conexión."
+    }, headers=auth_headers)
+    assert respuesta.status_code == 200
+    mensajes = respuesta.json()["messages"]
+    assert mensajes[-1]["role"] == "agent_human"
+    assert "Ana" in mensajes[-1]["content"]
+
+    # El cliente ve la respuesta en su propia sesión, y el ticket queda tomado
+    sesion = client.get(f"/api/v1/agent/sessions/{session_id}", headers=auth_headers).json()
+    assert sesion["conversation"][-1]["role"] == "agent_human"
+    assert client.get(f"/api/v1/tickets/{ticket_id}",
+                      headers=auth_headers).json()["status"] == "in_progress"
+
+
+def test_reply_rejected_when_ticket_has_no_conversation(client, auth_headers):
+    """Un ticket creado por API no tiene chat que retomar: 409, no un 500."""
+    ticket = client.post("/api/v1/tickets", json={
+        "customer_id": 1, "priority": "low",
+        "description": "Ticket creado directamente por la API sin pasar por el chat",
+    }, headers=auth_headers).json()
+    resp = client.post(f"/api/v1/tickets/{ticket['ticket_id']}/reply",
+                        json={"message": "Buenas, le escribo del equipo de soporte"},
+                        headers=auth_headers)
+    assert resp.status_code == 409
+    assert resp.json()["error"]["code"] == "CONFLICT"
+
+
+def test_conversation_is_internal_only(client, customer_headers):
+    """El hilo con las notas internas no es accesible para el rol customer."""
+    assert client.get("/api/v1/tickets/1/conversation",
+                      headers=customer_headers).status_code == 403
+    assert client.post("/api/v1/tickets/1/reply", json={"message": "hola de prueba"},
+                       headers=customer_headers).status_code == 403

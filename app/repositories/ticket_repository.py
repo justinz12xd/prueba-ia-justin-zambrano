@@ -48,9 +48,10 @@ class TicketRepository:
         )
         return self.db.scalars(stmt).first()
 
-    def create(self, customer_id: int, category: str, description: str, priority: str) -> Ticket:
+    def create(self, customer_id: int, category: str, description: str, priority: str,
+                agent_session_id: str | None = None) -> Ticket:
         ticket = Ticket(customer_id=customer_id, category=category, description=description,
-                         priority=priority, status="open")
+                         priority=priority, status="open", agent_session_id=agent_session_id)
         self.db.add(ticket)
         self.db.commit()
         self.db.refresh(ticket)

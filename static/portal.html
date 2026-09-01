@@ -105,6 +105,10 @@
     border-bottom-left-radius: 4px;
   }
   .msg.typing { color: var(--muted); font-style: italic; }
+  /* Respuesta de una persona: se distingue del bot para que el cliente sepa
+     que ya le está atendiendo alguien real. */
+  .msg.asesor { align-self: flex-start; background: var(--ok-soft); border: 1px solid #86efac; }
+  .msg .quien { display: block; font-size: 11px; font-weight: 600; color: var(--ok); margin-bottom: 3px; }
   .welcome { text-align: center; color: var(--muted); margin: auto 0; padding: 30px 20px; }
   .welcome .big { font-size: 20px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
   .chips { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 18px; }
@@ -160,6 +164,27 @@
   .qcard .signals { display: flex; gap: 7px; flex-wrap: wrap; align-items: center; }
   .qcard .actions { display: flex; gap: 8px; margin-top: 13px; }
   .empty { color: var(--muted); text-align: center; padding: 40px; }
+
+  /* hilo de conversación dentro de la tarjeta del ticket */
+  .hilo {
+    margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border);
+  }
+  .hilo .mensajes {
+    max-height: 280px; overflow-y: auto; background: var(--surface-2);
+    border-radius: 10px; padding: 13px; display: flex; flex-direction: column; gap: 9px;
+  }
+  .hilo .m {
+    max-width: 82%; padding: 8px 12px; border-radius: 12px; font-size: 13.5px;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .hilo .m .quien {
+    display: block; font-size: 11px; font-weight: 600; opacity: .75; margin-bottom: 2px;
+  }
+  .hilo .m.cliente { align-self: flex-start; background: var(--surface); border: 1px solid var(--border); }
+  .hilo .m.bot { align-self: flex-end; background: var(--surface); border: 1px dashed var(--border); color: var(--muted); }
+  .hilo .m.asesor { align-self: flex-end; background: var(--brand); color: #fff; }
+  .hilo .responder { display: flex; gap: 8px; margin-top: 11px; }
+  .hilo .responder input { flex: 1; }
 
   footer { text-align: center; color: var(--muted); font-size: 12.5px; padding: 14px; flex-shrink: 0; }
 </style>
@@ -245,6 +270,9 @@
   let token = null;
   let me = null;
   let sessionId = null;
+  let mensajesPintados = 0;   // cuántos mensajes del servidor ya se muestran
+  let sondeo = null;          // temporizador que busca respuestas del asesor
+  const CLAVE_SESION = "telecomec_session_id";
 
   const CATEGORY_UI = {
     TECH: { team: "Soporte Técnico", label: "Problema técnico" },
@@ -337,6 +365,8 @@
       if (me.role === "customer") {
         $("viewTag").textContent = "Centro de Ayuda";
         $("clientView").classList.remove("hidden");
+        await retomarSesion();
+        iniciarSondeo();
         $("chatInput").focus();
       } else {
         $("viewTag").textContent = "Consola de Soporte";
@@ -356,7 +386,8 @@
   $("password").addEventListener("keydown", (e) => { if (e.key === "Enter") login(); });
 
   $("logoutBtn").addEventListener("click", () => {
-    token = null; me = null; sessionId = null;
+    detenerSondeo();
+    token = null; me = null; sessionId = null; mensajesPintados = 0;
     for (const id of ["clientView", "agentView", "who", "logoutBtn", "techLink", "apiLink"]) {
       $(id).classList.add("hidden");
     }
@@ -409,6 +440,65 @@
     return appendNode(div);
   }
 
+  /** Recupera la conversación anterior del cliente, si la hay. */
+  async function retomarSesion() {
+    const guardada = (() => {
+      try { return localStorage.getItem(CLAVE_SESION); } catch { return null; }
+    })();
+    if (!guardada) return;
+    try {
+      const data = await api(`/api/v1/agent/sessions/${guardada}`);
+      sessionId = guardada;
+      (data.conversation || []).forEach(pintarMensajeServidor);
+      mensajesPintados = (data.conversation || []).length;
+    } catch {
+      // La sesión ya no existe (BD reiniciada o borrada): se empieza de cero.
+      try { localStorage.removeItem(CLAVE_SESION); } catch { /* modo privado */ }
+    }
+  }
+
+  function recordarSesion(id) {
+    sessionId = id;
+    try { localStorage.setItem(CLAVE_SESION, id); } catch { /* modo privado */ }
+  }
+
+  function pintarMensajeServidor(m) {
+    if (m.role === "user") return appendMessage("user", m.content);
+    if (m.role === "agent_human") return appendAsesor(m.content);
+    return appendMessage("bot", m.content);
+  }
+
+  /** Burbuja de un asesor humano, visualmente distinta de la del bot. */
+  function appendAsesor(texto) {
+    const div = document.createElement("div");
+    div.className = "msg asesor";
+    const quien = document.createElement("span");
+    quien.className = "quien";
+    quien.textContent = "Asesor";
+    div.appendChild(quien);
+    div.appendChild(document.createTextNode(texto));
+    return appendNode(div);
+  }
+
+  /** Busca periódicamente respuestas escritas por un asesor humano. */
+  function iniciarSondeo() {
+    detenerSondeo();
+    sondeo = setInterval(async () => {
+      if (!sessionId) return;
+      try {
+        const data = await api(`/api/v1/agent/sessions/${sessionId}`);
+        const conv = data.conversation || [];
+        // Solo se pintan los mensajes nuevos: los propios ya se dibujaron al enviarlos.
+        conv.slice(mensajesPintados).forEach(pintarMensajeServidor);
+        mensajesPintados = conv.length;
+      } catch { /* la sesión pudo cerrarse; el siguiente intento lo resolverá */ }
+    }, 6000);
+  }
+
+  function detenerSondeo() {
+    if (sondeo) { clearInterval(sondeo); sondeo = null; }
+  }
+
   async function send(preset = null) {
     const input = $("chatInput");
     const message = (preset ?? input.value).trim();
@@ -424,7 +514,8 @@
         method: "POST",
         body: { message, session_id: sessionId, customer_id: me.customer_id },
       });
-      sessionId = data.session_id;
+      recordarSesion(data.session_id);
+      mensajesPintados += 2;  // el turno del cliente y la respuesta del agente
       typing.className = "msg bot";
       typing.textContent = data.response;
 
@@ -470,6 +561,9 @@
       box.querySelectorAll("button[data-action]").forEach((btn) => {
         btn.addEventListener("click", () => updateStatus(btn.dataset.id, btn.dataset.action, btn));
       });
+      box.querySelectorAll("button[data-chat]").forEach((btn) => {
+        btn.addEventListener("click", () => alternarHilo(btn.dataset.chat, btn));
+      });
     } catch (error) {
       box.innerHTML = "";
       setStatus($("queueStatus"), `No se pudo cargar la bandeja: ${error.message}`, "err");
@@ -508,11 +602,15 @@
         <p class="desc">${escapeHtml(t.description)}</p>
         <div class="signals">${signals}</div>
         <div class="actions">
+          ${t.agent_session_id
+            ? `<button class="ghost small" data-chat="${t.ticket_id}">Abrir chat con el cliente</button>`
+            : ""}
           ${t.status === "open"
             ? `<button class="ghost small" data-action="in_progress" data-id="${t.ticket_id}">Tomar el caso</button>`
             : ""}
           <button class="small" data-action="resolved" data-id="${t.ticket_id}">Marcar resuelto</button>
         </div>
+        <div class="hilo hidden" id="hilo-${t.ticket_id}"></div>
       </div>`;
   }
 
@@ -525,6 +623,73 @@
     } catch (error) {
       busy(button, false, label);
       setStatus($("queueStatus"), error.message, "err");
+    }
+  }
+
+  // ---------- hilo de conversación del ticket (traspaso a humano) ----------
+
+  const ROL_UI = {
+    user: { clase: "cliente", quien: "Cliente" },
+    assistant: { clase: "bot", quien: "Agente virtual" },
+    agent_human: { clase: "asesor", quien: "Asesor" },
+  };
+
+  async function alternarHilo(ticketId, boton) {
+    const caja = $(`hilo-${ticketId}`);
+    if (!caja.classList.contains("hidden")) {
+      caja.classList.add("hidden");
+      boton.textContent = "Abrir chat con el cliente";
+      return;
+    }
+    boton.textContent = "Ocultar chat";
+    caja.classList.remove("hidden");
+    caja.innerHTML = '<p class="sub" style="margin:0">Cargando conversación…</p>';
+    try {
+      pintarHilo(ticketId, await api(`/api/v1/tickets/${ticketId}/conversation`));
+    } catch (error) {
+      caja.innerHTML = `<p class="sub" style="margin:0">No se pudo cargar: ${escapeHtml(error.message)}</p>`;
+    }
+  }
+
+  function pintarHilo(ticketId, data) {
+    const caja = $(`hilo-${ticketId}`);
+    const mensajes = data.messages.length
+      ? data.messages.map((m) => {
+          const ui = ROL_UI[m.role] || { clase: "bot", quien: m.role };
+          return `<div class="m ${ui.clase}"><span class="quien">${ui.quien}</span>` +
+                 `${escapeHtml(m.content)}</div>`;
+        }).join("")
+      : '<p class="sub" style="margin:0">La conversación está vacía.</p>';
+
+    caja.innerHTML = `
+      <div class="mensajes">${mensajes}</div>
+      <div class="responder">
+        <input id="resp-${ticketId}" placeholder="Escribe tu respuesta como asesor…" autocomplete="off">
+        <button class="small" id="btn-resp-${ticketId}">Responder</button>
+      </div>
+      <div class="status" id="est-resp-${ticketId}"></div>`;
+
+    const enviar = () => responder(ticketId);
+    $(`btn-resp-${ticketId}`).addEventListener("click", enviar);
+    $(`resp-${ticketId}`).addEventListener("keydown", (e) => { if (e.key === "Enter") enviar(); });
+    caja.querySelector(".mensajes").scrollTop = caja.querySelector(".mensajes").scrollHeight;
+  }
+
+  async function responder(ticketId) {
+    const input = $(`resp-${ticketId}`);
+    const mensaje = input.value.trim();
+    if (!mensaje) return;
+    const boton = $(`btn-resp-${ticketId}`);
+    busy(boton, true, "Responder");
+    setStatus($(`est-resp-${ticketId}`), "");
+    try {
+      // El backend devuelve el hilo actualizado, así que no hace falta recargarlo aparte.
+      pintarHilo(ticketId, await api(`/api/v1/tickets/${ticketId}/reply`, {
+        method: "POST", body: { message: mensaje },
+      }));
+    } catch (error) {
+      busy(boton, false, "Responder");
+      setStatus($(`est-resp-${ticketId}`), error.message, "err");
     }
   }
 

@@ -49,7 +49,7 @@ data/            datasets sintéticos generados (scripts/generate_synthetic_data
 sql/init.sql     DDL + función y stored procedure PL/pgSQL
 static/          portal del cliente (/portal) y panel técnico (/demo)
 docs/            chuleta de defensa oral para la entrevista
-tests/           pytest (53 tests) con TestClient + SQLite
+tests/           pytest (56 tests) con TestClient + SQLite
 ```
 
 ## 3. Cómo ejecutar
@@ -121,7 +121,7 @@ aunque la intención sea otra.
 ### Tests
 
 ```bash
-pytest tests/ -v      # 53 tests, corren contra SQLite en un archivo temporal
+pytest tests/ -v      # 56 tests, corren contra SQLite en un archivo temporal
 ```
 
 ## 4. Credenciales de prueba
@@ -142,7 +142,7 @@ Todos documentados con ejemplos en Swagger (`/docs`). Resumen:
 
 - **Auth:** `POST /api/v1/auth/login`, `POST /api/v1/auth/refresh`, `GET /api/v1/auth/me`
 - **Customers:** CRUD completo + `DELETE` lógico + `GET /{id}/churn-prediction`
-- **Tickets:** CRUD + `POST /tickets/classify` (clasificación sin crear ticket) + `GET /tickets/queue` (bandeja del agente con las señales de los modelos)
+- **Tickets:** CRUD + `POST /tickets/classify` (clasificación sin crear ticket) + `GET /tickets/queue` (bandeja del agente) + `GET /tickets/{id}/conversation` y `POST /tickets/{id}/reply` (traspaso a un asesor humano)
 - **ML:** `POST /ml/predict-churn`, `POST /ml/classify-ticket`, `POST /ml/analyze-sentiment`, `POST /ml/predict-resolution-time`, `GET /ml/models/info`
 - **Agente:** `POST /agent/chat`, `GET/DELETE /agent/sessions/{id}`
 - **MCP:** `GET /mcp/capabilities`, `GET /mcp/resources(/{id})`, `POST /mcp/tools/execute`
