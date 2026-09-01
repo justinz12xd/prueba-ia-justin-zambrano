@@ -15,6 +15,9 @@ telecomunicaciones.
 - [x] Parte 3 — Agente LangGraph
 - [x] Parte 4 — API FastAPI + MCP
 - [x] Docker / Tests / Documentación final
+- [x] Extras: portal del cliente y consola del asesor, traspaso a humano, endpoint y
+      tool MCP para el modelo de tiempo de resolución, script de prueba manual del
+      clasificador y guion de defensa oral (`docs/CHULETA_ENTREVISTA.md`)
 
 ---
 
@@ -69,7 +72,12 @@ docker compose up --build
 - Swagger UI: http://localhost:8000/docs
 - Postgres queda expuesto en `localhost:5432` (usuario/clave `postgres`/`postgres`, DB `telecom_support`)
 - `sql/init.sql` se ejecuta automáticamente al crear el volumen de Postgres (DDL + función + stored procedure).
-- Los modelos ML/DL ya vienen entrenados y versionados en `saved_models/`, así que la API funciona de inmediato sin paso de entrenamiento previo.
+- **No hace falta entrenar nada ni cargar datos a mano.** Los cuatro modelos vienen
+  entrenados y versionados en `saved_models/` (2.6 MB en total), y al arrancar la app
+  siembra sola los tres usuarios de prueba, un cliente demo y las cinco categorías de
+  tickets (`app/core/seed.py`). También instala la función y el procedimiento PL/pgSQL
+  de `sql/init.sql` si no existen, de modo que un `docker compose up` deja el sistema
+  listo para usarse.
 
 ### Opción B — Local sin Docker (Python 3.11)
 
@@ -80,7 +88,17 @@ cp .env.example .env   # ajustar DATABASE_URL a un Postgres local o SQLite
 uvicorn app.main:app --reload
 ```
 
-### Opción C — Base de datos con Supabase CLI
+### Opción C — Base de datos gestionada (Supabase u otro Postgres)
+
+La app funciona con cualquier PostgreSQL: basta con apuntar `DATABASE_URL` a él. Las
+tablas se crean al arrancar y la función y el procedimiento PL/pgSQL se instalan solos,
+así que no hay migración manual que hacer.
+
+```bash
+DATABASE_URL=postgresql://postgres:[password]@db.[proyecto].supabase.co:5432/postgres
+```
+
+### Opción D — Supabase CLI en local
 
 ```bash
 supabase start

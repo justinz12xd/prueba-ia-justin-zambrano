@@ -24,7 +24,10 @@ matplotlib==3.9.3
 seaborn==0.13.2
 
 # --- Deep Learning ---
-tensorflow==2.18.0
+# tensorflow-cpu en vez de tensorflow: arrastra las mismas APIs pero sin las
+# librerías CUDA de NVIDIA, que aquí no se usan (no hay GPU ni en Docker ni en las
+# plataformas gestionadas) y pesan más de 1.5 GB en la imagen.
+tensorflow-cpu==2.18.0
 
 # --- LangGraph / LLM agent ---
 langgraph==1.2.11

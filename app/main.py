@@ -22,9 +22,31 @@ logging.basicConfig(level=logging.INFO)
 settings = get_settings()
 
 
+def _aplicar_sql_init() -> None:
+    """Instala la función y el procedimiento PL/pgSQL de `sql/init.sql`.
+
+    Con docker-compose el script lo carga Postgres al crear el volumen, pero en una
+    base gestionada (Railway, Render, Supabase) nadie lo ejecuta. Se aplica aquí de
+    forma idempotente —el script usa IF NOT EXISTS y CREATE OR REPLACE— y sin
+    interrumpir el arranque si algo falla: la app funciona igual sin ellos.
+    """
+    if engine.dialect.name != "postgresql":
+        return
+    ruta = Path(__file__).resolve().parent.parent / "sql" / "init.sql"
+    if not ruta.is_file():
+        return
+    try:
+        with engine.begin() as conexion:
+            conexion.exec_driver_sql(ruta.read_text(encoding="utf-8"))
+        logging.getLogger("startup").info("sql/init.sql aplicado (funciones SQL disponibles)")
+    except Exception as exc:  # noqa: BLE001 - nunca debe impedir que la API arranque
+        logging.getLogger("startup").warning("No se pudo aplicar sql/init.sql: %s", exc)
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
+    _aplicar_sql_init()
     db = SessionLocal()
     try:
         run_seed(db)

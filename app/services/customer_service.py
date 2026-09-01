@@ -2,8 +2,10 @@
 from __future__ import annotations
 
 import datetime as dt
+import logging
 
 from fastapi import HTTPException, status
+from sqlalchemy.exc import DatabaseError
 from sqlalchemy import func, select, text
 from sqlalchemy.orm import Session
 
@@ -13,6 +15,8 @@ from app.models.prediction import Prediction
 from app.models.ticket import Ticket
 from app.repositories.customer_repository import CustomerRepository
 from app.schemas.customer import ChurnPredictionResponse, CustomerCreate, CustomerUpdate
+
+logger = logging.getLogger("customers")
 
 
 class CustomerService:
@@ -52,14 +56,24 @@ class CustomerService:
         esa función PL/pgSQL no existe, así que se calcula el equivalente con el ORM.
         """
         if self.db.bind is not None and self.db.bind.dialect.name == "postgresql":
-            row = self.db.execute(
-                text("SELECT open_tickets, avg_satisfaction "
-                     "FROM fn_customer_churn_summary(:customer_id)"),
-                {"customer_id": customer_id},
-            ).mappings().first()
-            if row is not None:
-                avg = row["avg_satisfaction"]
-                return int(row["open_tickets"] or 0), float(avg) if avg is not None else 3.5
+            try:
+                row = self.db.execute(
+                    text("SELECT open_tickets, avg_satisfaction "
+                         "FROM fn_customer_churn_summary(:customer_id)"),
+                    {"customer_id": customer_id},
+                ).mappings().first()
+                if row is not None:
+                    avg = row["avg_satisfaction"]
+                    return int(row["open_tickets"] or 0), float(avg) if avg is not None else 3.5
+            except DatabaseError as exc:
+                # La función vive en sql/init.sql, que docker-compose carga al crear el
+                # volumen. En un Postgres gestionado (Railway, Render, Supabase) ese
+                # script puede no haberse ejecutado nunca: en vez de romper el endpoint,
+                # se calcula lo mismo con el ORM.
+                logger.warning("fn_customer_churn_summary no disponible, uso el ORM: %s", exc)
+                # En PostgreSQL una sentencia fallida invalida la transacción entera:
+                # sin este rollback, las consultas siguientes también fallarían.
+                self.db.rollback()
 
         # El fallback debe devolver exactamente lo mismo que la función SQL: tickets
         # SIN RESOLVER (el enunciado define num_tickets como "cantidad de tickets
