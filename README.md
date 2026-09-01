@@ -47,7 +47,7 @@ dl_training/     scripts de entrenamiento TensorFlow/Keras (Parte 2)
 saved_models/    modelos entrenados (.joblib / .keras) + reportes/gráficas
 data/            datasets sintéticos generados (scripts/generate_synthetic_data.py)
 sql/init.sql     DDL + función y stored procedure PL/pgSQL
-tests/           pytest (28 tests) con TestClient + SQLite
+tests/           pytest (31 tests) con TestClient + SQLite
 ```
 
 ## 3. Cómo ejecutar
@@ -97,7 +97,7 @@ python dl_training/train_resolution_time_model.py
 ### Tests
 
 ```bash
-pytest tests/ -v      # 28 tests, corren contra SQLite en un archivo temporal
+pytest tests/ -v      # 31 tests, corren contra SQLite en un archivo temporal
 ```
 
 ## 4. Credenciales de prueba
@@ -173,6 +173,13 @@ Gráficas y reportes completos en `saved_models/ml/*.png|json` y `saved_models/d
   el tiempo disponible.
 - **Eliminación lógica uniforme:** `is_active` + `deleted_at` en `customer` y
   `ticket`, consistente con lo pedido en "Consideraciones".
+- **Autenticación uniforme en todos los routers, incluido el agente:** `/api/v1/agent/*`
+  también exige JWT. `chat` y la lectura de una sesión están abiertos a los tres roles
+  (`admin`/`agent`/`customer`), mientras que borrar una sesión queda restringido a
+  personal interno (`admin`/`agent`), mismo criterio que el `DELETE` de clientes. La
+  alternativa era dejar el chat público (widget para clientes anónimos), pero eso
+  implicaba exponer `GET/DELETE /agent/sessions/{id}` —que devuelve y destruye el
+  historial completo de la conversación— sin identificar a quien llama.
 - **Gemini vía LangChain:** se usó `langchain-google-genai` (el usuario cuenta con
   API key de Gemini) en vez de OpenAI/Anthropic. El nodo `generate_response`
   degrada automáticamente a respuestas basadas en plantillas si no hay

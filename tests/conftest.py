@@ -44,5 +44,15 @@ def agent_token(client):
 
 
 @pytest.fixture(scope="session")
+def customer_token(client):
+    return _login(client, "cliente@telecom.com", "Cliente123!")
+
+
+@pytest.fixture(scope="session")
 def auth_headers(admin_token):
     return {"Authorization": f"Bearer {admin_token}"}
+
+
+@pytest.fixture(scope="session")
+def customer_headers(customer_token):
+    return {"Authorization": f"Bearer {customer_token}"}
