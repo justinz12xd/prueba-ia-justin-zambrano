@@ -98,6 +98,26 @@ python dl_training/train_sentiment_model.py
 python dl_training/train_resolution_time_model.py
 ```
 
+### Probar el clasificador a mano
+
+```bash
+# Batería de 12 frases escritas a mano, distintas de las plantillas del generador
+python scripts/probar_clasificador.py
+
+python scripts/probar_clasificador.py "el wifi anda lentísimo en el cuarto"   # frase suelta
+python scripts/probar_clasificador.py --interactivo                            # escribir en vivo
+python scripts/probar_clasificador.py --dataset                                # CSV completo
+
+# Con el stack levantado, sin instalar nada:
+docker exec -it telecom_support_api python scripts/probar_clasificador.py --interactivo
+```
+
+Sobre frases nuevas el modelo acierta **11 de 12** con confianzas de 47-89 %, muy por
+debajo del 100 % que da sobre el CSV (que contiene las filas de entrenamiento). El fallo
+recurrente es ilustrativo: *"solo quería felicitar al técnico que vino ayer"* se predice
+como TECH, porque TF-IDF pondera palabras sueltas y "técnico" arrastra la predicción
+aunque la intención sea otra.
+
 ### Tests
 
 ```bash

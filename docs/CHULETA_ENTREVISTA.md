@@ -337,6 +337,22 @@ la función `_tool_x`, y la entrada en `TOOL_HANDLERS`.
 - Sentimiento: accuracy test 1.00 *(sintético)*.
 - Resolución: MAE 1.75 h, RMSE 2.53 h, R² 0.58.
 
+**Si piden probar el clasificador en vivo** — no muestres el 100 % del CSV, muestra esto:
+
+```bash
+docker exec -it telecom_support_api python scripts/probar_clasificador.py
+```
+
+12 frases escritas a mano: **11 aciertos**, con las probabilidades de las 5 clases y el
+desglose del fallo. Es mucho mejor respuesta que un 100 % sobre datos sintéticos, porque
+demuestra que sabes dónde falla tu modelo y por qué. El fallo a explicar:
+*"solo quería felicitar al técnico que vino ayer"* → TECH con 47 %, porque TF-IDF pondera
+palabras sueltas y "técnico" pesa más que la intención de la frase. La solución sería
+embeddings contextuales (que entienden "felicitar"), a cambio de más datos y más cómputo.
+
+Con `--interactivo` puedes pedirles a ellos que dicten la frase: es la demostración más
+convincente, porque el ejemplo no lo elegiste tú.
+
 **Comandos**
 
 ```bash

@@ -30,6 +30,15 @@ def _load_pipeline():
     return joblib.load(path)
 
 
+def get_pipeline():
+    """Pipeline entrenado (TF-IDF + clasificador), cacheado por proceso.
+
+    Público para que scripts de evaluación puedan usar `predict` en lote en vez de
+    llamar a `classify_ticket` texto por texto.
+    """
+    return _load_pipeline()
+
+
 def classify_ticket(description: str) -> tuple[str, dict[str, float]]:
     """Retorna (categoría_predicha, {categoria: probabilidad})."""
     validate_min_length(description)
