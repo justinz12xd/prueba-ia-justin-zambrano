@@ -8,16 +8,17 @@ agente conversacional (LangGraph + Google Gemini) y una API REST (FastAPI) con
 soporte del protocolo MCP, para atención al cliente de una empresa de
 telecomunicaciones.
 
-## Estado de avance
+## Alcance entregado
 
-- [x] Parte 1 — ML clásico (clasificación de tickets + churn)
-- [x] Parte 2 — Deep Learning (sentimiento + tiempo de resolución)
-- [x] Parte 3 — Agente LangGraph
-- [x] Parte 4 — API FastAPI + MCP
-- [x] Docker / Tests / Documentación final
-- [x] Extras: portal del cliente y consola del asesor, traspaso a humano, endpoint y
-      tool MCP para el modelo de tiempo de resolución, script de prueba manual del
-      clasificador y guion de defensa oral (`docs/CHULETA_ENTREVISTA.md`)
+- Parte 1 — ML clásico: clasificación de tickets y predicción de churn
+- Parte 2 — Deep Learning: red de sentimiento y red multi-input de tiempo de resolución
+- Parte 3 — Agente conversacional con LangGraph, integrado con los modelos anteriores
+- Parte 4 — API REST con FastAPI y servidor MCP
+- Docker, 61 tests y documentación
+
+Además de lo pedido: un portal para el cliente y una consola para el asesor, con
+traspaso de la conversación a una persona; endpoint y tool MCP para el modelo de tiempo
+de resolución; y un script para probar el clasificador a mano con frases propias.
 
 ---
 
@@ -51,7 +52,6 @@ saved_models/    modelos entrenados (.joblib / .keras) + reportes/gráficas
 data/            datasets sintéticos generados (scripts/generate_synthetic_data.py)
 sql/init.sql     DDL + función y stored procedure PL/pgSQL
 static/          portal del cliente (/portal) y panel técnico (/demo)
-docs/            chuleta de defensa oral para la entrevista
 tests/           pytest (61 tests) con TestClient + SQLite
 ```
 
@@ -367,9 +367,3 @@ Nota de transparencia: el desarrollo se apoyó en **asistencia de IA (Claude Cod
 por lo que el tiempo de reloj efectivo fue menor al de un desarrollo manual; la
 tabla refleja el esfuerzo relativo de cada sección. Las decisiones técnicas están
 justificadas una a una en la sección 7 y las limitaciones reconocidas en la 9.
-
-**Preparación para la entrevista de validación:** en `docs/CHULETA_ENTREVISTA.md`
-hay un guion de defensa oral —recorrido de demo, preguntas probables por sección,
-debilidades conocidas y ejercicios de modificación en vivo— centrado en
-`app/agent/` (flujo LangGraph) y `app/ml_runtime/` (conexión entre los modelos
-entrenados y la API), que son las partes más específicas del enunciado.
