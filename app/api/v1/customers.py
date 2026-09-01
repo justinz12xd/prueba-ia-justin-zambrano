@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
+from app.api.deps import CustomerScope, ensure_owner
 from app.core.security import require_roles
 from app.schemas.common import PaginatedResponse
 from app.schemas.customer import (ChurnPredictionResponse, CustomerCreate, CustomerResponse,
@@ -27,7 +28,9 @@ def list_customers(skip: int = Query(0, ge=0), limit: int = Query(50, ge=1, le=2
             description="Obtiene un cliente por su identificador. Retorna 404 si no existe o si fue eliminado lógicamente.",
             summary="Obtener un cliente",
             dependencies=[Depends(require_roles("admin", "agent", "customer"))])
-def get_customer(customer_id: int, db: Session = Depends(get_db)) -> CustomerResponse:
+def get_customer(customer_id: int, scope: CustomerScope,
+                  db: Session = Depends(get_db)) -> CustomerResponse:
+    ensure_owner(scope, customer_id)  # un cliente solo puede ver su propia ficha
     return CustomerService(db).get_customer_or_404(customer_id)
 
 

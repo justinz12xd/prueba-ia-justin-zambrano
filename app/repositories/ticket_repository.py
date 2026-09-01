@@ -15,12 +15,17 @@ class TicketRepository:
         self.db = db
 
     def list(self, skip: int = 0, limit: int = 50, customer_id: int | None = None,
-              only_active: bool = True) -> list[Ticket]:
+              only_active: bool = True, only_open: bool = False) -> list[Ticket]:
         stmt = select(Ticket)
         if only_active:
             stmt = stmt.where(Ticket.is_active.is_(True))
         if customer_id is not None:
             stmt = stmt.where(Ticket.customer_id == customer_id)
+        if only_open:
+            # El filtro tiene que ir en la consulta y no después: si se recortan
+            # primero los N más recientes y luego se descartan los resueltos, la
+            # bandeja puede salir vacía habiendo casos abiertos más atrás.
+            stmt = stmt.where(Ticket.status.in_(("open", "in_progress")))
         stmt = stmt.offset(skip).limit(limit).order_by(Ticket.ticket_id.desc())
         return list(self.db.scalars(stmt))
 

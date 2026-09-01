@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
+from app.api.deps import CustomerScope, ensure_owner, scoped_customer_id
 from app.core.security import TokenPayload, get_current_user, require_roles
 from app.schemas.ticket import (AgentReplyRequest, TicketClassifyRequest,
                                  TicketClassifyResponse, TicketConversation,
@@ -17,10 +18,11 @@ router = APIRouter(prefix="/api/v1/tickets", tags=["Tickets"])
 @router.get("", response_model=list[TicketResponse], summary="Listar tickets",
             description="Lista los tickets activos. Con el parámetro customer_id se filtran los de un cliente concreto.",
             dependencies=[Depends(require_roles("admin", "agent", "customer"))])
-def list_tickets(skip: int = Query(0, ge=0), limit: int = Query(50, ge=1, le=200),
-                  customer_id: int | None = None,
+def list_tickets(scope: CustomerScope, skip: int = Query(0, ge=0),
+                  limit: int = Query(50, ge=1, le=200), customer_id: int | None = None,
                   db: Session = Depends(get_db)) -> list[TicketResponse]:
-    return TicketService(db).list_tickets(skip, limit, customer_id)
+    # A un cliente se le ignora el customer_id que envíe: siempre ve los suyos.
+    return TicketService(db).list_tickets(skip, limit, scoped_customer_id(scope, customer_id))
 
 
 @router.get("/queue", response_model=list[TicketQueueItem],
@@ -38,8 +40,11 @@ def tickets_queue(limit: int = Query(20, ge=1, le=50), only_open: bool = True,
 @router.get("/{ticket_id}", response_model=TicketResponse, summary="Obtener un ticket",
             description="Obtiene un ticket por su identificador. Retorna 404 si no existe o fue eliminado lógicamente.",
             dependencies=[Depends(require_roles("admin", "agent", "customer"))])
-def get_ticket(ticket_id: int, db: Session = Depends(get_db)) -> TicketResponse:
-    return TicketService(db).get_ticket_or_404(ticket_id)
+def get_ticket(ticket_id: int, scope: CustomerScope,
+                db: Session = Depends(get_db)) -> TicketResponse:
+    ticket = TicketService(db).get_ticket_or_404(ticket_id)
+    ensure_owner(scope, ticket.customer_id)
+    return ticket
 
 
 @router.post("", response_model=TicketResponse, status_code=status.HTTP_201_CREATED,
@@ -47,7 +52,10 @@ def get_ticket(ticket_id: int, db: Session = Depends(get_db)) -> TicketResponse:
              description="Si no se envía 'category', se infiere automáticamente con el "
                          "clasificador ML a partir de la descripción.",
              dependencies=[Depends(require_roles("admin", "agent", "customer"))])
-def create_ticket(data: TicketCreate, db: Session = Depends(get_db)) -> TicketResponse:
+def create_ticket(data: TicketCreate, scope: CustomerScope,
+                   db: Session = Depends(get_db)) -> TicketResponse:
+    # Un cliente no puede abrir tickets a nombre de otro.
+    ensure_owner(scope, data.customer_id)
     return TicketService(db).create(data)
 
 

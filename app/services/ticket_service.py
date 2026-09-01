@@ -47,9 +47,7 @@ class TicketService:
         Cada modelo se consulta de forma tolerante a fallos: si uno no está
         disponible, el ticket igual aparece en la bandeja, solo que sin ese dato.
         """
-        tickets = self.repo.list(0, limit, None)
-        if only_open:
-            tickets = [t for t in tickets if t.status in ("open", "in_progress")]
+        tickets = self.repo.list(0, limit, None, only_open=only_open)
 
         ultimos_mensajes = self._ultimo_mensaje_por_ticket([t.ticket_id for t in tickets])
 

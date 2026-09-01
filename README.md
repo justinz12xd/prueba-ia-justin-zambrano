@@ -49,7 +49,7 @@ data/            datasets sintéticos generados (scripts/generate_synthetic_data
 sql/init.sql     DDL + función y stored procedure PL/pgSQL
 static/          portal del cliente (/portal) y panel técnico (/demo)
 docs/            chuleta de defensa oral para la entrevista
-tests/           pytest (56 tests) con TestClient + SQLite
+tests/           pytest (61 tests) con TestClient + SQLite
 ```
 
 ## 3. Cómo ejecutar
@@ -121,7 +121,7 @@ aunque la intención sea otra.
 ### Tests
 
 ```bash
-pytest tests/ -v      # 56 tests, corren contra SQLite en un archivo temporal
+pytest tests/ -v      # 61 tests, corren contra SQLite en un archivo temporal
 ```
 
 ## 4. Credenciales de prueba
@@ -234,6 +234,14 @@ Gráficas y reportes completos en `saved_models/ml/*.png|json` y `saved_models/d
   el tiempo disponible.
 - **Eliminación lógica uniforme:** `is_active` + `deleted_at` en `customer` y
   `ticket`, consistente con lo pedido en "Consideraciones".
+- **Autorización por pertenencia, además de por rol:** `require_roles(...)` responde a
+  "¿puedes usar este endpoint?", pero no a "¿son tuyos estos datos?". Sin lo segundo, un
+  cliente autenticado podía leer la ficha, los tickets y las conversaciones de cualquier
+  otro cliente cambiando el id de la URL. `app/api/deps.py` resuelve el *alcance* del
+  usuario (`None` para admin/agent, su `customer_id` para un cliente) y lo aplica en
+  clientes, tickets y sesiones. A un cliente se le **fuerza** el filtro en los listados y
+  al crear tickets o conversar, para que no pueda actuar en nombre de otro. Se responde
+  **404 y no 403**: un 403 confirmaría que ese recurso existe.
 - **Autenticación uniforme en todos los routers, incluido el agente:** `/api/v1/agent/*`
   también exige JWT. `chat` y la lectura de una sesión están abiertos a los tres roles
   (`admin`/`agent`/`customer`), mientras que borrar una sesión queda restringido a

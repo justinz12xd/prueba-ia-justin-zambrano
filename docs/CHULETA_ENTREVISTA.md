@@ -46,7 +46,7 @@ dl_training/       Parte 2 — TensorFlow/Keras
 saved_models/      artefactos entrenados + reportes JSON + gráficas
 sql/init.sql       DDL + 1 función + 1 stored procedure PL/pgSQL
 static/            portal del cliente (/portal) y panel técnico (/demo)
-tests/             56 tests (pytest + TestClient + SQLite)
+tests/             61 tests (pytest + TestClient + SQLite)
 ```
 
 **La frase para explicar la arquitectura en una línea:**
@@ -253,7 +253,7 @@ de la sesión: el JWT solo lleva email y rol) y `GET /tickets/queue` (la bandeja
 
 - *¿Por qué Postgres y no SQLite?* Porque el requisito de stored procedure pedía PL/pgSQL
   real. Los tests sí usan SQLite, por velocidad y para no depender de infraestructura.
-- *¿Los tests cubren qué?* 56 tests sobre los endpoints críticos: auth (incluido rechazo de
+- *¿Los tests cubren qué?* 61 tests sobre los endpoints críticos: auth (incluido rechazo de
   refresh token como access), CRUD de clientes con sus validaciones, tickets, los 4 modelos,
   el agente (incluidos 401 y 403 por rol) y MCP.
 - *¿Cómo garantizas que el modelo carga en producción?* `ml_runtime` cachea con `lru_cache`
@@ -283,6 +283,13 @@ Reconocer un límite con la solución al lado suma; que te lo descubran, resta.
    silencioso: `get_customer_info` caía siempre en "sin sesión de base de datos" y el
    agente nunca leía datos del cliente. Corregido anotando `config: RunnableConfig`.
    **Si preguntan por un bug difícil que hayas encontrado, cuenta este.**
+
+   Y si preguntan por **seguridad**: la primera versión tenía un IDOR. Todos los
+   endpoints validaban el rol pero ninguno la pertenencia, así que el cliente 1 podía
+   pedir `/customers/2`, `/tickets?customer_id=2` o la sesión de otro y leer nombre,
+   teléfono, tickets y conversaciones ajenas. Lo reproduje, lo cerré con una dependencia
+   de alcance (`app/api/deps.py`) y lo fijé con cuatro tests. Detalle a mencionar:
+   devuelve **404 y no 403**, porque un 403 ya confirma que ese cliente existe.
 
    El otro que vale la pena contar: el modelo de sentimiento marcaba como frustrado
    *"Una última cosa, ¿cuál es el horario?"* con **confianza 1.0**. Descarté subir el
@@ -376,7 +383,7 @@ convincente, porque el ejemplo no lo elegiste tú.
 
 ```bash
 docker compose up --build              # stack completo
-pytest tests/ -v                       # 56 tests
+pytest tests/ -v                       # 61 tests
 python ml_training/train_churn_model.py    # reentrenar
 docker exec -it telecom_support_db psql -U postgres -d telecom_support \
   -c "SELECT * FROM fn_customer_churn_summary(1);"   # demostrar la función SQL
@@ -532,6 +539,7 @@ el código actual.
 | **JWT con expiración configurable** | `app/core/security.py:42` + `app/core/config.py:31` | `ACCESS_TOKEN_EXPIRE_MINUTES` por entorno |
 | **Refresh tokens** | `app/core/security.py:48` + `app/services/auth_service.py` | El payload lleva `type`, y un refresh no sirve como access |
 | **Roles admin / agent / customer** | `app/core/security.py:18,79` | `require_roles(...)` como dependencia de cada ruta |
+| *(y autorización por pertenencia)* | `app/api/deps.py` | El rol da acceso al endpoint; el *alcance* decide de quién son los datos. Un cliente solo ve lo suyo, y se le fuerza el filtro en listados y creación |
 | **Swagger UI habilitado** | `/docs` (FastAPI lo monta solo) | |
 | **Descripción de cada endpoint** | Todos los decoradores `@router.*` | Los 25 tienen `summary` y `description` |
 | **Ejemplos de request/response** | `app/schemas/*.py` | `examples=[...]` en los campos y `json_schema_extra` en los 8 schemas de respuesta |

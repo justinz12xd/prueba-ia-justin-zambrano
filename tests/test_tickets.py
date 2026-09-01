@@ -153,3 +153,30 @@ def test_conversation_is_internal_only(client, customer_headers):
                       headers=customer_headers).status_code == 403
     assert client.post("/api/v1/tickets/1/reply", json={"message": "hola de prueba"},
                        headers=customer_headers).status_code == 403
+
+
+def test_queue_filters_open_tickets_in_the_query(client, auth_headers):
+    """La bandeja no debe salir vacía por culpa del límite.
+
+    Regresión: se pedían los N tickets más recientes y solo después se descartaban
+    los resueltos, así que unos pocos tickets resueltos recientes podían ocupar todo
+    el cupo y ocultar casos abiertos que sí requerían atención.
+    """
+    abierto = client.post("/api/v1/tickets", json={
+        "customer_id": 1, "priority": "high",
+        "description": "Caso abierto que debe seguir apareciendo en la bandeja del agente",
+    }, headers=auth_headers).json()
+
+    # Tres tickets resueltos, creados después: son los más recientes
+    for i in range(3):
+        t = client.post("/api/v1/tickets", json={
+            "customer_id": 1, "priority": "low",
+            "description": f"Ticket resuelto numero {i} que ya no requiere atencion alguna",
+        }, headers=auth_headers).json()
+        client.put(f"/api/v1/tickets/{t['ticket_id']}", json={"status": "resolved"},
+                   headers=auth_headers)
+
+    bandeja = client.get("/api/v1/tickets/queue?limit=3", headers=auth_headers).json()
+    assert any(t["ticket_id"] == abierto["ticket_id"] for t in bandeja), \
+        "el ticket abierto debe aparecer aunque haya resueltos más recientes"
+    assert all(t["status"] in ("open", "in_progress") for t in bandeja)

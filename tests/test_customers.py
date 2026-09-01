@@ -104,3 +104,78 @@ def test_ticket_stats_counts_open_and_averages_satisfaction(client, auth_headers
         assert avg == 1.0, "la satisfacción promedio debe salir del ticket calificado"
     finally:
         db.close()
+
+
+def test_customer_cannot_read_another_customers_data(client, customer_headers, auth_headers):
+    """Un cliente autenticado no puede leer la ficha, los tickets ni las
+    conversaciones de otro cliente cambiando el id de la URL (IDOR).
+
+    Se responde 404 y no 403 a propósito: un 403 confirmaría que ese recurso existe.
+    """
+    ajeno = client.post("/api/v1/customers", json={
+        "name": "Cliente Ajeno", "email": "ajeno.idor@example.com", "phone": "0998887771",
+        "plan_type": "Fibra 500MB", "monthly_charge": 80.0,
+    }, headers=auth_headers).json()
+    ajeno_id = ajeno["customer_id"]
+
+    ticket = client.post("/api/v1/tickets", json={
+        "customer_id": ajeno_id, "priority": "low",
+        "description": "Dato sensible del cliente ajeno que no debe filtrarse jamas",
+    }, headers=auth_headers).json()
+    sesion = client.post("/api/v1/agent/chat", json={
+        "message": "Quiero cancelar mi servicio, mi contrato termina el mes que viene",
+        "customer_id": ajeno_id,
+    }, headers=auth_headers).json()
+
+    # El rol customer del seed es el cliente 1, no el ajeno
+    assert client.get(f"/api/v1/customers/{ajeno_id}", headers=customer_headers).status_code == 404
+    assert client.get(f"/api/v1/tickets/{ticket['ticket_id']}",
+                      headers=customer_headers).status_code == 404
+    assert client.get(f"/api/v1/agent/sessions/{sesion['session_id']}",
+                      headers=customer_headers).status_code == 404
+
+    # Y sigue viendo lo suyo
+    assert client.get("/api/v1/customers/1", headers=customer_headers).status_code == 200
+
+
+def test_customer_listing_tickets_is_scoped_to_itself(client, customer_headers, auth_headers):
+    """Pedir los tickets de otro cliente devuelve los propios, no los ajenos."""
+    ajeno = client.post("/api/v1/customers", json={
+        "name": "Otro Mas", "email": "otro.scope@example.com", "phone": "0998887772",
+        "plan_type": "Fibra 100MB", "monthly_charge": 40.0,
+    }, headers=auth_headers).json()
+    client.post("/api/v1/tickets", json={
+        "customer_id": ajeno["customer_id"], "priority": "low",
+        "description": "Ticket del cliente ajeno que no debe aparecer en listados ajenos",
+    }, headers=auth_headers)
+
+    visibles = client.get(f"/api/v1/tickets?customer_id={ajeno['customer_id']}",
+                          headers=customer_headers).json()
+    assert all(t["customer_id"] == 1 for t in visibles), "solo debe ver los suyos"
+
+
+def test_customer_cannot_open_tickets_for_others(client, customer_headers, auth_headers):
+    ajeno = client.post("/api/v1/customers", json={
+        "name": "Tercero", "email": "tercero.scope@example.com", "phone": "0998887773",
+        "plan_type": "Fibra 100MB", "monthly_charge": 40.0,
+    }, headers=auth_headers).json()
+    resp = client.post("/api/v1/tickets", json={
+        "customer_id": ajeno["customer_id"], "priority": "low",
+        "description": "Intento de abrir un ticket a nombre de otra persona",
+    }, headers=customer_headers)
+    assert resp.status_code == 404
+
+
+def test_chat_ignores_a_foreign_customer_id(client, customer_headers, auth_headers):
+    """Si un cliente envía el customer_id de otro, se usa el suyo."""
+    ajeno = client.post("/api/v1/customers", json={
+        "name": "Cuarto", "email": "cuarto.scope@example.com", "phone": "0998887774",
+        "plan_type": "Fibra 100MB", "monthly_charge": 40.0,
+    }, headers=auth_headers).json()
+    chat = client.post("/api/v1/agent/chat", json={
+        "message": "Necesito revisar el estado de mi servicio de internet contratado",
+        "customer_id": ajeno["customer_id"],
+    }, headers=customer_headers).json()
+    sesion = client.get(f"/api/v1/agent/sessions/{chat['session_id']}",
+                        headers=customer_headers).json()
+    assert sesion["customer_id"] == 1

@@ -480,19 +480,21 @@
     return appendNode(div);
   }
 
+  /** Pinta los mensajes del servidor que aún no se muestran. Única fuente de verdad. */
+  async function sincronizarConversacion() {
+    if (!sessionId) return;
+    try {
+      const data = await api(`/api/v1/agent/sessions/${sessionId}`);
+      const conv = data.conversation || [];
+      conv.slice(mensajesPintados).forEach(pintarMensajeServidor);
+      mensajesPintados = conv.length;
+    } catch { /* la sesión pudo cerrarse; el siguiente intento lo resolverá */ }
+  }
+
   /** Busca periódicamente respuestas escritas por un asesor humano. */
   function iniciarSondeo() {
     detenerSondeo();
-    sondeo = setInterval(async () => {
-      if (!sessionId) return;
-      try {
-        const data = await api(`/api/v1/agent/sessions/${sessionId}`);
-        const conv = data.conversation || [];
-        // Solo se pintan los mensajes nuevos: los propios ya se dibujaron al enviarlos.
-        conv.slice(mensajesPintados).forEach(pintarMensajeServidor);
-        mensajesPintados = conv.length;
-      } catch { /* la sesión pudo cerrarse; el siguiente intento lo resolverá */ }
-    }, 6000);
+    sondeo = setInterval(sincronizarConversacion, 6000);
   }
 
   function detenerSondeo() {
@@ -504,7 +506,11 @@
     const message = (preset ?? input.value).trim();
     if (!message) return;
 
-    appendMessage("user", message);
+    // Burbujas provisionales: dan respuesta inmediata, pero no se contabilizan.
+    // Al terminar se sustituyen por lo que diga el servidor, que es la fuente de
+    // verdad: si un asesor humano respondió mientras tanto, su mensaje también
+    // entra, y en el orden correcto.
+    const propio = appendMessage("user", message);
     input.value = "";
     const typing = appendMessage("bot typing", "Escribiendo…");
     busy($("sendBtn"), true, "Enviar");
@@ -515,9 +521,9 @@
         body: { message, session_id: sessionId, customer_id: me.customer_id },
       });
       recordarSesion(data.session_id);
-      mensajesPintados += 2;  // el turno del cliente y la respuesta del agente
-      typing.className = "msg bot";
-      typing.textContent = data.response;
+      propio.remove();
+      typing.remove();
+      await sincronizarConversacion();
 
       // El ticket lo abre el agente en el backend; aquí solo se muestra.
       if (data.ticket) appendTicketCard(data.ticket);
@@ -529,8 +535,11 @@
           `Un especialista continuará la conversación contigo.`);
       }
     } catch (error) {
+      propio.remove();
       typing.className = "msg bot";
       typing.textContent = `No pudimos procesar tu mensaje: ${error.message}`;
+      // Se devuelve el texto al campo para que el cliente no lo pierda.
+      input.value = message;
     } finally {
       busy($("sendBtn"), false, "Enviar");
       $("chatInput").focus();
