@@ -1,7 +1,7 @@
 # Sistema Inteligente de Atención al Cliente — Telecomunicaciones
 
 > Prueba Técnica: Desarrollador de Inteligencia Artificial — Viamatica
-> **Autor:** Justin ([@justinz12xd](https://github.com/justinz12xd)) — *reemplazar por nombre completo antes de la entrega final*
+> **Autor:** Justin Alejandro Zambrano Lucas ([@justinz12xd](https://github.com/justinz12xd))
 
 Sistema que integra ML clásico (scikit-learn), Deep Learning (TensorFlow/Keras), un
 agente conversacional (LangGraph + Google Gemini) y una API REST (FastAPI) con

@@ -1,0 +1,12 @@
+# Normaliza los finales de línea a LF dentro del repositorio.
+# Evita diffs falsos (archivo completo reescrito) al ejecutar los scripts de
+# generación de datos / entrenamiento desde Windows, que escribe CRLF.
+* text=auto eol=lf
+
+# Artefactos binarios: nunca aplicar conversión de finales de línea.
+*.joblib binary
+*.keras  binary
+*.png    binary
+*.pdf    binary
+*.sqlite3 binary
+*.db     binary

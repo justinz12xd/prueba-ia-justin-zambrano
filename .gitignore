@@ -29,6 +29,9 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Enunciado de la prueba (documento fuente, no forma parte del entregable)
+*.pdf
+
 # Docker
 *.pid
 
