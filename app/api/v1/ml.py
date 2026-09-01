@@ -40,8 +40,10 @@ def analyze_sentiment(data: SentimentRequest) -> SentimentResponse:
              description="Red neuronal multi-input de la Parte 2.2: combina la descripción "
                          "(embeddings), la categoría y prioridad (one-hot) y la hora/día "
                          "(codificación cíclica) para estimar las horas hasta la resolución. "
-                         "Si no se envían hora ni día, se usan los del momento actual.",
-             dependencies=[Depends(require_roles("admin", "agent"))])
+                         "Si no se envían hora ni día, se usan los del momento actual. "
+                         "Abierto al rol customer: el portal muestra al cliente el tiempo "
+                         "estimado de respuesta de su propia solicitud.",
+             dependencies=[Depends(require_roles("admin", "agent", "customer"))])
 def predict_resolution_time(data: ResolutionTimeRequest) -> ResolutionTimeResponse:
     return ml_service.predict_resolution_time(data)
 

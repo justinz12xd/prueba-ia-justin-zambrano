@@ -7,7 +7,8 @@ from sqlalchemy.orm import Session
 from app.core.security import (create_access_token, create_refresh_token, decode_token,
                                 hash_password, verify_password)
 from app.repositories.user_repository import UserRepository
-from app.schemas.auth import LoginRequest, RefreshRequest, RegisterRequest, TokenResponse
+from app.schemas.auth import (LoginRequest, MeResponse, RefreshRequest, RegisterRequest,
+                              TokenResponse)
 from app.core.config import get_settings
 
 settings = get_settings()
@@ -43,6 +44,18 @@ class AuthService:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                                  detail="Usuario no encontrado o inactivo")
         return self._issue_tokens(user.email, user.role)
+
+    def me(self, email: str) -> MeResponse:
+        user = self.users.get_by_email(email)
+        if user is None:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                                 detail="Usuario no encontrado o inactivo")
+        return MeResponse(
+            email=user.email,
+            role=user.role,
+            customer_id=user.customer_id,
+            customer_name=user.customer.name if user.customer else None,
+        )
 
     def register(self, data: RegisterRequest):
         if self.users.get_by_email(data.email) is not None:

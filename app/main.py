@@ -7,6 +7,7 @@ from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 import app.models  # noqa: F401  registra todos los modelos en Base.metadata
@@ -64,11 +65,23 @@ app.include_router(mcp_router)
 @app.get("/", tags=["Health"], summary="Health check")
 def health():
     return {"status": "ok", "app": settings.APP_NAME, "version": settings.APP_VERSION,
-            "demo": "/demo", "docs": "/docs"}
+            "portal": "/portal", "demo": "/demo", "docs": "/docs"}
 
 
-# Demo web (opcional): UI estática que consume la propia API. Se monta solo si la
-# carpeta existe, para que la app arranque igual en entornos que no la copien.
+# UIs estáticas (opcionales): consumen la propia API. Se registran solo si la carpeta
+# existe, para que la app arranque igual en entornos que no la copien.
+#   /portal -> centro de ayuda para clientes (simulación del producto)
+#   /demo   -> panel técnico con los 4 modelos y el MCP
 _STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
 if _STATIC_DIR.is_dir():
-    app.mount("/demo", StaticFiles(directory=_STATIC_DIR, html=True), name="demo")
+    app.mount("/static", StaticFiles(directory=_STATIC_DIR), name="static")
+
+    @app.get("/portal", tags=["Demo"], summary="Centro de ayuda para clientes",
+             include_in_schema=False)
+    def portal() -> FileResponse:
+        return FileResponse(_STATIC_DIR / "portal.html")
+
+    @app.get("/demo", tags=["Demo"], summary="Panel técnico de modelos",
+             include_in_schema=False)
+    def demo() -> FileResponse:
+        return FileResponse(_STATIC_DIR / "index.html")

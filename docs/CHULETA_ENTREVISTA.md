@@ -45,8 +45,8 @@ ml_training/       Parte 1 — scikit-learn
 dl_training/       Parte 2 — TensorFlow/Keras
 saved_models/      artefactos entrenados + reportes JSON + gráficas
 sql/init.sql       DDL + 1 función + 1 stored procedure PL/pgSQL
-static/index.html  demo web servido en /demo
-tests/             36 tests (pytest + TestClient + SQLite)
+static/            portal del cliente (/portal) y panel técnico (/demo)
+tests/             39 tests (pytest + TestClient + SQLite)
 ```
 
 **La frase para explicar la arquitectura en una línea:**
@@ -65,16 +65,23 @@ SQLAlchemy; aquí las entidades SQLAlchemy sí son el modelo.
 ## 2. Recorrido de demo (5 minutos)
 
 1. `docker compose up --build` → API en `:8000`, Postgres en `:5432`.
-2. Abrir **`http://localhost:8000/demo`** → login con `admin@telecom.com` / `Admin123!`.
-3. En el chat escribir: *"Llevo tres días sin internet y estoy harto, quiero cancelar"*.
-   Señalar las etiquetas que aparecen: `intent: account_query`, `categoría: CNCL`,
-   `sentimiento: negative`, `escalado a humano`, y el motivo del escalamiento.
-   **Ese es el punto fuerte:** tres modelos actuando sobre un solo mensaje.
-4. Mostrar los cuatro paneles de modelos (clasificación, sentimiento, churn, tiempo de resolución).
-5. Ejecutar una tool MCP y enseñar el sobre JSON-RPC con `isError: false`.
-6. Cerrar en `/docs` (Swagger) para mostrar los 25 endpoints documentados.
+2. Abrir **`http://localhost:8000/portal`** → login `cliente@telecom.com` / `Cliente123!`.
+3. Escribir un problema y **no enviarlo todavía**: mientras tecleas aparece
+   *"Detectamos: Problema técnico → se enviará a Soporte Técnico, confianza 91%"*.
+   Cambia el texto a uno de facturación y muestra cómo cambia el equipo destino.
+   **Ese es el mejor momento de la demo: el modelo trabajando en vivo, sin botones.**
+4. Enviar → se crea el ticket con la categoría inferida y aparece el comprobante con
+   el equipo asignado y el **tiempo estimado de respuesta** (red de la Parte 2.2).
+5. En el asistente, escribir algo con frustración → aparece el aviso de derivación a
+   un asesor, con el motivo detectado.
+6. Ir a **`/demo`** para la vista técnica: probabilidades por clase, `is_frustrated`,
+   churn y una tool MCP con su sobre JSON-RPC.
+7. Cerrar en `/docs` (Swagger) mostrando los endpoints documentados.
 
----
+> Si te preguntan "¿esto es solo una demo bonita?": el portal no simula nada, llama a
+> `POST /api/v1/tickets/classify` mientras escribes, `POST /api/v1/tickets` al enviar
+> y `POST /api/v1/ml/predict-resolution-time` para el tiempo estimado. Todo queda en
+> Postgres; `GET /api/v1/tickets?customer_id=N` lo demuestra.
 
 ## 3. Parte 1 — ML con scikit-learn
 
@@ -203,8 +210,9 @@ en el demo.
 
 ## 6. Parte 4 — API REST y MCP
 
-**25 endpoints**: los 24 que pide el enunciado (20 bajo `/api/v1` + 4 de MCP) más
-`predict-resolution-time`.
+**27 endpoints**: los 24 que pide el enunciado (20 bajo `/api/v1` + 4 de MCP) más
+`predict-resolution-time` y `GET /auth/me` (que el portal necesita para saber a qué
+cliente pertenece la sesión: el JWT solo lleva email y rol).
 
 - **Validaciones Pydantic:** email con `EmailStr`; teléfono con regex `^09\d{8,}$`
   (`app/schemas/customer.py`); descripción de ticket `min_length=20, max_length=500`.
@@ -232,7 +240,7 @@ en el demo.
 
 - *¿Por qué Postgres y no SQLite?* Porque el requisito de stored procedure pedía PL/pgSQL
   real. Los tests sí usan SQLite, por velocidad y para no depender de infraestructura.
-- *¿Los tests cubren qué?* 36 tests sobre los endpoints críticos: auth (incluido rechazo de
+- *¿Los tests cubren qué?* 39 tests sobre los endpoints críticos: auth (incluido rechazo de
   refresh token como access), CRUD de clientes con sus validaciones, tickets, los 4 modelos,
   el agente (incluidos 401 y 403 por rol) y MCP.
 - *¿Cómo garantizas que el modelo carga en producción?* `ml_runtime` cachea con `lru_cache`
@@ -302,7 +310,7 @@ la función `_tool_x`, y la entrada en `TOOL_HANDLERS`.
 | agente@telecom.com | Agente123! | agent |
 | cliente@telecom.com | Cliente123! | customer |
 
-**URLs:** `/demo` (UI) · `/docs` (Swagger) · `/` (health) · `/mcp/capabilities`
+**URLs:** `/portal` (cliente) · `/demo` (panel técnico) · `/docs` (Swagger) · `/` (health)
 
 **Métricas para citar de memoria**
 
@@ -315,7 +323,7 @@ la función `_tool_x`, y la entrada en `TOOL_HANDLERS`.
 
 ```bash
 docker compose up --build              # stack completo
-pytest tests/ -v                       # 36 tests
+pytest tests/ -v                       # 39 tests
 python ml_training/train_churn_model.py    # reentrenar
 docker exec -it telecom_support_db psql -U postgres -d telecom_support \
   -c "SELECT * FROM fn_customer_churn_summary(1);"   # demostrar la función SQL

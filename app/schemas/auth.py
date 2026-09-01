@@ -27,3 +27,18 @@ class RegisterRequest(BaseModel):
     password: str = Field(..., min_length=6)
     role: Literal["admin", "agent", "customer"] = "customer"
     customer_id: int | None = None
+
+
+class MeResponse(BaseModel):
+    """Identidad del usuario autenticado.
+
+    El portal la necesita para saber a qué cliente pertenece la sesión: el JWT solo
+    lleva el email y el rol, no el customer_id.
+    """
+
+    email: EmailStr
+    role: Literal["admin", "agent", "customer"]
+    customer_id: int | None = Field(
+        None, description="Cliente asociado a la cuenta, si el usuario es un cliente"
+    )
+    customer_name: str | None = None

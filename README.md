@@ -47,9 +47,9 @@ dl_training/     scripts de entrenamiento TensorFlow/Keras (Parte 2)
 saved_models/    modelos entrenados (.joblib / .keras) + reportes/gráficas
 data/            datasets sintéticos generados (scripts/generate_synthetic_data.py)
 sql/init.sql     DDL + función y stored procedure PL/pgSQL
-static/          demo web servido en /demo (consume la propia API)
+static/          portal del cliente (/portal) y panel técnico (/demo)
 docs/            chuleta de defensa oral para la entrevista
-tests/           pytest (36 tests) con TestClient + SQLite
+tests/           pytest (39 tests) con TestClient + SQLite
 ```
 
 ## 3. Cómo ejecutar
@@ -64,7 +64,8 @@ docker compose up --build
 ```
 
 - API: http://localhost:8000
-- **Demo web interactivo: http://localhost:8000/demo**
+- **Portal del cliente: http://localhost:8000/portal**
+- **Panel técnico de modelos: http://localhost:8000/demo**
 - Swagger UI: http://localhost:8000/docs
 - Postgres queda expuesto en `localhost:5432` (usuario/clave `postgres`/`postgres`, DB `telecom_support`)
 - `sql/init.sql` se ejecuta automáticamente al crear el volumen de Postgres (DDL + función + stored procedure).
@@ -100,7 +101,7 @@ python dl_training/train_resolution_time_model.py
 ### Tests
 
 ```bash
-pytest tests/ -v      # 36 tests, corren contra SQLite en un archivo temporal
+pytest tests/ -v      # 39 tests, corren contra SQLite en un archivo temporal
 ```
 
 ## 4. Credenciales de prueba
@@ -119,7 +120,7 @@ También se crea un cliente demo (`customer_id=1`) asociado al usuario `customer
 
 Todos documentados con ejemplos en Swagger (`/docs`). Resumen:
 
-- **Auth:** `POST /api/v1/auth/login`, `POST /api/v1/auth/refresh`
+- **Auth:** `POST /api/v1/auth/login`, `POST /api/v1/auth/refresh`, `GET /api/v1/auth/me`
 - **Customers:** CRUD completo + `DELETE` lógico + `GET /{id}/churn-prediction`
 - **Tickets:** CRUD + `POST /tickets/classify` (clasificación sin crear ticket)
 - **ML:** `POST /ml/predict-churn`, `POST /ml/classify-ticket`, `POST /ml/analyze-sentiment`, `POST /ml/predict-resolution-time`, `GET /ml/models/info`
@@ -132,6 +133,27 @@ curl -X POST http://localhost:8000/mcp/tools/execute \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","id":"req-1","tool":"classify_ticket","arguments":{"description":"No tengo internet desde ayer"}}'
 ```
+
+## 5.1 Interfaces web
+
+Además de Swagger, la API sirve dos páginas que consumen sus propios endpoints:
+
+**`/portal` — Centro de Ayuda (simulación del producto).** Es la vista del cliente
+final: escribe su problema en lenguaje natural y, mientras teclea, el clasificador
+de tickets detecta la categoría y le dice a qué equipo se derivará
+(*"Detectamos: Consulta de facturación → Facturación, confianza 87%"*). Al enviar,
+se crea el ticket real con la categoría inferida y se le muestra el tiempo estimado
+de respuesta calculado por la red de la Parte 2.2. Incluye el asistente conversacional
+—que avisa cuando deriva a una persona— y el historial de solicitudes del cliente.
+
+**`/demo` — Panel técnico.** Vista para evaluar los modelos: probabilidades por clase,
+sentimiento con su `is_frustrated`, churn con nivel de riesgo, tiempo de resolución y
+ejecución de tools MCP con el sobre JSON-RPC completo.
+
+El portal usa `GET /api/v1/auth/me` para resolver a qué cliente pertenece la sesión
+(el JWT solo transporta email y rol). La clasificación en vivo va con *debounce* de
+450 ms para no lanzar una petición por tecla, y si falla no bloquea el envío: es una
+ayuda, no un requisito.
 
 ## 6. Resultados de los modelos
 
