@@ -17,6 +17,14 @@ class TokenResponse(BaseModel):
     expires_in: int = Field(..., description="Segundos de validez del access token")
     role: str
 
+    model_config = {"json_schema_extra": {"examples": [{
+        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+        "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+        "token_type": "bearer",
+        "expires_in": 1800,
+        "role": "admin",
+    }]}}
+
 
 class RefreshRequest(BaseModel):
     refresh_token: str

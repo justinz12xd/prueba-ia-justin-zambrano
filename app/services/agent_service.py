@@ -1,11 +1,13 @@
 """Orquesta el agente LangGraph: reconstruye el estado desde la sesión persistida
-en BD, invoca el grafo y guarda los nuevos mensajes."""
+en BD, invoca el grafo, guarda los mensajes nuevos y —cuando la conversación quedó
+ligada a un ticket— registra la interacción en la tabla `interaction` del esquema."""
 from __future__ import annotations
 
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.agent.graph import get_compiled_graph
+from app.models.interaction import Interaction
 from app.repositories.agent_session_repository import AgentSessionRepository
 from app.schemas.agent import ChatRequest, ChatResponse, ChatTicket, SessionResponse
 
@@ -41,6 +43,20 @@ class AgentService:
 
         context = result.get("context") or {}
         ticket_data = context.get("ticket")
+
+        # La tabla `interaction` del esquema guarda el par mensaje/respuesta con el
+        # sentimiento detectado y el tiempo estimado. Solo tiene sentido cuando la
+        # conversación derivó en un ticket, porque interaction.ticket_id es obligatorio.
+        if ticket_data:
+            self.db.add(Interaction(
+                ticket_id=ticket_data["ticket_id"],
+                customer_msg=data.message,
+                agent_response=assistant_message["content"],
+                sentiment=context.get("sentiment"),
+                resolution_time=ticket_data.get("estimated_hours"),
+            ))
+            self.db.commit()
+
         return ChatResponse(
             session_id=session.session_id,
             response=result.get("response", ""),

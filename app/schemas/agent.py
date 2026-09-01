@@ -34,6 +34,22 @@ class ChatResponse(BaseModel):
     )
     customer_context: dict | None = None
 
+    model_config = {"json_schema_extra": {"examples": [{
+        "session_id": "9a9a3bfa-2c96-4557-8ca4-26467fa800e1",
+        "response": "Lamento el inconveniente técnico. Un especialista revisará tu "
+                    "conexión. Quedó registrada como la solicitud #12.",
+        "intent": "technical_support",
+        "escalate": False,
+        "ticket": {
+            "ticket_id": 12, "category": "TECH", "priority": "medium",
+            "status": "open", "is_new": True, "estimated_hours": 11.6,
+        },
+        "customer_context": {
+            "predicted_category": "TECH", "sentiment": "negative",
+            "is_frustrated": False, "churn_risk": "low",
+        },
+    }]}}
+
 
 class SessionMessage(BaseModel):
     role: str

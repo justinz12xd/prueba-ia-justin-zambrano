@@ -4,6 +4,7 @@ from __future__ import annotations
 import datetime as dt
 
 from fastapi import HTTPException, status
+from sqlalchemy import func, select, text
 from sqlalchemy.orm import Session
 
 from app.ml_runtime import churn_model
@@ -43,13 +44,42 @@ class CustomerService:
         customer = self.get_customer_or_404(customer_id)
         return self.repo.soft_delete(customer)
 
+    def ticket_stats(self, customer_id: int) -> tuple[int, float]:
+        """Nº de tickets sin resolver y satisfacción promedio real del cliente.
+
+        En PostgreSQL se resuelve con la función `fn_customer_churn_summary` de
+        `sql/init.sql` (una sola llamada). En SQLite —que es lo que usan los tests—
+        esa función PL/pgSQL no existe, así que se calcula el equivalente con el ORM.
+        """
+        if self.db.bind is not None and self.db.bind.dialect.name == "postgresql":
+            row = self.db.execute(
+                text("SELECT open_tickets, avg_satisfaction "
+                     "FROM fn_customer_churn_summary(:customer_id)"),
+                {"customer_id": customer_id},
+            ).mappings().first()
+            if row is not None:
+                avg = row["avg_satisfaction"]
+                return int(row["open_tickets"] or 0), float(avg) if avg is not None else 3.5
+
+        # El fallback debe devolver exactamente lo mismo que la función SQL: tickets
+        # SIN RESOLVER (el enunciado define num_tickets como "cantidad de tickets
+        # abiertos") y la satisfacción promedio sobre todos los tickets del cliente.
+        num_tickets = self.db.execute(
+            select(func.count(Ticket.ticket_id)).where(
+                Ticket.customer_id == customer_id,
+                Ticket.is_active.is_(True),
+                Ticket.status.notin_(("resolved", "closed")),
+            )
+        ).scalar_one()
+        avg_satisfaction = self.db.execute(
+            select(func.avg(Ticket.satisfaction)).where(
+                Ticket.customer_id == customer_id, Ticket.is_active.is_(True))
+        ).scalar_one()
+        return int(num_tickets or 0), float(avg_satisfaction) if avg_satisfaction is not None else 3.5
+
     def predict_churn_for_customer(self, customer_id: int) -> ChurnPredictionResponse:
         customer = self.get_customer_or_404(customer_id)
-        num_tickets = (
-            self.db.query(Ticket)
-            .filter(Ticket.customer_id == customer_id, Ticket.is_active.is_(True))
-            .count()
-        )
+        num_tickets, avg_satisfaction = self.ticket_stats(customer_id)
         features = {
             "tenure_months": customer.tenure_months,
             "monthly_charge": customer.monthly_charge,
@@ -57,7 +87,7 @@ class CustomerService:
             "contract_type": customer.contract_type,
             "payment_method": customer.payment_method,
             "num_tickets": num_tickets,
-            "avg_satisfaction": 3.5,
+            "avg_satisfaction": avg_satisfaction,
         }
         prob, risk = churn_model.predict_churn(features)
 

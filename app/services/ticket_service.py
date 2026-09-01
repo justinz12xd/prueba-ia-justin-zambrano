@@ -57,14 +57,18 @@ class TicketService:
                 pass
             if ticket.customer is not None:
                 try:
+                    from app.services.customer_service import CustomerService
+
+                    num_tickets, avg_satisfaction = CustomerService(self.db).ticket_stats(
+                        ticket.customer_id)
                     prob, risk = churn_model.predict_churn({
                         "tenure_months": ticket.customer.tenure_months,
                         "monthly_charge": ticket.customer.monthly_charge,
                         "total_charges": ticket.customer.total_charges,
                         "contract_type": ticket.customer.contract_type,
                         "payment_method": ticket.customer.payment_method,
-                        "num_tickets": len(ticket.customer.tickets or []),
-                        "avg_satisfaction": 3.5,
+                        "num_tickets": num_tickets,
+                        "avg_satisfaction": avg_satisfaction,
                     })
                     item.churn_probability, item.churn_risk = round(prob, 4), risk
                 except Exception:  # noqa: BLE001

@@ -22,6 +22,7 @@ def predict_churn(data: ChurnFeaturesInput) -> ChurnPredictionOutput:
 
 
 @router.post("/classify-ticket", response_model=TicketClassifyResponse,
+            description="Igual que /tickets/classify, expuesto bajo /ml para consumir el modelo de forma independiente del recurso ticket. Devuelve la categoría y la probabilidad de cada clase.",
              summary="Clasificar ticket (alias ML)",
              dependencies=[Depends(require_roles("admin", "agent", "customer"))])
 def classify_ticket(data: TicketClassifyRequest) -> TicketClassifyResponse:
@@ -29,6 +30,7 @@ def classify_ticket(data: TicketClassifyRequest) -> TicketClassifyResponse:
 
 
 @router.post("/analyze-sentiment", response_model=SentimentResponse,
+            description="Clasifica un texto como positive/neutral/negative con la red LSTM. El campo is_frustrated (negative con confianza > 0.6) es la señal que el agente usa para escalar.",
              summary="Analizar sentimiento de un texto",
              dependencies=[Depends(require_roles("admin", "agent"))])
 def analyze_sentiment(data: SentimentRequest) -> SentimentResponse:

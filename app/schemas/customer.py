@@ -65,7 +65,24 @@ class CustomerResponse(CustomerBase):
     is_active: bool
     created_at: dt.datetime
 
-    model_config = {"from_attributes": True}
+    model_config = {
+        "from_attributes": True,
+        "json_schema_extra": {"examples": [{
+        "customer_id": 1,
+        "name": "María Pérez",
+        "email": "maria.perez@example.com",
+        "phone": "0991234567",
+        "plan_type": "Fibra 200MB",
+        "monthly_charge": 35.5,
+        "tenure_months": 18,
+        "total_charges": 639.0,
+        "contract_type": "month-to-month",
+        "payment_method": "credit_card",
+        "churn_status": 0,
+        "is_active": True,
+        "created_at": "2026-03-14T10:25:00Z",
+    }]},
+    }
 
 
 class ChurnPredictionResponse(BaseModel):
@@ -74,3 +91,11 @@ class ChurnPredictionResponse(BaseModel):
     risk_level: Literal["low", "medium", "high"]
     model_version: str
     generated_at: dt.datetime
+
+    model_config = {"json_schema_extra": {"examples": [{
+        "customer_id": 1,
+        "churn_probability": 0.6831,
+        "risk_level": "high",
+        "model_version": "1.0.0",
+        "generated_at": "2026-08-31T18:40:12Z",
+    }]}}

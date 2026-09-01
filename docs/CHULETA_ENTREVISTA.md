@@ -46,7 +46,7 @@ dl_training/       Parte 2 — TensorFlow/Keras
 saved_models/      artefactos entrenados + reportes JSON + gráficas
 sql/init.sql       DDL + 1 función + 1 stored procedure PL/pgSQL
 static/            portal del cliente (/portal) y panel técnico (/demo)
-tests/             44 tests (pytest + TestClient + SQLite)
+tests/             46 tests (pytest + TestClient + SQLite)
 ```
 
 **La frase para explicar la arquitectura en una línea:**
@@ -229,7 +229,11 @@ de la sesión: el JWT solo lleva email y rol) y `GET /tickets/queue` (la bandeja
   por defecto (`app/repositories/customer_repository.py:56`).
 - **SQL:** `sql/init.sql` con la función `fn_customer_churn_summary(customer_id)` y el
   procedure `sp_refresh_category_avg_resolution()`. Se cargan solos al crear el volumen de
-  Postgres en docker-compose.
+  Postgres en docker-compose. **La función no es decorativa**: `CustomerService.ticket_stats()`
+  la llama cuando el motor es PostgreSQL (con fallback ORM en SQLite para los tests) y de
+  ahí salen los tickets abiertos y la satisfacción promedio que alimentan el churn.
+  *Demostrable en vivo:* `SELECT * FROM fn_customer_churn_summary(1);` en psql devuelve lo
+  mismo que usa el endpoint.
 
 **MCP:** `GET /mcp/capabilities`, `GET /mcp/resources`, `GET /mcp/resources/{id}`,
 `POST /mcp/tools/execute`, con las 5 tools pedidas + `predict_resolution_time`.
@@ -244,7 +248,7 @@ de la sesión: el JWT solo lleva email y rol) y `GET /tickets/queue` (la bandeja
 
 - *¿Por qué Postgres y no SQLite?* Porque el requisito de stored procedure pedía PL/pgSQL
   real. Los tests sí usan SQLite, por velocidad y para no depender de infraestructura.
-- *¿Los tests cubren qué?* 44 tests sobre los endpoints críticos: auth (incluido rechazo de
+- *¿Los tests cubren qué?* 46 tests sobre los endpoints críticos: auth (incluido rechazo de
   refresh token como access), CRUD de clientes con sus validaciones, tickets, los 4 modelos,
   el agente (incluidos 401 y 403 por rol) y MCP.
 - *¿Cómo garantizas que el modelo carga en producción?* `ml_runtime` cachea con `lru_cache`
@@ -265,10 +269,9 @@ Reconocer un límite con la solución al lado suma; que te lo descubran, resta.
    Por eso la bandeja solo muestra la etiqueta cuando `is_frustrated` es verdadero:
    **prefiero no mostrar nada antes que mostrar un dato engañoso.** Si preguntan por
    criterio de producto, esta es una buena respuesta.
-2. **`avg_satisfaction` está fijo en 3.5** al predecir churn de un cliente concreto
-   (`app/services/customer_service.py:60`), pese a ser la 2ª feature más importante. La
-   función SQL `fn_customer_churn_summary` ya calcula el promedio real: cablearla es el
-   siguiente paso natural. **Buena respuesta si preguntan "¿qué mejorarías?"**.
+2. **El dataset no tiene histórico temporal**: el churn se predice con una foto del
+   cliente, no con su evolución. Con datos reales usaría ventanas (tickets del último
+   trimestre, variación del consumo) en vez de acumulados.
 3. **El `config` de LangGraph no llegaba a los nodos** hasta que lo detecté al implementar
    la apertura de tickets: la firma `config: RunnableConfig | None = None` hace que
    LangGraph **no** inyecte el config (lo decide inspeccionando la firma). El síntoma era
@@ -338,7 +341,7 @@ la función `_tool_x`, y la entrada en `TOOL_HANDLERS`.
 
 ```bash
 docker compose up --build              # stack completo
-pytest tests/ -v                       # 44 tests
+pytest tests/ -v                       # 46 tests
 python ml_training/train_churn_model.py    # reentrenar
 docker exec -it telecom_support_db psql -U postgres -d telecom_support \
   -c "SELECT * FROM fn_customer_churn_summary(1);"   # demostrar la función SQL

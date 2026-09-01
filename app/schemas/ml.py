@@ -21,6 +21,8 @@ class ChurnPredictionOutput(BaseModel):
     risk_level: Literal["low", "medium", "high"]
     model_version: str
 
+    model_config = {"json_schema_extra": {"examples": [{"churn_probability": 0.6831, "risk_level": "high", "model_version": "1.0.0"}]}}
+
 
 class SentimentRequest(BaseModel):
     text: str = Field(..., min_length=3, examples=["Estoy muy molesto con el servicio"])
@@ -32,6 +34,12 @@ class SentimentResponse(BaseModel):
     is_frustrated: bool = Field(
         ..., description="True si sentiment == negative con alta confianza (usado para escalar)"
     )
+
+    model_config = {"json_schema_extra": {"examples": [{
+        "sentiment": "negative",
+        "probabilities": {"negative": 0.9999, "neutral": 0.0001, "positive": 0.0},
+        "is_frustrated": True,
+    }]}}
 
 
 class ResolutionTimeRequest(BaseModel):

@@ -139,16 +139,21 @@ def get_customer_info(state: AgentState, config: RunnableConfig) -> AgentState:
         context["tenure_months"] = customer.tenure_months
         context["contract_type"] = customer.contract_type
 
-        # Churn de alto riesgo -> se usa luego en check_escalation
+        # Churn de alto riesgo -> se usa luego en check_escalation.
+        # Los tickets y la satisfacción salen de CustomerService.ticket_stats, que en
+        # PostgreSQL resuelve con la función SQL fn_customer_churn_summary.
         try:
+            from app.services.customer_service import CustomerService
+
+            num_tickets, avg_satisfaction = CustomerService(db).ticket_stats(customer_id)
             prob, risk = churn_model.predict_churn({
                 "tenure_months": customer.tenure_months,
                 "monthly_charge": customer.monthly_charge,
                 "total_charges": customer.total_charges,
                 "contract_type": customer.contract_type,
                 "payment_method": customer.payment_method,
-                "num_tickets": len(customer.tickets or []),
-                "avg_satisfaction": 3.5,
+                "num_tickets": num_tickets,
+                "avg_satisfaction": avg_satisfaction,
             })
             context["churn_probability"] = prob
             context["churn_risk"] = risk

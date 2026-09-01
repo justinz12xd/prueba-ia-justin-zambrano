@@ -67,3 +67,40 @@ def test_churn_prediction_endpoint(client, auth_headers):
     body = resp.json()
     assert 0.0 <= body["churn_probability"] <= 1.0
     assert body["risk_level"] in {"low", "medium", "high"}
+
+
+def test_ticket_stats_counts_open_and_averages_satisfaction(client, auth_headers):
+    """num_tickets cuenta solo los tickets SIN RESOLVER (como pide el enunciado) y
+    avg_satisfaction sale de los tickets calificados, no de un valor fijo."""
+    from app.core.database import SessionLocal
+    from app.services.customer_service import CustomerService
+
+    # Cliente nuevo y aislado, para no depender del estado que dejan otros tests.
+    customer = client.post("/api/v1/customers", json={
+        "name": "Stats Test", "email": "stats.test@example.com", "phone": "0995550001",
+        "plan_type": "Fibra 100MB", "monthly_charge": 30.0,
+    }, headers=auth_headers).json()
+    cid = customer["customer_id"]
+
+    db = SessionLocal()
+    try:
+        assert CustomerService(db).ticket_stats(cid) == (0, 3.5)  # sin tickets -> por defecto
+
+        resuelto = client.post("/api/v1/tickets", json={
+            "customer_id": cid, "priority": "low",
+            "description": "Consulta general sobre el estado de mi servicio contratado",
+        }, headers=auth_headers).json()
+        client.put(f"/api/v1/tickets/{resuelto['ticket_id']}",
+                   json={"status": "resolved", "satisfaction": 1}, headers=auth_headers)
+
+        client.post("/api/v1/tickets", json={
+            "customer_id": cid, "priority": "high",
+            "description": "No tengo internet desde ayer y el modem parpadea en rojo",
+        }, headers=auth_headers)
+
+        db.expire_all()
+        num_tickets, avg = CustomerService(db).ticket_stats(cid)
+        assert num_tickets == 1, "el ticket resuelto no debe contar como abierto"
+        assert avg == 1.0, "la satisfacción promedio debe salir del ticket calificado"
+    finally:
+        db.close()

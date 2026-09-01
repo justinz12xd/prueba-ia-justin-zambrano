@@ -112,18 +112,21 @@ RESOURCE_DESCRIPTORS = [
 
 
 @router.get("/capabilities", response_model=MCPCapabilitiesResponse,
+            description="Describe el servidor MCP: nombre, versión, herramientas disponibles con su JSON Schema de entrada, y recursos publicados.",
             summary="Capacidades del servidor MCP")
 def capabilities() -> MCPCapabilitiesResponse:
     return MCPCapabilitiesResponse(tools=TOOL_DESCRIPTORS, resources=RESOURCE_DESCRIPTORS)
 
 
 @router.get("/resources", response_model=list[MCPResourceDescriptor],
+            description="Lista los recursos de solo lectura que otros agentes pueden consultar.",
             summary="Lista recursos disponibles")
 def list_resources() -> list[MCPResourceDescriptor]:
     return RESOURCE_DESCRIPTORS
 
 
 @router.get("/resources/{resource_id}", response_model=MCPResponse,
+            description="Devuelve un recurso concreto dentro del sobre JSON-RPC 2.0. Un id inexistente se reporta con isError=true, no con un código HTTP de error.",
             summary="Obtiene un recurso específico")
 def get_resource(resource_id: str) -> MCPResponse:
     if resource_id == "ticket_categories":
@@ -219,7 +222,12 @@ TOOL_HANDLERS = {
 }
 
 
-@router.post("/tools/execute", response_model=MCPResponse, summary="Ejecuta una herramienta MCP")
+@router.post("/tools/execute", response_model=MCPResponse,
+             summary="Ejecuta una herramienta MCP",
+             description="Ejecuta una de las tools declaradas en /mcp/capabilities y devuelve "
+                         "el resultado dentro del sobre JSON-RPC 2.0. Los errores de ejecución "
+                         "viajan con HTTP 200 e isError=true, siguiendo el protocolo: el error "
+                         "es parte del resultado, no un fallo de transporte.")
 def execute_tool(request: ToolExecuteRequest, db: Session = Depends(get_db)) -> MCPResponse:
     handler = TOOL_HANDLERS.get(request.tool)
     if handler is None:

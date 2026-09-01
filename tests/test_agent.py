@@ -109,3 +109,26 @@ def test_greeting_does_not_open_ticket(client, auth_headers):
                                                     "customer_id": 1}, headers=auth_headers)
     assert resp.status_code == 200
     assert resp.json()["ticket"] is None
+
+
+def test_chat_persists_interaction_row(client, auth_headers):
+    """La tabla `interaction` del esquema se alimenta con cada turno ligado a un ticket."""
+    from app.core.database import SessionLocal
+    from app.models.interaction import Interaction
+
+    resp = client.post("/api/v1/agent/chat", json={
+        "message": "Me cobraron dos veces el mismo mes y necesito que lo revisen",
+        "customer_id": 1,
+    }, headers=auth_headers)
+    ticket_id = resp.json()["ticket"]["ticket_id"]
+
+    db = SessionLocal()
+    try:
+        rows = db.query(Interaction).filter(Interaction.ticket_id == ticket_id).all()
+        assert rows, "debería haberse registrado la interacción"
+        row = rows[-1]
+        assert row.customer_msg
+        assert row.agent_response
+        assert row.sentiment in {"positive", "neutral", "negative", None}
+    finally:
+        db.close()

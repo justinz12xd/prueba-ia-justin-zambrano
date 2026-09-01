@@ -43,7 +43,21 @@ class TicketResponse(TicketBase):
     created_at: dt.datetime
     resolved_at: dt.datetime | None = None
 
-    model_config = {"from_attributes": True}
+    model_config = {
+        "from_attributes": True,
+        "json_schema_extra": {"examples": [{
+        "ticket_id": 12,
+        "customer_id": 1,
+        "description": "El internet se corta cada media hora desde el lunes",
+        "category": "TECH",
+        "priority": "high",
+        "status": "open",
+        "satisfaction": None,
+        "is_active": True,
+        "created_at": "2026-08-31T18:35:00Z",
+        "resolved_at": None,
+    }]},
+    }
 
 
 class TicketClassifyRequest(BaseModel):
@@ -53,6 +67,14 @@ class TicketClassifyRequest(BaseModel):
 class TicketClassifyResponse(BaseModel):
     predicted_category: TicketCategoryLiteral
     probabilities: dict[str, float]
+
+    model_config = {"json_schema_extra": {"examples": [{
+        "predicted_category": "TECH",
+        "probabilities": {
+            "TECH": 0.8087, "PLAN": 0.0593, "BILL": 0.0448,
+            "CNCL": 0.0444, "OTHR": 0.0427,
+        },
+    }]}}
 
 
 class TicketQueueItem(BaseModel):

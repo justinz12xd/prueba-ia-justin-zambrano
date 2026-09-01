@@ -49,7 +49,7 @@ data/            datasets sintéticos generados (scripts/generate_synthetic_data
 sql/init.sql     DDL + función y stored procedure PL/pgSQL
 static/          portal del cliente (/portal) y panel técnico (/demo)
 docs/            chuleta de defensa oral para la entrevista
-tests/           pytest (44 tests) con TestClient + SQLite
+tests/           pytest (46 tests) con TestClient + SQLite
 ```
 
 ## 3. Cómo ejecutar
@@ -101,7 +101,7 @@ python dl_training/train_resolution_time_model.py
 ### Tests
 
 ```bash
-pytest tests/ -v      # 44 tests, corren contra SQLite en un archivo temporal
+pytest tests/ -v      # 46 tests, corren contra SQLite en un archivo temporal
 ```
 
 ## 4. Credenciales de prueba
@@ -225,6 +225,15 @@ Gráficas y reportes completos en `saved_models/ml/*.png|json` y `saved_models/d
   agente LangGraph consumen los mismos wrappers de carga/predicción (`joblib`/
   `tf.keras.models.load_model`, cacheados con `lru_cache`), evitando cargar los
   modelos más de una vez por proceso y evitando duplicar lógica de inferencia.
+- **La función SQL se consume desde la aplicación, no solo se entrega:**
+  `CustomerService.ticket_stats()` llama a `fn_customer_churn_summary` cuando el motor es
+  PostgreSQL, y cae a una consulta ORM equivalente en SQLite (los tests). De ahí salen el
+  número de tickets abiertos y la satisfacción promedio **reales** que alimentan el modelo
+  de churn; antes `avg_satisfaction` iba fija en 3.5 pese a ser la 2ª feature más
+  importante. Los dos caminos devuelven lo mismo, verificado contra ambos motores.
+- **La tabla `interaction` del esquema se alimenta desde el agente:** cada turno que queda
+  ligado a un ticket registra `customer_msg`, `agent_response`, el `sentiment` detectado y
+  el tiempo estimado. Sin esto la tabla del enunciado existía pero quedaba siempre vacía.
 - **MCP con envoltura JSON-RPC en `result.content[].data`:** se siguió literalmente
   el formato de respuesta del enunciado; los errores de ejecución de una tool se
   devuelven con HTTP 200 e `isError:true` (igual que el protocolo MCP real: el

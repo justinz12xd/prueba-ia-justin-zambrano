@@ -13,6 +13,7 @@ router = APIRouter(prefix="/api/v1/tickets", tags=["Tickets"])
 
 
 @router.get("", response_model=list[TicketResponse], summary="Listar tickets",
+            description="Lista los tickets activos. Con el parámetro customer_id se filtran los de un cliente concreto.",
             dependencies=[Depends(require_roles("admin", "agent", "customer"))])
 def list_tickets(skip: int = Query(0, ge=0), limit: int = Query(50, ge=1, le=200),
                   customer_id: int | None = None,
@@ -33,6 +34,7 @@ def tickets_queue(limit: int = Query(20, ge=1, le=50), only_open: bool = True,
 
 
 @router.get("/{ticket_id}", response_model=TicketResponse, summary="Obtener un ticket",
+            description="Obtiene un ticket por su identificador. Retorna 404 si no existe o fue eliminado lógicamente.",
             dependencies=[Depends(require_roles("admin", "agent", "customer"))])
 def get_ticket(ticket_id: int, db: Session = Depends(get_db)) -> TicketResponse:
     return TicketService(db).get_ticket_or_404(ticket_id)
@@ -48,6 +50,7 @@ def create_ticket(data: TicketCreate, db: Session = Depends(get_db)) -> TicketRe
 
 
 @router.put("/{ticket_id}", response_model=TicketResponse, summary="Actualizar ticket",
+            description="Actualiza el estado, la prioridad, la categoría o la satisfacción. Al pasar a resolved/closed se registra automáticamente resolved_at.",
             dependencies=[Depends(require_roles("admin", "agent"))])
 def update_ticket(ticket_id: int, data: TicketUpdate,
                    db: Session = Depends(get_db)) -> TicketResponse:
