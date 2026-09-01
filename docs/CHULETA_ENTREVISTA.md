@@ -4,6 +4,9 @@
 **Repo:** `prueba-ia-justin-zambrano`
 **Stack:** FastAPI · SQLAlchemy · scikit-learn · TensorFlow/Keras · LangGraph + Gemini · MCP · JWT · Docker
 
+> **¿Te preguntan dónde está algo?** Ve directo a la **sección 12**: mapa de cada
+> requisito del enunciado con archivo y línea.
+>
 > Guion para la entrevista de validación. La prueba avisa que hay que **explicar el código
 > y modificarlo en vivo**, así que la sección 9 (modificaciones en vivo) es la más importante:
 > practícala antes, con el proyecto levantado.
@@ -378,3 +381,172 @@ El README lo dice de frente, así que la respuesta debe ser tranquila y consiste
 Y luego demuéstralo con la sección 8 y con una modificación en vivo. **La defensa no es el
 discurso: es poder tocar el código delante de ellos.** Si no sabes algo, dilo y explica cómo
 lo averiguarías; es mejor que improvisar una explicación falsa sobre tu propio repo.
+
+---
+
+## 12. Mapa: cada requisito del enunciado → dónde está en el código
+
+Tabla de rastreo para la entrevista. Si te preguntan *"¿dónde implementaste X?"*, la
+respuesta está aquí con archivo y línea. Todas las referencias están verificadas contra
+el código actual.
+
+### PARTE 1.1 — Clasificación de tickets
+
+| Lo que pide el enunciado | Dónde está | Qué hace |
+|---|---|---|
+| Preprocesamiento (tokenización, limpieza, vectorización) | `app/ml_runtime/text_preprocessing.py:28` `normalize_text` | Minúsculas, quita acentos y signos, colapsa espacios. Vive en un módulo compartido porque joblib lo serializa dentro del vectorizador |
+| Stopwords en español | `app/ml_runtime/text_preprocessing.py:15` | Lista propia, evita depender de NLTK |
+| **2 modelos diferentes y comparación** | `ml_training/train_ticket_classifier.py:54` `build_pipelines` | LogisticRegression vs LinearSVC calibrado; se elige el de mejor F1-macro en test |
+| Calibración para tener probabilidades | `ml_training/train_ticket_classifier.py:71` | `CalibratedClassifierCV`, porque LinearSVC no tiene `predict_proba` |
+| **Pipeline con `sklearn.pipeline.Pipeline`** | `ml_training/train_ticket_classifier.py:54-77` | TF-IDF (1-2 gramas, min_df=2, 5000 features) + clasificador |
+| **Validación cruzada con 5 folds** | `ml_training/train_ticket_classifier.py:87,93` | `StratifiedKFold(n_splits=5)` + `cross_val_score` con F1-macro |
+| Accuracy, precision, recall, F1 **por categoría** | `ml_training/train_ticket_classifier.py:97` | `classification_report(output_dict=True)` → JSON del reporte |
+| **Matriz de confusión** | `ml_training/train_ticket_classifier.py:122` | PNG en `saved_models/ml/confusion_matrix_tickets.png` |
+| **Guardar con joblib** | `ml_training/train_ticket_classifier.py:131` | `saved_models/ml/ticket_classifier.joblib` |
+| Validación: **mínimo 10 caracteres** | `app/ml_runtime/text_preprocessing.py:38` + `app/schemas/ticket.py:50` | Se valida en el modelo *y* en el schema Pydantic; la API responde 422 |
+| Texto en español con tildes | `app/ml_runtime/text_preprocessing.py:28` | El normalizador quita acentos, así que "señal"/"senal" caen en el mismo token |
+| **Retornar categoría y probabilidad de cada clase** | `app/ml_runtime/ticket_classifier.py:42-47` `classify_ticket` | Devuelve `(categoría, {clase: probabilidad})` |
+| Probarlo a mano | `scripts/probar_clasificador.py` | 4 modos: batería de frases nuevas, frase suelta, interactivo, dataset completo |
+
+### PARTE 1.2 — Predicción de churn
+
+| Lo que pide el enunciado | Dónde está | Qué hace |
+|---|---|---|
+| **Análisis exploratorio** (distribución de churn, correlaciones) | `ml_training/train_churn_model.py:63` `run_eda` | Distribución de clases, correlación de cada feature con el target, conteo de nulos. Queda en el JSON del reporte |
+| **Manejo de valores nulos** | `ml_training/train_churn_model.py:89-96` | `SimpleImputer` mediana (numéricas) y moda (categóricas), dentro del `ColumnTransformer` |
+| **Datos desbalanceados** | `ml_training/train_churn_model.py:100-103` | `class_weight="balanced"` sobre un 90/10, sin resampling externo |
+| **≥2 features derivados** | `ml_training/train_churn_model.py:53` `engineer_features` | `charge_per_tenure` (cargo por mes de antigüedad) y `tickets_per_tenure` (densidad de incidencias) |
+| Modelo de clasificación con probabilidades | `ml_training/train_churn_model.py:100-118` | RandomForest vs GradientBoosting, se elige por AUC-ROC; `predict_proba` |
+| **AUC-ROC** | `ml_training/train_churn_model.py:114` | `roc_auc_score`, además de `average_precision_score` |
+| **Curva precision-recall** | `ml_training/train_churn_model.py:130` | PNG en `saved_models/ml/churn_roc_pr_curves.png` |
+| **Explicabilidad: feature importance** | `ml_training/train_churn_model.py:143` | Gráfica ordenada + ranking en el JSON |
+| **Guardar modelo y preprocesador** | `ml_training/train_churn_model.py:153` | Un solo `.joblib`: el `Pipeline` incluye el `ColumnTransformer`, así no pueden desincronizarse |
+| Features del cliente en tiempo real | `app/services/customer_service.py:47` `ticket_stats` | Tickets abiertos y satisfacción promedio reales (vía función SQL en Postgres) |
+
+### PARTE 2.1 — Red de sentimiento
+
+| Lo que pide el enunciado | Dónde está | Qué hace |
+|---|---|---|
+| **Capa de Embedding** | `dl_training/train_sentiment_model.py:82` | `Embedding(vocab, 64, mask_zero=True)`; la máscara evita que el padding contamine la LSTM |
+| **Capa LSTM o GRU** | `dl_training/train_sentiment_model.py:83` | `LSTM(64, dropout=0.2, recurrent_dropout=0.2)` |
+| **Dense con Dropout** | `dl_training/train_sentiment_model.py:84-85` | `Dense(32, relu)` + `Dropout(0.4)` |
+| **Salida con activación apropiada** | `dl_training/train_sentiment_model.py:86` | `Dense(3, softmax)` para 3 clases |
+| **Tokenizer de tf.keras** | `dl_training/train_sentiment_model.py:67` | `Tokenizer(num_words=10000, oov_token="<OOV>")` |
+| **Padding de secuencias** | `dl_training/train_sentiment_model.py:72` | `pad_sequences(maxlen=200, padding="post")` |
+| **Vocabulario máximo 10.000** | `dl_training/train_sentiment_model.py:45` | `MAX_VOCAB = 10_000` |
+| **Longitud máxima 200** | `dl_training/train_sentiment_model.py:46` | `MAX_LEN = 200` |
+| **EarlyStopping (patience=3)** | `dl_training/train_sentiment_model.py:98` | Con `restore_best_weights=True` |
+| **ModelCheckpoint** | `dl_training/train_sentiment_model.py:99` | `save_best_only=True` → `sentiment_model_best.keras` |
+| **ReduceLROnPlateau** | `dl_training/train_sentiment_model.py:100` | Factor 0.5, patience 2 |
+| **Curvas de entrenamiento (loss y accuracy)** | `dl_training/train_sentiment_model.py:133` | `sentiment_training_curves.png` |
+| **Matriz de confusión en test** | `dl_training/train_sentiment_model.py:139` | `sentiment_confusion_matrix.png` |
+| **Exportar en .keras** | `dl_training/train_sentiment_model.py:147` | `saved_models/dl/sentiment_model.keras` |
+| Inferencia desde la API | `app/ml_runtime/sentiment_model.py` | Expone `analyze_sentiment` → `(etiqueta, probabilidades, is_frustrated)` |
+
+### PARTE 2.2 — Tiempo de resolución
+
+| Lo que pide el enunciado | Dónde está | Qué hace |
+|---|---|---|
+| **Red neuronal para regresión** | `dl_training/train_resolution_time_model.py:108` | `Dense(1, activation="linear")`, pérdida MSE |
+| Input: **descripción (embeddings)** | `dl_training/train_resolution_time_model.py:94-97` | Embedding + `GlobalAveragePooling1D` + Dense |
+| Input: **categoría one-hot** | `dl_training/train_resolution_time_model.py:60,99` | Helper `one_hot` + `Input(shape=(5,))` |
+| Input: **prioridad** | `dl_training/train_resolution_time_model.py:100` | One-hot de 3 niveles |
+| Input: **hora del día y día de la semana** | `dl_training/train_resolution_time_model.py:55,101-102` | `cyclical_encode` (sin/cos): la hora 23 y la 0 quedan contiguas |
+| **Manejar inputs mixtos** | `dl_training/train_resolution_time_model.py:104` | API funcional con `Concatenate` de las 5 ramas |
+| **MAE, RMSE, R²** | `dl_training/train_resolution_time_model.py:138-140` | Las tres al JSON del reporte |
+| Exportar el modelo | `dl_training/train_resolution_time_model.py:158` | `.keras` + tokenizer y encoders en `.joblib` |
+| Consumo real | `app/api/v1/ml.py:40` y `app/mcp/router.py` (tool `predict_resolution_time`) | Endpoint REST + tool MCP; se muestra al cliente en el portal |
+
+### PARTE 3.1 — Agente LangGraph
+
+| Lo que pide el enunciado | Dónde está | Qué hace |
+|---|---|---|
+| **State con TypedDict** | `app/agent/state.py:7` | `AgentState(TypedDict, total=False)` |
+| ├ `messages` | `app/agent/state.py:8` | Historial completo de la conversación |
+| ├ `customer_id` (opcional) | `app/agent/state.py:9` | |
+| ├ `intent` | `app/agent/state.py:10` | greeting / farewell / account_query / technical_support / general_info |
+| ├ `context` | `app/agent/state.py:12` | Datos del cliente + señales de los modelos |
+| ├ `escalate` | `app/agent/state.py:13` | |
+| └ `response` | `app/agent/state.py:14` | (+ `error` en la línea 15, añadido para degradar sin romper el grafo) |
+| **Nodo `classify_intent`** | `app/agent/nodes.py:71` | Regex para saludo/despedida; si no, el clasificador ML decide la categoría y de ahí sale la intención. También calcula sentimiento |
+| **Nodo `get_customer_info`** | `app/agent/nodes.py:113` | Lee el cliente de la BD (sesión inyectada por el config) y calcula su riesgo de churn |
+| **Nodo `handle_account_query`** | `app/agent/nodes.py:238` | Marca cancelaciones y registra el ticket |
+| **Nodo `handle_technical_support`** | `app/agent/nodes.py:247` | Registra el ticket técnico |
+| **Nodo `handle_general_info`** | `app/agent/nodes.py:254` | Consultas que no abren ticket |
+| **Nodo `check_escalation`** | `app/agent/nodes.py:264` | Decide escalar y redacta el motivo |
+| **Nodo `generate_response`** | `app/agent/nodes.py:335` | Gemini si hay API key; si no, plantillas |
+| **Edges condicionales según la intención** | `app/agent/graph.py:49,53` | `_route_after_intent` (línea 23) ataja saludos; `_route_by_intent` (línea 29) enruta por intención |
+| **Manejo de errores y estados inválidos** | `app/agent/nodes.py:104,164,232,368` | Cada nodo en `try/except`: el error va a `state["error"]` y se sigue con defaults |
+| **Saludar y despedirse** | `app/agent/nodes.py:35,39` + `TEMPLATE_RESPONSES` | Regex de saludo/despedida que saltan el resto del grafo |
+| **Recordar contexto de la conversación** | `app/services/agent_service.py:20` `chat` | Reconstruye `messages` desde la tabla `agent_session` en cada turno |
+| **Escalar si detecta frustración o no puede resolver** | `app/agent/nodes.py:267` | 4 disparadores: pide humano, frustración, cancelación o churn alto |
+| **Dar información del cliente si se identifica** | `app/agent/nodes.py:113` | Nombre, plan, antigüedad y riesgo al contexto |
+
+### PARTE 3.2 — Integración con los modelos
+
+| Lo que pide el enunciado | Dónde está | Qué hace |
+|---|---|---|
+| **Usar el clasificador para categorizar consultas** | `app/agent/nodes.py:85` | La categoría se mapea a intención con `CATEGORY_TO_INTENT` |
+| **Usar el modelo de sentimiento para detectar frustración** | `app/agent/nodes.py:92` | `is_frustrated` (negativo con confianza > 0.6) alimenta el escalamiento |
+| **Consultar churn para clientes de alto riesgo** | `app/agent/nodes.py:149` | Si el riesgo es alto, se escala aunque el mensaje sea cordial |
+| Extra: tiempo de resolución | `app/agent/nodes.py:219` | Estima la respuesta del ticket que abre el agente |
+
+### PARTE 4.1 — API REST
+
+| Lo que pide el enunciado | Dónde está |
+|---|---|
+| `POST /auth/login` · `POST /auth/refresh` | `app/api/v1/auth.py:14,21` |
+| `GET/POST /customers`, `GET/PUT/DELETE /customers/{id}` | `app/api/v1/customers.py:16,34,26,41,49` |
+| `GET /customers/{id}/churn-prediction` | `app/api/v1/customers.py:57` |
+| `GET/POST /tickets`, `GET/PUT /tickets/{id}` | `app/api/v1/tickets.py:15,43,36,52` |
+| `POST /tickets/classify` | `app/api/v1/tickets.py:60` |
+| `POST /ml/predict-churn` · `classify-ticket` · `analyze-sentiment` · `GET /ml/models/info` | `app/api/v1/ml.py:16,24,32,53` |
+| `POST /agent/chat` · `GET/DELETE /agent/sessions/{id}` | `app/api/v1/agent.py:14,23,32` |
+| *(extra)* `GET /auth/me`, `GET /tickets/queue`, `POST /ml/predict-resolution-time` | `app/api/v1/auth.py:28`, `app/api/v1/tickets.py:24`, `app/api/v1/ml.py:40` |
+
+**Requisitos de la API**
+
+| Lo que pide el enunciado | Dónde está | Qué hace |
+|---|---|---|
+| **Schemas de request y response** | `app/schemas/` | Uno por recurso: auth, customer, ticket, ml, agent, mcp, common |
+| **Validación de email** | `app/schemas/customer.py:16,42` | `EmailStr` de Pydantic |
+| **Teléfono: mínimo 10 dígitos, solo números, empieza con 09** | `app/schemas/customer.py:9,27,53` | Regex `^09\d{8,}$`, validado en creación y actualización |
+| **Descripción de tickets: 20 a 500 caracteres** | `app/schemas/ticket.py:15,29` | `min_length=20, max_length=500` |
+| **JWT con expiración configurable** | `app/core/security.py:42` + `app/core/config.py:31` | `ACCESS_TOKEN_EXPIRE_MINUTES` por entorno |
+| **Refresh tokens** | `app/core/security.py:48` + `app/services/auth_service.py` | El payload lleva `type`, y un refresh no sirve como access |
+| **Roles admin / agent / customer** | `app/core/security.py:18,79` | `require_roles(...)` como dependencia de cada ruta |
+| **Swagger UI habilitado** | `/docs` (FastAPI lo monta solo) | |
+| **Descripción de cada endpoint** | Todos los decoradores `@router.*` | Los 25 tienen `summary` y `description` |
+| **Ejemplos de request/response** | `app/schemas/*.py` | `examples=[...]` en los campos y `json_schema_extra` en los 8 schemas de respuesta |
+| **Respuestas de error estandarizadas** | `app/core/exceptions.py:25` | Todo sale como `{"error": {"code", "message", "details"}}` |
+| **Códigos HTTP apropiados** | `app/core/exceptions.py:10` | Mapa estado → código (401, 403, 404, 409, 422, 503…) |
+| **SQLAlchemy como ORM** | `app/models/` + `app/repositories/` | Modelos declarativos 2.0 y patrón Repository |
+| **PostgreSQL o SQLite** | `docker-compose.yml` (Postgres) / `tests/conftest.py` (SQLite) | |
+| **Al menos 1 stored procedure o función SQL** | `sql/init.sql:100` y `:140` | `fn_customer_churn_summary(id)` y `sp_refresh_category_avg_resolution()` |
+| *(y se consume de verdad)* | `app/services/customer_service.py:47,57` | En Postgres llama a la función; en SQLite cae a una consulta ORM equivalente |
+
+### PARTE 4.2 — Protocolo MCP
+
+| Lo que pide el enunciado | Dónde está | Qué hace |
+|---|---|---|
+| `GET /mcp/capabilities` | `app/mcp/router.py:114` | Nombre, versión, tools con su JSON Schema, recursos |
+| `POST /mcp/tools/execute` | `app/mcp/router.py:225` | Despacha por nombre de tool |
+| `GET /mcp/resources` | `app/mcp/router.py:121` | |
+| `GET /mcp/resources/{id}` | `app/mcp/router.py:128` | |
+| **Tools: predict_churn, classify_ticket, get_customer_info, create_ticket, chat_with_agent** | `app/mcp/router.py:30` (descriptores) y `:215` (handlers) | Las 5 exigidas + `predict_resolution_time` |
+| **Formato de respuesta JSON-RPC** (`jsonrpc`, `id`, `result.content`, `isError`) | `app/schemas/mcp.py:43,46` | Literal `"2.0"`; los errores de tool viajan con HTTP 200 e `isError=true` |
+
+### Consideraciones y entrega
+
+| Lo que pide el enunciado | Dónde está |
+|---|---|
+| **Arquitectura por capas o DDD** | `api → services → repositories → models`, más `ml_runtime` transversal |
+| **Eliminaciones lógicas** (`is_active` / `deleted_at`) | `app/repositories/customer_repository.py:56`; los listados filtran por `is_active` |
+| **ORM recomendable** | SQLAlchemy 2.0 con `Mapped[...]` |
+| **Dockerizar el backend** | `Dockerfile` + `docker-compose.yml` (API + Postgres con healthcheck) |
+| **Tests básicos de endpoints críticos** | `tests/` — 46 tests: auth, clientes, tickets, ML, agente y MCP |
+| **README.md con instrucciones** | `README.md` |
+| **requirements.txt** | `requirements.txt` |
+| **docker-compose.yml funcional** | `docker-compose.yml` — verificado levantando el stack completo |
+| **Script SQL con stored procedures** | `sql/init.sql` — se carga solo al crear el volumen de Postgres |
+| **Esquema de datos completo** (customer, ticket, interaction, ticket_category, prediction, agent_session) | `app/models/` — las 6 tablas existen y **todas se escriben**: `prediction` en `app/services/customer_service.py:94`, `interaction` en `app/services/agent_service.py:51`, `ticket_category` en `app/core/seed.py:38` |
