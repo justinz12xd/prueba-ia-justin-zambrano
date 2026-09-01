@@ -3,9 +3,11 @@ from __future__ import annotations
 
 import logging
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 import app.models  # noqa: F401  registra todos los modelos en Base.metadata
 from app.api.v1 import agent, auth, customers, ml, tickets
@@ -61,4 +63,12 @@ app.include_router(mcp_router)
 
 @app.get("/", tags=["Health"], summary="Health check")
 def health():
-    return {"status": "ok", "app": settings.APP_NAME, "version": settings.APP_VERSION}
+    return {"status": "ok", "app": settings.APP_NAME, "version": settings.APP_VERSION,
+            "demo": "/demo", "docs": "/docs"}
+
+
+# Demo web (opcional): UI estática que consume la propia API. Se monta solo si la
+# carpeta existe, para que la app arranque igual en entornos que no la copien.
+_STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
+if _STATIC_DIR.is_dir():
+    app.mount("/demo", StaticFiles(directory=_STATIC_DIR, html=True), name="demo")

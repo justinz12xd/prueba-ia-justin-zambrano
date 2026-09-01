@@ -53,6 +53,22 @@ TOOL_DESCRIPTORS = [
                       "required": ["description"]},
     ),
     MCPToolDescriptor(
+        name="predict_resolution_time",
+        description="Estima en horas cuánto tardará en resolverse un ticket (red multi-input "
+                    "de la Parte 2.2). Si no se envían hour_of_day/day_of_week usa los actuales.",
+        input_schema={
+            "type": "object",
+            "properties": {
+                "description": {"type": "string"},
+                "category": {"type": "string", "enum": ["TECH", "BILL", "PLAN", "CNCL", "OTHR"]},
+                "priority": {"type": "string", "enum": ["low", "medium", "high"]},
+                "hour_of_day": {"type": "integer", "minimum": 0, "maximum": 23},
+                "day_of_week": {"type": "integer", "minimum": 0, "maximum": 6},
+            },
+            "required": ["description", "category"],
+        },
+    ),
+    MCPToolDescriptor(
         name="get_customer_info",
         description="Obtiene la información de un cliente por su customer_id.",
         input_schema={"type": "object", "properties": {"customer_id": {"type": "integer"}},
@@ -143,6 +159,20 @@ def _tool_classify_ticket(args: dict, db: Session) -> dict:
     return {"predicted_category": category, "probabilities": probabilities}
 
 
+def _tool_predict_resolution_time(args: dict, db: Session) -> dict:
+    from app.schemas.ml import ResolutionTimeRequest
+    from app.services.ml_service import MLService
+
+    payload = ResolutionTimeRequest(
+        description=args["description"],
+        category=args["category"],
+        priority=args.get("priority", "medium"),
+        hour_of_day=args.get("hour_of_day"),
+        day_of_week=args.get("day_of_week"),
+    )
+    return MLService().predict_resolution_time(payload).model_dump(mode="json")
+
+
 def _tool_get_customer_info(args: dict, db: Session) -> dict:
     from app.services.customer_service import CustomerService
     customer = CustomerService(db).get_customer_or_404(int(args["customer_id"]))
@@ -182,6 +212,7 @@ def _tool_chat_with_agent(args: dict, db: Session) -> dict:
 TOOL_HANDLERS = {
     "predict_churn": _tool_predict_churn,
     "classify_ticket": _tool_classify_ticket,
+    "predict_resolution_time": _tool_predict_resolution_time,
     "get_customer_info": _tool_get_customer_info,
     "create_ticket": _tool_create_ticket,
     "chat_with_agent": _tool_chat_with_agent,

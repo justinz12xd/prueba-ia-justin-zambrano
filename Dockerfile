@@ -19,6 +19,7 @@ RUN pip install -r requirements.txt
 COPY app ./app
 COPY saved_models ./saved_models
 COPY sql ./sql
+COPY static ./static
 
 EXPOSE 8000
 

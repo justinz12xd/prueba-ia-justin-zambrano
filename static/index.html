@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo — Sistema Inteligente de Atención al Cliente</title>
+<style>
+  :root {
+    --bg: #0f1420;
+    --surface: #171d2b;
+    --surface-2: #1e2637;
+    --border: #2a3348;
+    --text: #e6ebf5;
+    --muted: #8d9ab5;
+    --accent: #4f8cff;
+    --accent-soft: #1d2f52;
+    --ok: #34d399;
+    --warn: #fbbf24;
+    --danger: #f87171;
+    --radius: 10px;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  header {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  header h1 { font-size: 17px; margin: 0; font-weight: 600; letter-spacing: -0.01em; }
+  header .sub { color: var(--muted); font-size: 13px; }
+  header .spacer { flex: 1; }
+  header a { color: var(--accent); text-decoration: none; font-size: 13px; }
+  header a:hover { text-decoration: underline; }
+
+  main { max-width: 1180px; margin: 0 auto; padding: 24px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 18px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+  }
+  .card h2 {
+    font-size: 14px; margin: 0 0 4px; font-weight: 600;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card .hint { color: var(--muted); font-size: 12.5px; margin: 0 0 14px; }
+  .card.wide { grid-column: 1 / -1; }
+
+  label { display: block; font-size: 12px; color: var(--muted); margin: 10px 0 4px; }
+  input, select, textarea {
+    width: 100%; padding: 9px 11px; background: var(--bg); color: var(--text);
+    border: 1px solid var(--border); border-radius: 7px; font: inherit;
+  }
+  textarea { resize: vertical; min-height: 68px; }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent-soft); border-color: var(--accent); }
+  .row { display: flex; gap: 10px; }
+  .row > * { flex: 1; }
+
+  button {
+    margin-top: 12px; padding: 9px 16px; border-radius: 7px; border: 1px solid transparent;
+    background: var(--accent); color: #fff; font: inherit; font-weight: 500; cursor: pointer;
+  }
+  button:hover { filter: brightness(1.08); }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  button.ghost { background: transparent; border-color: var(--border); color: var(--muted); }
+
+  pre {
+    background: var(--bg); border: 1px solid var(--border); border-radius: 7px;
+    padding: 11px; font-family: var(--mono); font-size: 12px; margin: 12px 0 0;
+    max-height: 220px; overflow: auto; white-space: pre-wrap; word-break: break-word;
+  }
+  pre:empty { display: none; }
+
+  .badge {
+    display: inline-block; padding: 2px 9px; border-radius: 999px;
+    font-size: 11.5px; font-weight: 600; border: 1px solid var(--border);
+    background: var(--surface-2); color: var(--muted);
+  }
+  .badge.ok { color: var(--ok); border-color: #14532d; background: #052e1a; }
+  .badge.warn { color: var(--warn); border-color: #713f12; background: #2a1c05; }
+  .badge.danger { color: var(--danger); border-color: #7f1d1d; background: #2b0e0e; }
+  .badge.accent { color: var(--accent); border-color: #1e3a6d; background: var(--accent-soft); }
+
+  #chatLog {
+    height: 340px; overflow-y: auto; padding: 14px; background: var(--bg);
+    border: 1px solid var(--border); border-radius: 7px; display: flex;
+    flex-direction: column; gap: 10px;
+  }
+  .msg { max-width: 84%; padding: 9px 13px; border-radius: 12px; font-size: 14px; }
+  .msg.user { align-self: flex-end; background: var(--accent); color: #fff; border-bottom-right-radius: 3px; }
+  .msg.bot { align-self: flex-start; background: var(--surface-2); border-bottom-left-radius: 3px; }
+  .msg.sys { align-self: center; color: var(--muted); font-size: 12px; font-style: italic; }
+  .meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; min-height: 22px; }
+  .chat-input { display: flex; gap: 10px; margin-top: 12px; }
+  .chat-input input { flex: 1; }
+  .chat-input button { margin-top: 0; }
+
+  .bars { margin-top: 12px; display: grid; gap: 6px; }
+  .bar-row { display: grid; grid-template-columns: 52px 1fr 48px; gap: 9px; align-items: center; font-size: 12px; }
+  .bar { height: 7px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
+  .bar > span { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
+  .bar-row .val { text-align: right; color: var(--muted); font-family: var(--mono); }
+
+  .gate { max-width: 420px; margin: 60px auto; }
+  .status { font-size: 12.5px; margin-top: 10px; min-height: 18px; }
+  .status.err { color: var(--danger); }
+  .status.ok { color: var(--ok); }
+  footer { color: var(--muted); font-size: 12px; text-align: center; padding: 26px; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Sistema Inteligente de Atención al Cliente</h1>
+    <div class="sub">Demo interactivo — clasificación de tickets · churn · sentimiento · tiempo de resolución · agente LangGraph</div>
+  </div>
+  <div class="spacer"></div>
+  <a href="/docs" target="_blank">Swagger →</a>
+  <span id="whoami" class="badge hidden"></span>
+  <button id="logoutBtn" class="ghost hidden" style="margin-top:0">Salir</button>
+</header>
+
+<main>
+  <!-- ------------------------------ LOGIN ------------------------------ -->
+  <section id="gate" class="card gate">
+    <h2>Autenticación</h2>
+    <p class="hint">La API exige JWT en todos los endpoints. Usa una de las credenciales sembradas.</p>
+    <label for="email">Email</label>
+    <input id="email" value="admin@telecom.com" autocomplete="username">
+    <label for="password">Contraseña</label>
+    <input id="password" type="password" value="Admin123!" autocomplete="current-password">
+    <label for="preset">Credenciales de prueba</label>
+    <select id="preset">
+      <option value="admin@telecom.com|Admin123!">admin@telecom.com (rol admin)</option>
+      <option value="agente@telecom.com|Agente123!">agente@telecom.com (rol agent)</option>
+      <option value="cliente@telecom.com|Cliente123!">cliente@telecom.com (rol customer)</option>
+    </select>
+    <button id="loginBtn">Iniciar sesión</button>
+    <div id="loginStatus" class="status"></div>
+  </section>
+
+  <!-- ------------------------------ APP ------------------------------ -->
+  <div id="app" class="hidden">
+    <div class="grid">
+
+      <!-- Agente conversacional -->
+      <section class="card wide">
+        <h2>Agente conversacional <span class="badge accent">LangGraph</span></h2>
+        <p class="hint">
+          Cada mensaje recorre el grafo: <code>classify_intent → get_customer_info → handler →
+          check_escalation → generate_response</code>. La intención sale del clasificador de tickets
+          y la frustración del modelo de sentimiento.
+        </p>
+        <div id="chatLog">
+          <div class="msg sys">Escribe un mensaje para iniciar la conversación</div>
+        </div>
+        <div class="meta" id="chatMeta"></div>
+        <div class="chat-input">
+          <input id="chatInput" placeholder="Ej: Llevo tres días sin internet y estoy harto, quiero cancelar"
+                 autocomplete="off">
+          <button id="sendBtn">Enviar</button>
+          <button id="resetBtn" class="ghost">Nueva sesión</button>
+        </div>
+        <div class="status" id="chatStatus"></div>
+      </section>
+
+      <!-- Clasificador de tickets -->
+      <section class="card">
+        <h2>Clasificación de tickets <span class="badge">scikit-learn</span></h2>
+        <p class="hint">TF-IDF + Logistic Regression. Devuelve la categoría y la probabilidad de cada clase.</p>
+        <label for="clsText">Descripción del ticket</label>
+        <textarea id="clsText">El internet está lentísimo y se corta cada media hora</textarea>
+        <button id="clsBtn">Clasificar</button>
+        <div class="meta" id="clsBadge"></div>
+        <div class="bars" id="clsBars"></div>
+        <div class="status" id="clsStatus"></div>
+      </section>
+
+      <!-- Sentimiento -->
+      <section class="card">
+        <h2>Análisis de sentimiento <span class="badge">Keras · LSTM</span></h2>
+        <p class="hint">Embedding → LSTM → Dense. <code>is_frustrated</code> es la señal que usa el agente para escalar.</p>
+        <label for="sentText">Mensaje del cliente</label>
+        <textarea id="sentText">Estoy muy molesto, llevo tres días sin solución y nadie me responde</textarea>
+        <button id="sentBtn">Analizar</button>
+        <div class="meta" id="sentBadge"></div>
+        <div class="bars" id="sentBars"></div>
+        <div class="status" id="sentStatus"></div>
+      </section>
+
+      <!-- Churn -->
+      <section class="card">
+        <h2>Predicción de churn <span class="badge">scikit-learn</span></h2>
+        <p class="hint">Gradient Boosting sobre features del cliente + 2 features derivados.</p>
+        <div class="row">
+          <div><label for="tenure">Antigüedad (meses)</label><input id="tenure" type="number" value="3"></div>
+          <div><label for="monthly">Cargo mensual</label><input id="monthly" type="number" value="80"></div>
+        </div>
+        <div class="row">
+          <div><label for="total">Cargos totales</label><input id="total" type="number" value="240"></div>
+          <div><label for="numTickets">Nº tickets</label><input id="numTickets" type="number" value="6"></div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="contract">Contrato</label>
+            <select id="contract">
+              <option value="month-to-month">Mes a mes</option>
+              <option value="one-year">1 año</option>
+              <option value="two-year">2 años</option>
+            </select>
+          </div>
+          <div>
+            <label for="payment">Pago</label>
+            <select id="payment">
+              <option value="cash">Efectivo</option>
+              <option value="credit_card">Tarjeta</option>
+              <option value="bank_transfer">Transferencia</option>
+            </select>
+          </div>
+        </div>
+        <label for="satisfaction">Satisfacción promedio (1-5)</label>
+        <input id="satisfaction" type="number" step="0.1" min="1" max="5" value="1.8">
+        <button id="churnBtn">Predecir churn</button>
+        <div class="meta" id="churnBadge"></div>
+        <div class="bars" id="churnBars"></div>
+        <div class="status" id="churnStatus"></div>
+      </section>
+
+      <!-- Tiempo de resolución -->
+      <section class="card">
+        <h2>Tiempo de resolución <span class="badge">Keras · multi-input</span></h2>
+        <p class="hint">Regresión con inputs mixtos: texto (embeddings) + categoría/prioridad (one-hot) + hora y día (cíclicos).</p>
+        <label for="rtText">Descripción del ticket</label>
+        <textarea id="rtText">El router pierde la señal cada media hora desde el lunes</textarea>
+        <div class="row">
+          <div>
+            <label for="rtCat">Categoría</label>
+            <select id="rtCat">
+              <option>TECH</option><option>BILL</option><option>PLAN</option>
+              <option>CNCL</option><option>OTHR</option>
+            </select>
+          </div>
+          <div>
+            <label for="rtPrio">Prioridad</label>
+            <select id="rtPrio">
+              <option value="high">Alta</option>
+              <option value="medium" selected>Media</option>
+              <option value="low">Baja</option>
+            </select>
+          </div>
+        </div>
+        <button id="rtBtn">Estimar</button>
+        <div class="meta" id="rtBadge"></div>
+        <div class="status" id="rtStatus"></div>
+        <pre id="rtOut"></pre>
+      </section>
+
+      <!-- MCP -->
+      <section class="card">
+        <h2>Protocolo MCP <span class="badge accent">JSON-RPC 2.0</span></h2>
+        <p class="hint">Las mismas capacidades expuestas para que otros agentes de IA consuman el sistema.</p>
+        <label for="mcpTool">Tool</label>
+        <select id="mcpTool">
+          <option value="classify_ticket">classify_ticket</option>
+          <option value="predict_resolution_time">predict_resolution_time</option>
+          <option value="get_customer_info">get_customer_info</option>
+          <option value="predict_churn">predict_churn</option>
+        </select>
+        <label for="mcpArgs">arguments (JSON)</label>
+        <textarea id="mcpArgs">{"description": "Quiero cancelar mi servicio de internet"}</textarea>
+        <div class="row">
+          <button id="mcpBtn">Ejecutar tool</button>
+          <button id="mcpCapBtn" class="ghost">Ver capabilities</button>
+        </div>
+        <div class="status" id="mcpStatus"></div>
+        <pre id="mcpOut"></pre>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  Justin Alejandro Zambrano Lucas · Prueba técnica IA/ML · FastAPI + scikit-learn + TensorFlow + LangGraph + MCP
+</footer>
+
+<script>
+(() => {
+  "use strict";
+
+  const $ = (id) => document.getElementById(id);
+  let token = null;
+  let sessionId = null;
+
+  const MCP_PRESETS = {
+    classify_ticket: { description: "Quiero cancelar mi servicio de internet" },
+    predict_resolution_time: {
+      description: "El router pierde la señal cada media hora desde el lunes",
+      category: "TECH", priority: "high",
+    },
+    get_customer_info: { customer_id: 1 },
+    predict_churn: { customer_id: 1 },
+  };
+
+  // ----------------------------- helpers -----------------------------
+
+  async function api(path, { method = "GET", body = null, auth = true } = {}) {
+    const headers = { "Content-Type": "application/json" };
+    if (auth && token) headers.Authorization = `Bearer ${token}`;
+    const res = await fetch(path, { method, headers, body: body ? JSON.stringify(body) : null });
+    const text = await res.text();
+    let data = null;
+    try { data = text ? JSON.parse(text) : null; } catch { data = { raw: text }; }
+    if (!res.ok) {
+      const detail = data?.error?.message || data?.detail || `HTTP ${res.status}`;
+      const err = new Error(typeof detail === "string" ? detail : JSON.stringify(detail));
+      err.status = res.status;
+      err.payload = data;
+      throw err;
+    }
+    return data;
+  }
+
+  function setStatus(el, message, kind = "") {
+    el.textContent = message;
+    el.className = `status ${kind}`;
+  }
+
+  function busy(button, isBusy, labelWhenIdle) {
+    button.disabled = isBusy;
+    button.textContent = isBusy ? "…" : labelWhenIdle;
+  }
+
+  function badge(text, kind = "") {
+    const span = document.createElement("span");
+    span.className = `badge ${kind}`;
+    span.textContent = text;
+    return span;
+  }
+
+  /** Dibuja un ranking de probabilidades ordenado de mayor a menor. */
+  function renderBars(container, probabilities) {
+    container.innerHTML = "";
+    Object.entries(probabilities)
+      .sort((a, b) => b[1] - a[1])
+      .forEach(([label, value]) => {
+        const pct = (value * 100).toFixed(1);
+        const row = document.createElement("div");
+        row.className = "bar-row";
+        row.innerHTML =
+          `<span>${label}</span><div class="bar"><span style="width:${pct}%"></span></div>` +
+          `<span class="val">${pct}%</span>`;
+        container.appendChild(row);
+      });
+  }
+
+  function riskKind(level) {
+    return level === "high" ? "danger" : level === "medium" ? "warn" : "ok";
+  }
+
+  // ----------------------------- auth -----------------------------
+
+  $("preset").addEventListener("change", (event) => {
+    const [email, password] = event.target.value.split("|");
+    $("email").value = email;
+    $("password").value = password;
+  });
+
+  async function login() {
+    const button = $("loginBtn");
+    busy(button, true, "Iniciar sesión");
+    setStatus($("loginStatus"), "");
+    try {
+      const data = await api("/api/v1/auth/login", {
+        method: "POST", auth: false,
+        body: { email: $("email").value.trim(), password: $("password").value },
+      });
+      token = data.access_token;
+      const role = JSON.parse(atob(token.split(".")[1])).role;
+      $("whoami").textContent = `${$("email").value.trim()} · ${role}`;
+      $("whoami").classList.remove("hidden");
+      $("logoutBtn").classList.remove("hidden");
+      $("gate").classList.add("hidden");
+      $("app").classList.remove("hidden");
+      $("chatInput").focus();
+    } catch (error) {
+      setStatus($("loginStatus"), error.message, "err");
+    } finally {
+      busy(button, false, "Iniciar sesión");
+    }
+  }
+
+  $("loginBtn").addEventListener("click", login);
+  $("password").addEventListener("keydown", (e) => { if (e.key === "Enter") login(); });
+
+  $("logoutBtn").addEventListener("click", () => {
+    token = null;
+    sessionId = null;
+    $("app").classList.add("hidden");
+    $("gate").classList.remove("hidden");
+    $("whoami").classList.add("hidden");
+    $("logoutBtn").classList.add("hidden");
+  });
+
+  // ----------------------------- agente -----------------------------
+
+  function appendMessage(kind, text) {
+    const log = $("chatLog");
+    log.querySelector(".msg.sys")?.remove();
+    const div = document.createElement("div");
+    div.className = `msg ${kind}`;
+    div.textContent = text;
+    log.appendChild(div);
+    log.scrollTop = log.scrollHeight;
+    return div;
+  }
+
+  async function send() {
+    const input = $("chatInput");
+    const message = input.value.trim();
+    if (!message) return;
+
+    appendMessage("user", message);
+    input.value = "";
+    const placeholder = appendMessage("bot", "…");
+    setStatus($("chatStatus"), "");
+    busy($("sendBtn"), true, "Enviar");
+
+    try {
+      const data = await api("/api/v1/agent/chat", {
+        method: "POST",
+        body: { message, session_id: sessionId },
+      });
+      sessionId = data.session_id;
+      placeholder.textContent = data.response;
+
+      const meta = $("chatMeta");
+      meta.innerHTML = "";
+      meta.appendChild(badge(`intent: ${data.intent}`, "accent"));
+      const context = data.customer_context || {};
+      if (context.predicted_category) meta.appendChild(badge(`categoría: ${context.predicted_category}`));
+      if (context.sentiment) {
+        meta.appendChild(badge(
+          `sentimiento: ${context.sentiment}`,
+          context.sentiment === "negative" ? "danger" : context.sentiment === "positive" ? "ok" : ""
+        ));
+      }
+      if (context.churn_risk) meta.appendChild(badge(`churn: ${context.churn_risk}`, riskKind(context.churn_risk)));
+      meta.appendChild(badge(data.escalate ? "escalado a humano" : "resuelto por el agente",
+                              data.escalate ? "warn" : "ok"));
+      if (context.escalation_reason) {
+        setStatus($("chatStatus"), `Motivo de escalamiento: ${context.escalation_reason}`);
+      }
+    } catch (error) {
+      placeholder.remove();
+      setStatus($("chatStatus"), error.message, "err");
+    } finally {
+      busy($("sendBtn"), false, "Enviar");
+    }
+  }
+
+  $("sendBtn").addEventListener("click", send);
+  $("chatInput").addEventListener("keydown", (e) => { if (e.key === "Enter") send(); });
+
+  $("resetBtn").addEventListener("click", async () => {
+    const previous = sessionId;
+    sessionId = null;
+    $("chatLog").innerHTML = '<div class="msg sys">Nueva sesión iniciada</div>';
+    $("chatMeta").innerHTML = "";
+    setStatus($("chatStatus"), "");
+    if (previous) {
+      // Eliminación real de la sesión en BD (solo admin/agent tienen permiso).
+      try { await api(`/api/v1/agent/sessions/${previous}`, { method: "DELETE" }); }
+      catch { /* el rol customer no puede borrar: se ignora, la sesión local ya se reinició */ }
+    }
+  });
+
+  // ----------------------------- modelos -----------------------------
+
+  $("clsBtn").addEventListener("click", async () => {
+    busy($("clsBtn"), true, "Clasificar");
+    setStatus($("clsStatus"), "");
+    try {
+      const data = await api("/api/v1/ml/classify-ticket", {
+        method: "POST", body: { description: $("clsText").value.trim() },
+      });
+      $("clsBadge").innerHTML = "";
+      $("clsBadge").appendChild(badge(data.predicted_category, "accent"));
+      renderBars($("clsBars"), data.probabilities);
+    } catch (error) {
+      setStatus($("clsStatus"), error.message, "err");
+    } finally {
+      busy($("clsBtn"), false, "Clasificar");
+    }
+  });
+
+  $("sentBtn").addEventListener("click", async () => {
+    busy($("sentBtn"), true, "Analizar");
+    setStatus($("sentStatus"), "");
+    try {
+      const data = await api("/api/v1/ml/analyze-sentiment", {
+        method: "POST", body: { text: $("sentText").value.trim() },
+      });
+      const kind = data.sentiment === "negative" ? "danger" : data.sentiment === "positive" ? "ok" : "";
+      $("sentBadge").innerHTML = "";
+      $("sentBadge").appendChild(badge(data.sentiment, kind));
+      $("sentBadge").appendChild(badge(
+        data.is_frustrated ? "is_frustrated: true → escala" : "is_frustrated: false",
+        data.is_frustrated ? "warn" : ""
+      ));
+      renderBars($("sentBars"), data.probabilities);
+    } catch (error) {
+      setStatus($("sentStatus"), error.message, "err");
+    } finally {
+      busy($("sentBtn"), false, "Analizar");
+    }
+  });
+
+  $("churnBtn").addEventListener("click", async () => {
+    busy($("churnBtn"), true, "Predecir churn");
+    setStatus($("churnStatus"), "");
+    try {
+      const data = await api("/api/v1/ml/predict-churn", {
+        method: "POST",
+        body: {
+          tenure_months: Number($("tenure").value),
+          monthly_charge: Number($("monthly").value),
+          total_charges: Number($("total").value),
+          num_tickets: Number($("numTickets").value),
+          avg_satisfaction: Number($("satisfaction").value),
+          contract_type: $("contract").value,
+          payment_method: $("payment").value,
+        },
+      });
+      $("churnBadge").innerHTML = "";
+      $("churnBadge").appendChild(badge(`riesgo: ${data.risk_level}`, riskKind(data.risk_level)));
+      $("churnBadge").appendChild(badge(`${(data.churn_probability * 100).toFixed(1)}% de abandono`));
+      renderBars($("churnBars"), {
+        abandona: data.churn_probability,
+        permanece: 1 - data.churn_probability,
+      });
+    } catch (error) {
+      setStatus($("churnStatus"), error.message, "err");
+    } finally {
+      busy($("churnBtn"), false, "Predecir churn");
+    }
+  });
+
+  $("rtBtn").addEventListener("click", async () => {
+    busy($("rtBtn"), true, "Estimar");
+    setStatus($("rtStatus"), "");
+    $("rtOut").textContent = "";
+    try {
+      const data = await api("/api/v1/ml/predict-resolution-time", {
+        method: "POST",
+        body: {
+          description: $("rtText").value.trim(),
+          category: $("rtCat").value,
+          priority: $("rtPrio").value,
+        },
+      });
+      $("rtBadge").innerHTML = "";
+      $("rtBadge").appendChild(badge(`≈ ${data.estimated_hours} h`, "accent"));
+      $("rtBadge").appendChild(badge(
+        new Date(data.estimated_resolution_at).toLocaleString("es-EC", {
+          dateStyle: "medium", timeStyle: "short",
+        })
+      ));
+      $("rtOut").textContent = JSON.stringify(data, null, 2);
+    } catch (error) {
+      setStatus($("rtStatus"), error.message, "err");
+    } finally {
+      busy($("rtBtn"), false, "Estimar");
+    }
+  });
+
+  // ----------------------------- MCP -----------------------------
+
+  $("mcpTool").addEventListener("change", (event) => {
+    $("mcpArgs").value = JSON.stringify(MCP_PRESETS[event.target.value], null, 2);
+  });
+
+  $("mcpBtn").addEventListener("click", async () => {
+    busy($("mcpBtn"), true, "Ejecutar tool");
+    setStatus($("mcpStatus"), "");
+    try {
+      let args;
+      try {
+        args = JSON.parse($("mcpArgs").value);
+      } catch {
+        throw new Error("El campo arguments no es JSON válido");
+      }
+      const data = await api("/mcp/tools/execute", {
+        method: "POST",
+        body: { jsonrpc: "2.0", id: `demo-${Date.now()}`, tool: $("mcpTool").value, arguments: args },
+      });
+      $("mcpOut").textContent = JSON.stringify(data, null, 2);
+      setStatus($("mcpStatus"),
+                data.result.isError ? "La tool devolvió isError: true" : "isError: false",
+                data.result.isError ? "err" : "ok");
+    } catch (error) {
+      setStatus($("mcpStatus"), error.message, "err");
+    } finally {
+      busy($("mcpBtn"), false, "Ejecutar tool");
+    }
+  });
+
+  $("mcpCapBtn").addEventListener("click", async () => {
+    setStatus($("mcpStatus"), "");
+    try {
+      const data = await api("/mcp/capabilities");
+      $("mcpOut").textContent = JSON.stringify(data, null, 2);
+    } catch (error) {
+      setStatus($("mcpStatus"), error.message, "err");
+    }
+  });
+})();
+</script>
+</body>
+</html>

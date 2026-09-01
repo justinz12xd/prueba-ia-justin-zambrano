@@ -4,7 +4,8 @@ from fastapi import APIRouter, Depends
 
 from app.core.security import require_roles
 from app.schemas.ml import (ChurnFeaturesInput, ChurnPredictionOutput, ModelsInfoResponse,
-                             SentimentRequest, SentimentResponse)
+                             ResolutionTimeRequest, ResolutionTimeResponse, SentimentRequest,
+                             SentimentResponse)
 from app.schemas.ticket import TicketClassifyRequest, TicketClassifyResponse
 from app.services.ml_service import MLService
 
@@ -32,6 +33,17 @@ def classify_ticket(data: TicketClassifyRequest) -> TicketClassifyResponse:
              dependencies=[Depends(require_roles("admin", "agent"))])
 def analyze_sentiment(data: SentimentRequest) -> SentimentResponse:
     return ml_service.analyze_sentiment(data.text)
+
+
+@router.post("/predict-resolution-time", response_model=ResolutionTimeResponse,
+             summary="Estimar tiempo de resolución de un ticket",
+             description="Red neuronal multi-input de la Parte 2.2: combina la descripción "
+                         "(embeddings), la categoría y prioridad (one-hot) y la hora/día "
+                         "(codificación cíclica) para estimar las horas hasta la resolución. "
+                         "Si no se envían hora ni día, se usan los del momento actual.",
+             dependencies=[Depends(require_roles("admin", "agent"))])
+def predict_resolution_time(data: ResolutionTimeRequest) -> ResolutionTimeResponse:
+    return ml_service.predict_resolution_time(data)
 
 
 @router.get("/models/info", response_model=ModelsInfoResponse,

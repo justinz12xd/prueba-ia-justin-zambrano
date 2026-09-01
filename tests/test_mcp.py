@@ -3,8 +3,21 @@ def test_mcp_capabilities(client):
     assert resp.status_code == 200
     body = resp.json()
     tool_names = {t["name"] for t in body["tools"]}
+    # Las 5 tools exigidas por el enunciado, más predict_resolution_time (Parte 2.2).
     assert tool_names == {"predict_churn", "classify_ticket", "get_customer_info",
-                           "create_ticket", "chat_with_agent"}
+                           "create_ticket", "chat_with_agent", "predict_resolution_time"}
+
+
+def test_mcp_execute_predict_resolution_time(client):
+    resp = client.post("/mcp/tools/execute", json={
+        "id": "req-rt", "tool": "predict_resolution_time",
+        "arguments": {"description": "El router pierde la señal cada media hora desde el lunes",
+                      "category": "TECH", "priority": "high"},
+    })
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["result"]["isError"] is False
+    assert body["result"]["content"][0]["data"]["estimated_hours"] > 0
 
 
 def test_mcp_resources_list(client):

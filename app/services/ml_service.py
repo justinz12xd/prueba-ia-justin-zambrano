@@ -1,11 +1,13 @@
 """Fachada de servicios ML/DL para los endpoints /api/v1/ml/* y el protocolo MCP."""
 from __future__ import annotations
 
+import datetime as dt
+
 from fastapi import HTTPException, status
 
 from app.ml_runtime import churn_model, resolution_time_model, sentiment_model, ticket_classifier
 from app.schemas.ml import (ChurnFeaturesInput, ChurnPredictionOutput, ModelsInfoResponse,
-                             SentimentResponse)
+                             ResolutionTimeRequest, ResolutionTimeResponse, SentimentResponse)
 from app.schemas.ticket import TicketClassifyResponse
 
 
@@ -35,13 +37,31 @@ class MLService:
         return SentimentResponse(sentiment=sentiment, probabilities=probabilities,
                                   is_frustrated=is_frustrated)
 
-    def predict_resolution_time(self, category: str, priority: str, description: str,
-                                 hour_of_day: int, day_of_week: int) -> float:
+    def predict_resolution_time(self, data: ResolutionTimeRequest) -> ResolutionTimeResponse:
+        """Estima el tiempo de resolución de un ticket (Parte 2.2).
+
+        `hour_of_day` y `day_of_week` son opcionales: si no se envían se toman del
+        momento actual, que es el caso de uso real (estimar al crear el ticket).
+        """
+        now = dt.datetime.now(dt.timezone.utc)
+        hour_of_day = data.hour_of_day if data.hour_of_day is not None else now.hour
+        day_of_week = data.day_of_week if data.day_of_week is not None else now.weekday()
+
         try:
-            return resolution_time_model.predict_resolution_time(
-                category, priority, description, hour_of_day, day_of_week)
+            hours = resolution_time_model.predict_resolution_time(
+                data.category, data.priority, data.description, hour_of_day, day_of_week)
         except resolution_time_model.ResolutionModelUnavailable as exc:
             raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, str(exc)) from exc
+
+        return ResolutionTimeResponse(
+            estimated_hours=round(hours, 2),
+            estimated_resolution_at=now + dt.timedelta(hours=hours),
+            category=data.category,
+            priority=data.priority,
+            hour_of_day=hour_of_day,
+            day_of_week=day_of_week,
+            model_version="1.0.0",
+        )
 
     def models_info(self) -> ModelsInfoResponse:
         return ModelsInfoResponse(

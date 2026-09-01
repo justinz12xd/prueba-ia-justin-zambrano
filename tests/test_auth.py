@@ -27,3 +27,11 @@ def test_refresh_token(client, admin_token):
 def test_protected_endpoint_without_token(client):
     resp = client.get("/api/v1/customers")
     assert resp.status_code == 401
+
+
+def test_demo_page_is_served(client):
+    """La UI de demo se sirve desde la propia API (mount /demo)."""
+    resp = client.get("/demo/")
+    assert resp.status_code == 200
+    assert "text/html" in resp.headers["content-type"]
+    assert "Sistema Inteligente de Atención al Cliente" in resp.text
