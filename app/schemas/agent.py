@@ -11,11 +11,27 @@ class ChatRequest(BaseModel):
     customer_id: int | None = Field(None, description="Si se conoce, permite personalizar la atención")
 
 
+class ChatTicket(BaseModel):
+    """Ticket abierto (o reutilizado) por el agente durante la conversación."""
+
+    ticket_id: int
+    category: str
+    priority: str
+    status: str
+    is_new: bool = Field(..., description="False si se reutilizó un ticket abierto del mismo tipo")
+    estimated_hours: float | None = Field(
+        None, description="Estimación de la red de tiempo de resolución, si está disponible"
+    )
+
+
 class ChatResponse(BaseModel):
     session_id: str
     response: str
     intent: str | None = None
     escalate: bool = False
+    ticket: ChatTicket | None = Field(
+        None, description="Presente si la consulta ameritó registrar una solicitud de soporte"
+    )
     customer_context: dict | None = None
 
 

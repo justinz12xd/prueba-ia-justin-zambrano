@@ -46,7 +46,7 @@ dl_training/       Parte 2 — TensorFlow/Keras
 saved_models/      artefactos entrenados + reportes JSON + gráficas
 sql/init.sql       DDL + 1 función + 1 stored procedure PL/pgSQL
 static/            portal del cliente (/portal) y panel técnico (/demo)
-tests/             39 tests (pytest + TestClient + SQLite)
+tests/             44 tests (pytest + TestClient + SQLite)
 ```
 
 **La frase para explicar la arquitectura en una línea:**
@@ -65,23 +65,27 @@ SQLAlchemy; aquí las entidades SQLAlchemy sí son el modelo.
 ## 2. Recorrido de demo (5 minutos)
 
 1. `docker compose up --build` → API en `:8000`, Postgres en `:5432`.
-2. Abrir **`http://localhost:8000/portal`** → login `cliente@telecom.com` / `Cliente123!`.
-3. Escribir un problema y **no enviarlo todavía**: mientras tecleas aparece
-   *"Detectamos: Problema técnico → se enviará a Soporte Técnico, confianza 91%"*.
-   Cambia el texto a uno de facturación y muestra cómo cambia el equipo destino.
-   **Ese es el mejor momento de la demo: el modelo trabajando en vivo, sin botones.**
-4. Enviar → se crea el ticket con la categoría inferida y aparece el comprobante con
-   el equipo asignado y el **tiempo estimado de respuesta** (red de la Parte 2.2).
-5. En el asistente, escribir algo con frustración → aparece el aviso de derivación a
-   un asesor, con el motivo detectado.
-6. Ir a **`/demo`** para la vista técnica: probabilidades por clase, `is_frustrated`,
-   churn y una tool MCP con su sobre JSON-RPC.
-7. Cerrar en `/docs` (Swagger) mostrando los endpoints documentados.
+2. **`http://localhost:8000/portal`** con `cliente@telecom.com` / `Cliente123!`.
+   Sale un chat a pantalla completa: **el cliente no ve formularios ni métricas.**
+3. Escribir *"El internet se corta cada media hora desde el lunes, ya reinicié el router"*.
+   El agente responde y aparece una tarjeta: **Solicitud #1 · Soporte Técnico · respuesta
+   estimada 11.6 h**. Explicar que el ticket lo abrió el grafo, no el navegador.
+4. Insistir con el mismo problema → *"La sumé a tu solicitud #1, que sigue abierta"*.
+   **No se duplica el ticket**: es una regla de negocio, no un accidente.
+5. Salir y entrar con `agente@telecom.com` / `Agente123!` → **la misma URL muestra otra
+   cosa**: la bandeja de soporte, con ese ticket ya clasificado y etiquetado con
+   sentimiento, riesgo de churn y tiempo estimado. Tomar el caso o resolverlo.
+6. `/demo` para la vista técnica (probabilidades por clase, MCP con su sobre JSON-RPC).
 
-> Si te preguntan "¿esto es solo una demo bonita?": el portal no simula nada, llama a
-> `POST /api/v1/tickets/classify` mientras escribes, `POST /api/v1/tickets` al enviar
-> y `POST /api/v1/ml/predict-resolution-time` para el tiempo estimado. Todo queda en
-> Postgres; `GET /api/v1/tickets?customer_id=N` lo demuestra.
+> **El punto que hay que dejar claro:** un solo mensaje del cliente activa los cuatro
+> modelos. El clasificador decide la categoría y el equipo, el de sentimiento decide la
+> prioridad y si se escala, el de churn entra en esa misma decisión, y el de tiempo de
+> resolución produce la promesa de respuesta. El cliente ve una frase amable; el agente
+> ve el caso ya priorizado.
+
+> Si preguntan *"¿esto es solo maquetación?"*: el portal llama a `/agent/chat` y
+> `/tickets/queue`, y todo queda en Postgres —`GET /api/v1/tickets?customer_id=1` lo
+> demuestra—. La creación del ticket vive en `app/agent/nodes.py`, no en el HTML.
 
 ## 3. Parte 1 — ML con scikit-learn
 
@@ -210,9 +214,9 @@ en el demo.
 
 ## 6. Parte 4 — API REST y MCP
 
-**27 endpoints**: los 24 que pide el enunciado (20 bajo `/api/v1` + 4 de MCP) más
-`predict-resolution-time` y `GET /auth/me` (que el portal necesita para saber a qué
-cliente pertenece la sesión: el JWT solo lleva email y rol).
+**28 endpoints**: los 24 que pide el enunciado (20 bajo `/api/v1` + 4 de MCP) más
+`predict-resolution-time`, `GET /auth/me` (el portal necesita saber el rol y el cliente
+de la sesión: el JWT solo lleva email y rol) y `GET /tickets/queue` (la bandeja del agente).
 
 - **Validaciones Pydantic:** email con `EmailStr`; teléfono con regex `^09\d{8,}$`
   (`app/schemas/customer.py`); descripción de ticket `min_length=20, max_length=500`.
@@ -240,7 +244,7 @@ cliente pertenece la sesión: el JWT solo lleva email y rol).
 
 - *¿Por qué Postgres y no SQLite?* Porque el requisito de stored procedure pedía PL/pgSQL
   real. Los tests sí usan SQLite, por velocidad y para no depender de infraestructura.
-- *¿Los tests cubren qué?* 39 tests sobre los endpoints críticos: auth (incluido rechazo de
+- *¿Los tests cubren qué?* 44 tests sobre los endpoints críticos: auth (incluido rechazo de
   refresh token como access), CRUD de clientes con sus validaciones, tickets, los 4 modelos,
   el agente (incluidos 401 y 403 por rol) y MCP.
 - *¿Cómo garantizas que el modelo carga en producción?* `ml_runtime` cachea con `lru_cache`
@@ -260,10 +264,16 @@ Reconocer un límite con la solución al lado suma; que te lo descubran, resta.
    (`app/services/customer_service.py:60`), pese a ser la 2ª feature más importante. La
    función SQL `fn_customer_churn_summary` ya calcula el promedio real: cablearla es el
    siguiente paso natural. **Buena respuesta si preguntan "¿qué mejorarías?"**.
-3. **Sin Alembic.** Las tablas se crean con `Base.metadata.create_all`; para producción haría
+3. **El `config` de LangGraph no llegaba a los nodos** hasta que lo detecté al implementar
+   la apertura de tickets: la firma `config: RunnableConfig | None = None` hace que
+   LangGraph **no** inyecte el config (lo decide inspeccionando la firma). El síntoma era
+   silencioso: `get_customer_info` caía siempre en "sin sesión de base de datos" y el
+   agente nunca leía datos del cliente. Corregido anotando `config: RunnableConfig`.
+   **Si preguntan por un bug difícil que hayas encontrado, cuenta este.**
+4. **Sin Alembic.** Las tablas se crean con `Base.metadata.create_all`; para producción haría
    falta migraciones versionadas.
-4. **Sin checkpointer de LangGraph** (decisión consciente, ver sección 5).
-5. **Sin rate limiting ni paginación en tickets** (clientes sí tiene paginación).
+5. **Sin checkpointer de LangGraph** (decisión consciente, ver sección 5).
+6. **Sin rate limiting ni paginación en tickets** (clientes sí tiene paginación).
 
 ---
 
@@ -310,7 +320,7 @@ la función `_tool_x`, y la entrada en `TOOL_HANDLERS`.
 | agente@telecom.com | Agente123! | agent |
 | cliente@telecom.com | Cliente123! | customer |
 
-**URLs:** `/portal` (cliente) · `/demo` (panel técnico) · `/docs` (Swagger) · `/` (health)
+**URLs:** `/portal` (cliente o agente, según el rol) · `/demo` (panel técnico) · `/docs` (Swagger) · `/` (health)
 
 **Métricas para citar de memoria**
 
@@ -323,7 +333,7 @@ la función `_tool_x`, y la entrada en `TOOL_HANDLERS`.
 
 ```bash
 docker compose up --build              # stack completo
-pytest tests/ -v                       # 39 tests
+pytest tests/ -v                       # 44 tests
 python ml_training/train_churn_model.py    # reentrenar
 docker exec -it telecom_support_db psql -U postgres -d telecom_support \
   -c "SELECT * FROM fn_customer_churn_summary(1);"   # demostrar la función SQL

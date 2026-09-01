@@ -4,12 +4,18 @@ Cada nodo recibe el AgentState y (opcionalmente) el RunnableConfig de LangGraph,
 desde el cual se obtiene la sesión de base de datos inyectada por
 `app.services.agent_service` en `config["configurable"]["db"]`.
 
+IMPORTANTE: el parámetro debe anotarse exactamente como `RunnableConfig`, sin
+unión ni valor por defecto. LangGraph inspecciona la firma para decidir si
+inyecta el config, y con `RunnableConfig | None = None` no lo hace: los nodos
+recibirían `config=None` y se quedarían sin acceso a la base de datos.
+
 Todos los nodos están envueltos en try/except: si algo falla, se registra el
 error en `state["error"]` y se degrada con valores por defecto seguros en vez
 de abortar el grafo completo (manejo de errores y estados inválidos).
 """
 from __future__ import annotations
 
+import datetime as dt
 import logging
 import re
 
@@ -17,9 +23,14 @@ from langchain_core.runnables import RunnableConfig
 
 from app.agent.llm import get_llm
 from app.agent.state import AgentState
-from app.ml_runtime import churn_model, sentiment_model, ticket_classifier
+from app.ml_runtime import (churn_model, resolution_time_model, sentiment_model,
+                            ticket_classifier)
 
 logger = logging.getLogger("agent")
+
+
+def _now() -> dt.datetime:
+    return dt.datetime.now(dt.timezone.utc)
 
 GREETING_PATTERNS = re.compile(
     r"^\s*(hola|buenas|buenos d[ií]as|buenas tardes|buenas noches|hey|qu[eé] tal)\b",
@@ -57,7 +68,7 @@ def _last_user_message(state: AgentState) -> str:
 # Nodo: classify_intent
 # ---------------------------------------------------------------------------
 
-def classify_intent(state: AgentState, config: RunnableConfig | None = None) -> AgentState:
+def classify_intent(state: AgentState, config: RunnableConfig) -> AgentState:
     text = _last_user_message(state)
     context = dict(state.get("context") or {})
 
@@ -99,7 +110,7 @@ def classify_intent(state: AgentState, config: RunnableConfig | None = None) -> 
 # Nodo: get_customer_info
 # ---------------------------------------------------------------------------
 
-def get_customer_info(state: AgentState, config: RunnableConfig | None = None) -> AgentState:
+def get_customer_info(state: AgentState, config: RunnableConfig) -> AgentState:
     context = dict(state.get("context") or {})
     customer_id = state.get("customer_id")
 
@@ -155,21 +166,87 @@ def get_customer_info(state: AgentState, config: RunnableConfig | None = None) -
 # Nodos de manejo por intención
 # ---------------------------------------------------------------------------
 
-def handle_account_query(state: AgentState, config: RunnableConfig | None = None) -> AgentState:
+MIN_TICKET_DESCRIPTION = 20  # mismo mínimo que exige el schema TicketCreate
+
+
+def _priority_from_context(context: dict) -> str:
+    """Prioridad sugerida a partir de las señales del mensaje."""
+    if context.get("is_frustrated") or context.get("churn_risk") == "high":
+        return "high"
+    if context.get("is_cancellation"):
+        return "high"
+    return "medium"
+
+
+def _open_ticket(state: AgentState, config: RunnableConfig | None, context: dict) -> dict:
+    """Registra la solicitud del cliente como ticket, si corresponde.
+
+    Reglas:
+      - hace falta un cliente identificado y una sesión de BD;
+      - el mensaje debe tener al menos 20 caracteres (mismo mínimo que la API);
+      - si el cliente ya tiene un ticket abierto de esa categoría, se reutiliza en
+        vez de duplicarlo: insistir sobre el mismo problema no abre tickets nuevos.
+
+    Es best-effort: cualquier fallo queda en el contexto y la conversación sigue.
+    """
+    db = (config or {}).get("configurable", {}).get("db") if config else None
+    customer_id = state.get("customer_id")
+    text = _last_user_message(state).strip()
+    category = context.get("predicted_category")
+
+    if db is None or not customer_id or not category or len(text) < MIN_TICKET_DESCRIPTION:
+        return context
+
+    try:
+        from app.repositories.ticket_repository import TicketRepository
+
+        repo = TicketRepository(db)
+        existing = repo.find_open_by_category(customer_id, category)
+        if existing is not None:
+            ticket, is_new = existing, False
+        else:
+            ticket = repo.create(customer_id, category, text[:500],
+                                 _priority_from_context(context))
+            is_new = True
+
+        estimated_hours = None
+        try:
+            estimated_hours = round(resolution_time_model.predict_resolution_time(
+                category, ticket.priority, text, _now().hour, _now().weekday()), 2)
+        except Exception as exc:  # noqa: BLE001 - la estimación es opcional
+            logger.warning("No se pudo estimar el tiempo de resolución: %s", exc)
+
+        context["ticket"] = {
+            "ticket_id": ticket.ticket_id,
+            "category": ticket.category,
+            "priority": ticket.priority,
+            "status": ticket.status,
+            "is_new": is_new,
+            "estimated_hours": estimated_hours,
+        }
+    except Exception as exc:  # noqa: BLE001 - nunca romper la conversación por el ticket
+        logger.exception("Error registrando el ticket desde el agente")
+        context["ticket_error"] = str(exc)
+    return context
+
+
+def handle_account_query(state: AgentState, config: RunnableConfig) -> AgentState:
     context = dict(state.get("context") or {})
     context["handler"] = "account_query"
     if context.get("predicted_category") == "CNCL":
         context["is_cancellation"] = True
+    context = _open_ticket(state, config, context)
     return {**state, "context": context}
 
 
-def handle_technical_support(state: AgentState, config: RunnableConfig | None = None) -> AgentState:
+def handle_technical_support(state: AgentState, config: RunnableConfig) -> AgentState:
     context = dict(state.get("context") or {})
     context["handler"] = "technical_support"
+    context = _open_ticket(state, config, context)
     return {**state, "context": context}
 
 
-def handle_general_info(state: AgentState, config: RunnableConfig | None = None) -> AgentState:
+def handle_general_info(state: AgentState, config: RunnableConfig) -> AgentState:
     context = dict(state.get("context") or {})
     context["handler"] = "general_info"
     return {**state, "context": context}
@@ -179,7 +256,7 @@ def handle_general_info(state: AgentState, config: RunnableConfig | None = None)
 # Nodo: check_escalation
 # ---------------------------------------------------------------------------
 
-def check_escalation(state: AgentState, config: RunnableConfig | None = None) -> AgentState:
+def check_escalation(state: AgentState, config: RunnableConfig) -> AgentState:
     context = dict(state.get("context") or {})
 
     escalate = bool(
@@ -225,20 +302,32 @@ def _template_response(state: AgentState) -> str:
                 "para que te ayude de inmediato. ")
         if context.get("is_cancellation"):
             base += "Un especialista de retención se comunicará contigo en breve."
+        ticket = context.get("ticket")
+        if ticket:
+            base += (f" Tu solicitud #{ticket['ticket_id']} ya está registrada."
+                     if ticket["is_new"] else
+                     f" Lo sumé a tu solicitud #{ticket['ticket_id']}.")
         return base
 
+    ticket = context.get("ticket")
+    referencia = ""
+    if ticket:
+        referencia = (f" Quedó registrada como la solicitud #{ticket['ticket_id']}."
+                      if ticket["is_new"]
+                      else f" La sumé a tu solicitud #{ticket['ticket_id']}, que sigue abierta.")
+
     if intent == "technical_support":
-        return ("Lamento el inconveniente técnico. He registrado tu caso; un especialista "
-                "de soporte revisará tu conexión y te contactaremos con una solución.")
+        return ("Lamento el inconveniente técnico. Un especialista revisará tu conexión y "
+                f"te contactaremos con una solución.{referencia}")
     if intent == "account_query":
         name = context.get("customer_name")
         saludo = f"{name}, " if name else ""
-        return (f"{saludo}he registrado tu consulta de cuenta/facturación. "
-                "En breve un agente confirmará los detalles contigo.")
+        return (f"{saludo}he tomado tu consulta de cuenta/facturación. "
+                f"En breve un agente confirmará los detalles contigo.{referencia}")
     return "Gracias por tu mensaje, en breve un agente revisará tu consulta."
 
 
-def generate_response(state: AgentState, config: RunnableConfig | None = None) -> AgentState:
+def generate_response(state: AgentState, config: RunnableConfig) -> AgentState:
     llm = get_llm()
     if llm is None:
         return {**state, "response": _template_response(state)}

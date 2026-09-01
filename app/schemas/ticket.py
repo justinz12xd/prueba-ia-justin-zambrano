@@ -53,3 +53,26 @@ class TicketClassifyRequest(BaseModel):
 class TicketClassifyResponse(BaseModel):
     predicted_category: TicketCategoryLiteral
     probabilities: dict[str, float]
+
+
+class TicketQueueItem(BaseModel):
+    """Ticket enriquecido con las señales de los modelos, para la consola de soporte.
+
+    Se arma en el backend (y no con N llamadas desde el navegador) para que la
+    consola se dibuje con una sola petición.
+    """
+
+    ticket_id: int
+    customer_id: int
+    customer_name: str | None = None
+    category: TicketCategoryLiteral
+    priority: Priority
+    status: TicketStatus
+    description: str
+    created_at: dt.datetime
+
+    sentiment: str | None = Field(None, description="Sentimiento detectado en la descripción")
+    is_frustrated: bool = False
+    churn_probability: float | None = None
+    churn_risk: str | None = None
+    estimated_hours: float | None = None

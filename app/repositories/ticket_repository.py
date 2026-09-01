@@ -32,6 +32,22 @@ class TicketRepository:
             return None
         return ticket
 
+    def find_open_by_category(self, customer_id: int, category: str) -> Ticket | None:
+        """Ticket activo y sin resolver del mismo tipo para ese cliente.
+
+        Lo usa el agente para no abrir un ticket nuevo cada vez que el cliente
+        insiste sobre el mismo problema en la conversación.
+        """
+        stmt = (
+            select(Ticket)
+            .where(Ticket.customer_id == customer_id,
+                   Ticket.category == category,
+                   Ticket.is_active.is_(True),
+                   Ticket.status.in_(("open", "in_progress")))
+            .order_by(Ticket.ticket_id.desc())
+        )
+        return self.db.scalars(stmt).first()
+
     def create(self, customer_id: int, category: str, description: str, priority: str) -> Ticket:
         ticket = Ticket(customer_id=customer_id, category=category, description=description,
                          priority=priority, status="open")

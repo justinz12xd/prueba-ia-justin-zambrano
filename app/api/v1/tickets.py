@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.core.security import require_roles
 from app.schemas.ticket import (TicketClassifyRequest, TicketClassifyResponse, TicketCreate,
-                                 TicketResponse, TicketUpdate)
+                                 TicketQueueItem, TicketResponse, TicketUpdate)
 from app.services.ticket_service import TicketService
 
 router = APIRouter(prefix="/api/v1/tickets", tags=["Tickets"])
@@ -18,6 +18,18 @@ def list_tickets(skip: int = Query(0, ge=0), limit: int = Query(50, ge=1, le=200
                   customer_id: int | None = None,
                   db: Session = Depends(get_db)) -> list[TicketResponse]:
     return TicketService(db).list_tickets(skip, limit, customer_id)
+
+
+@router.get("/queue", response_model=list[TicketQueueItem],
+            summary="Bandeja de trabajo del agente",
+            description="Tickets sin resolver enriquecidos con las señales de los modelos: "
+                        "sentimiento del cliente, riesgo de churn y tiempo estimado de "
+                        "resolución. Se declara antes de /{ticket_id} para que la ruta "
+                        "literal gane sobre la paramétrica.",
+            dependencies=[Depends(require_roles("admin", "agent"))])
+def tickets_queue(limit: int = Query(20, ge=1, le=50), only_open: bool = True,
+                   db: Session = Depends(get_db)) -> list[TicketQueueItem]:
+    return TicketService(db).queue(limit, only_open)
 
 
 @router.get("/{ticket_id}", response_model=TicketResponse, summary="Obtener un ticket",

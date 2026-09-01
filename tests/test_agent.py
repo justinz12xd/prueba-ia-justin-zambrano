@@ -75,3 +75,37 @@ def test_customer_role_cannot_delete_session(client, auth_headers, customer_head
                          headers=customer_headers).status_code == 403
     assert client.delete(f"/api/v1/agent/sessions/{session_id}",
                          headers=auth_headers).status_code == 204
+
+
+def test_agent_opens_ticket_from_conversation(client, auth_headers):
+    """Un problema real descrito en el chat queda registrado como ticket."""
+    resp = client.post("/api/v1/agent/chat", json={
+        "message": "El internet se corta cada media hora desde el lunes y ya reinicié el router",
+        "customer_id": 1,
+    }, headers=auth_headers)
+    assert resp.status_code == 200
+    ticket = resp.json()["ticket"]
+    assert ticket is not None
+    assert ticket["category"] == "TECH"
+    assert ticket["is_new"] is True
+    assert ticket["ticket_id"] > 0
+
+
+def test_agent_reuses_open_ticket_of_same_category(client, auth_headers):
+    """Insistir sobre el mismo problema no debe abrir un ticket duplicado."""
+    payload = {"message": "Sigo sin internet, se corta cada media hora desde el lunes",
+               "customer_id": 1}
+    first = client.post("/api/v1/agent/chat", json=payload, headers=auth_headers).json()
+    second = client.post("/api/v1/agent/chat", json=payload, headers=auth_headers).json()
+
+    assert first["ticket"]["category"] == "TECH"
+    assert second["ticket"]["ticket_id"] == first["ticket"]["ticket_id"]
+    assert second["ticket"]["is_new"] is False
+
+
+def test_greeting_does_not_open_ticket(client, auth_headers):
+    """Un saludo no es una solicitud de soporte."""
+    resp = client.post("/api/v1/agent/chat", json={"message": "Hola, buenas tardes",
+                                                    "customer_id": 1}, headers=auth_headers)
+    assert resp.status_code == 200
+    assert resp.json()["ticket"] is None

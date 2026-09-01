@@ -24,16 +24,17 @@
     --shadow: 0 1px 2px rgba(16,32,64,.06), 0 8px 24px rgba(16,32,64,.06);
   }
   * { box-sizing: border-box; }
+  html, body { height: 100%; }
   body {
     margin: 0; background: var(--bg); color: var(--text);
     font: 15px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    display: flex; flex-direction: column;
   }
 
-  /* ---------- barra superior ---------- */
   .topbar {
     background: var(--surface); border-bottom: 1px solid var(--border);
-    padding: 0 24px; display: flex; align-items: center; gap: 14px; height: 62px;
-    position: sticky; top: 0; z-index: 10;
+    padding: 0 24px; display: flex; align-items: center; gap: 14px;
+    height: 60px; flex-shrink: 0;
   }
   .logo { display: flex; align-items: center; gap: 9px; font-weight: 700; letter-spacing: -.02em; }
   .logo .mark {
@@ -45,27 +46,19 @@
   .topbar a { font-size: 13px; color: var(--muted); text-decoration: none; }
   .topbar a:hover { color: var(--brand); }
 
-  main { max-width: 1080px; margin: 0 auto; padding: 28px 24px 60px; }
-
   .card {
     background: var(--surface); border: 1px solid var(--border);
     border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px;
   }
   h2 { font-size: 17px; margin: 0 0 4px; letter-spacing: -.01em; }
-  h3 { font-size: 14px; margin: 0 0 10px; }
   .sub { color: var(--muted); font-size: 13.5px; margin: 0 0 18px; }
 
   label { display: block; font-size: 13px; font-weight: 500; margin: 14px 0 5px; }
-  input, select, textarea {
+  input, select {
     width: 100%; padding: 11px 13px; border: 1px solid var(--border);
     border-radius: 9px; font: inherit; background: var(--surface); color: var(--text);
   }
-  textarea { resize: vertical; min-height: 110px; }
-  input:focus, select:focus, textarea:focus {
-    outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px var(--brand-soft);
-  }
-  .counter { font-size: 12px; color: var(--muted); text-align: right; margin-top: 5px; }
-  .counter.bad { color: var(--danger); }
+  input:focus, select:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px var(--brand-soft); }
 
   button {
     padding: 11px 20px; border: 1px solid transparent; border-radius: 9px;
@@ -75,13 +68,10 @@
   button:disabled { opacity: .45; cursor: not-allowed; }
   button.ghost { background: transparent; border-color: var(--border); color: var(--text); font-weight: 500; }
   button.ghost:hover:not(:disabled) { background: var(--surface-2); }
-  button.link {
-    background: none; border: none; color: var(--brand); padding: 0;
-    font-size: 13px; font-weight: 500; text-decoration: underline;
-  }
+  button.small { padding: 6px 13px; font-size: 13px; }
 
   .pill {
-    display: inline-flex; align-items: center; gap: 6px; padding: 3px 11px;
+    display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px;
     border-radius: 999px; font-size: 12px; font-weight: 600;
     background: var(--surface-2); color: var(--muted);
   }
@@ -90,193 +80,161 @@
   .pill.warn { background: var(--warn-soft); color: var(--warn); }
   .pill.danger { background: var(--danger-soft); color: var(--danger); }
 
-  /* ---------- detección en vivo ---------- */
-  .detect {
-    margin-top: 14px; padding: 13px 15px; border-radius: 10px;
-    background: var(--brand-soft); border: 1px solid #c7d7fe;
-    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-  }
-  .detect.idle { background: var(--surface-2); border-color: var(--border); color: var(--muted); }
-  .detect .team { font-weight: 600; }
-  /* El span vive dentro de #detectText, no es hijo directo del flex: el margen
-     explícito es lo que separa la confianza del nombre del equipo. */
-  .detect .conf { font-size: 12.5px; color: var(--muted); margin-left: 10px; white-space: nowrap; }
-
-  .tech-detail {
-    margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border);
-    font-size: 12.5px;
-  }
-  .bar-row { display: grid; grid-template-columns: 52px 1fr 46px; gap: 9px; align-items: center; margin-top: 5px; }
-  .bar { height: 6px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
-  .bar > span { display: block; height: 100%; background: var(--brand); }
-  .bar-row .val { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
-
-  /* ---------- resultado ---------- */
-  .receipt { border-left: 4px solid var(--ok); }
-  .receipt .big { font-size: 28px; font-weight: 700; letter-spacing: -.02em; }
-  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-top: 16px; }
-  .fact { background: var(--surface-2); border-radius: 9px; padding: 11px 13px; }
-  .fact .k { font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
-  .fact .v { font-weight: 600; margin-top: 2px; }
-
-  /* ---------- tickets ---------- */
-  .ticket {
-    border: 1px solid var(--border); border-radius: 10px; padding: 13px 15px; margin-top: 10px;
-    display: flex; gap: 14px; align-items: flex-start;
-  }
-  .ticket .body { flex: 1; min-width: 0; }
-  .ticket .desc { font-size: 14px; margin: 5px 0 0; }
-  .ticket .id { font-family: ui-monospace, Menlo, monospace; font-size: 12.5px; color: var(--muted); }
-
-  /* ---------- chat ---------- */
-  .chat-shell { display: grid; grid-template-columns: 1fr; gap: 0; }
-  #chatLog {
-    height: 300px; overflow-y: auto; padding: 16px; background: var(--surface-2);
-    border-radius: 10px; display: flex; flex-direction: column; gap: 10px;
-  }
-  .msg { max-width: 82%; padding: 10px 14px; border-radius: 14px; font-size: 14px; }
-  .msg.user { align-self: flex-end; background: var(--brand); color: #fff; border-bottom-right-radius: 4px; }
-  .msg.bot { align-self: flex-start; background: var(--surface); border: 1px solid var(--border); border-bottom-left-radius: 4px; }
-  .msg.sys { align-self: center; color: var(--muted); font-size: 12.5px; }
-  .chat-input { display: flex; gap: 10px; margin-top: 12px; }
-  .chat-input input { flex: 1; }
-
-  .escalation {
-    margin-top: 12px; padding: 12px 15px; border-radius: 10px;
-    background: var(--warn-soft); border: 1px solid #fcd34d; font-size: 13.5px;
-  }
-  .escalation strong { color: var(--warn); }
-
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .stack > * + * { margin-top: 20px; }
   .status { font-size: 13px; margin-top: 10px; min-height: 18px; }
   .status.err { color: var(--danger); }
   .hidden { display: none !important; }
   .center { max-width: 420px; margin: 70px auto; }
-  footer { text-align: center; color: var(--muted); font-size: 12.5px; padding: 20px; }
 
-  @media (max-width: 820px) { .grid-2 { grid-template-columns: 1fr; } }
+  /* =================== VISTA CLIENTE: solo chat =================== */
+  #clientView { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+  .chat-wrap {
+    flex: 1; display: flex; flex-direction: column; min-height: 0;
+    max-width: 760px; width: 100%; margin: 0 auto; padding: 20px 20px 0;
+  }
+  #chatLog {
+    flex: 1; overflow-y: auto; display: flex; flex-direction: column;
+    gap: 12px; padding: 6px 4px 20px;
+  }
+  .msg {
+    max-width: 78%; padding: 11px 15px; border-radius: 16px; font-size: 14.5px;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .msg.user { align-self: flex-end; background: var(--brand); color: #fff; border-bottom-right-radius: 4px; }
+  .msg.bot {
+    align-self: flex-start; background: var(--surface); border: 1px solid var(--border);
+    border-bottom-left-radius: 4px;
+  }
+  .msg.typing { color: var(--muted); font-style: italic; }
+  .welcome { text-align: center; color: var(--muted); margin: auto 0; padding: 30px 20px; }
+  .welcome .big { font-size: 20px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 18px; }
+  .chip {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 999px;
+    padding: 8px 15px; font-size: 13.5px; cursor: pointer; color: var(--text); font-weight: 400;
+  }
+  .chip:hover { border-color: var(--brand); color: var(--brand); background: var(--surface); }
+
+  /* tarjeta del ticket dentro del chat */
+  .ticket-card {
+    align-self: flex-start; max-width: 78%; background: var(--surface);
+    border: 1px solid var(--border); border-left: 3px solid var(--ok);
+    border-radius: 12px; padding: 13px 16px;
+  }
+  .ticket-card .head { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+  .ticket-card .rows { margin-top: 9px; display: grid; gap: 4px; font-size: 13.5px; }
+  .ticket-card .rows div { display: flex; justify-content: space-between; gap: 16px; }
+  .ticket-card .rows .k { color: var(--muted); }
+
+  .notice {
+    align-self: center; max-width: 88%; background: var(--warn-soft);
+    border: 1px solid #fcd34d; border-radius: 10px; padding: 10px 15px; font-size: 13.5px;
+  }
+  .notice strong { color: var(--warn); }
+
+  .composer {
+    flex-shrink: 0; padding: 14px 0 22px; display: flex; gap: 10px;
+    border-top: 1px solid var(--border); background: var(--bg);
+  }
+  .composer input { flex: 1; border-radius: 999px; padding: 12px 18px; }
+
+  /* =================== VISTA AGENTE: consola =================== */
+  #agentView { flex: 1; overflow-y: auto; }
+  .console { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  .console-head { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; flex-wrap: wrap; }
+  .console-head h2 { margin: 0; }
+  .console-head .spacer { flex: 1; }
+  .console-head label { margin: 0; display: flex; align-items: center; gap: 7px; font-weight: 400; }
+  .console-head input[type="checkbox"] { width: auto; }
+
+  .qcard {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 16px 18px; margin-bottom: 14px;
+    border-left: 3px solid var(--border);
+  }
+  .qcard.urgent { border-left-color: var(--danger); }
+  .qcard.attention { border-left-color: var(--warn); }
+  .qcard .line1 { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .qcard .tid { font-family: ui-monospace, Menlo, monospace; font-weight: 600; }
+  .qcard .cust { color: var(--muted); font-size: 13px; }
+  .qcard .desc { margin: 9px 0 11px; font-size: 14px; }
+  .qcard .signals { display: flex; gap: 7px; flex-wrap: wrap; align-items: center; }
+  .qcard .actions { display: flex; gap: 8px; margin-top: 13px; }
+  .empty { color: var(--muted); text-align: center; padding: 40px; }
+
+  footer { text-align: center; color: var(--muted); font-size: 12.5px; padding: 14px; flex-shrink: 0; }
 </style>
 </head>
 <body>
 
 <div class="topbar">
   <div class="logo"><span class="mark">T</span> TelecomEC</div>
-  <span class="pill">Centro de Ayuda</span>
+  <span class="pill" id="viewTag">Centro de Ayuda</span>
   <div class="spacer"></div>
   <span class="who hidden" id="who"></span>
-  <a href="/demo" title="Panel técnico con los 4 modelos">Panel técnico</a>
-  <a href="/docs">API</a>
-  <button id="logoutBtn" class="ghost hidden" style="padding:7px 14px">Salir</button>
+  <a href="/demo" id="techLink" class="hidden">Panel técnico</a>
+  <a href="/docs" id="apiLink" class="hidden">API</a>
+  <button id="logoutBtn" class="ghost small hidden">Salir</button>
 </div>
 
-<main>
+<!-- ============================ LOGIN ============================ -->
+<section id="gate" class="card center">
+  <h2>Ingresa a tu cuenta</h2>
+  <p class="sub">El sistema te mostrará la vista que corresponde a tu rol.</p>
+  <label for="email">Correo electrónico</label>
+  <input id="email" value="cliente@telecom.com" autocomplete="username">
+  <label for="password">Contraseña</label>
+  <input id="password" type="password" value="Cliente123!" autocomplete="current-password">
+  <label for="preset">Cuenta de prueba</label>
+  <select id="preset">
+    <option value="cliente@telecom.com|Cliente123!">Cliente — solo chat de ayuda</option>
+    <option value="agente@telecom.com|Agente123!">Agente de soporte — consola de tickets</option>
+    <option value="admin@telecom.com|Admin123!">Administrador — consola de tickets</option>
+  </select>
+  <button id="loginBtn" style="margin-top:18px;width:100%">Ingresar</button>
+  <div id="loginStatus" class="status"></div>
+</section>
 
-  <!-- ============================ LOGIN ============================ -->
-  <section id="gate" class="card center">
-    <h2>Ingresa a tu cuenta</h2>
-    <p class="sub">Accede para crear solicitudes de soporte y ver su estado.</p>
-    <label for="email">Correo electrónico</label>
-    <input id="email" value="cliente@telecom.com" autocomplete="username">
-    <label for="password">Contraseña</label>
-    <input id="password" type="password" value="Cliente123!" autocomplete="current-password">
-    <label for="preset">Cuenta de prueba</label>
-    <select id="preset">
-      <option value="cliente@telecom.com|Cliente123!">Cliente (vista de este portal)</option>
-      <option value="agente@telecom.com|Agente123!">Agente de soporte</option>
-      <option value="admin@telecom.com|Admin123!">Administrador</option>
-    </select>
-    <button id="loginBtn" style="margin-top:18px;width:100%">Ingresar</button>
-    <div id="loginStatus" class="status"></div>
-  </section>
-
-  <!-- ============================ PORTAL ============================ -->
-  <div id="app" class="hidden stack">
-
-    <!-- Nueva solicitud -->
-    <section class="card">
-      <h2>¿En qué podemos ayudarte?</h2>
-      <p class="sub">
-        Cuéntanos qué está pasando con tus palabras. Clasificamos tu caso automáticamente
-        y lo enviamos al equipo correcto.
-      </p>
-
-      <label for="desc">Describe tu problema</label>
-      <textarea id="desc" placeholder="Ejemplo: Desde el lunes el internet se corta cada media hora, ya reinicié el router y sigue igual."></textarea>
-      <div class="counter" id="counter">0 / 500 caracteres (mínimo 20)</div>
-
-      <!-- Detección automática en vivo -->
-      <div class="detect idle" id="detect">
-        <span id="detectText">Escribe al menos 20 caracteres y detectaremos el tipo de solicitud…</span>
-      </div>
-      <div class="tech-detail hidden" id="techDetail">
-        <button class="link" id="toggleDetail" type="button">Ocultar detalle técnico</button>
-        <div id="bars" style="margin-top:8px"></div>
-      </div>
-      <button class="link hidden" id="showDetail" type="button" style="margin-top:10px">Ver detalle técnico</button>
-
-      <div class="grid-2" style="margin-top:6px">
-        <div>
-          <label for="priority">¿Qué tan urgente es?</label>
-          <select id="priority">
-            <option value="low">Baja — puedo esperar</option>
-            <option value="medium" selected>Media — me afecta a diario</option>
-            <option value="high">Alta — no puedo usar el servicio</option>
-          </select>
-        </div>
-        <div>
-          <label for="categoryOverride">Categoría</label>
-          <select id="categoryOverride">
-            <option value="">Detectar automáticamente (recomendado)</option>
-            <option value="TECH">Problema técnico</option>
-            <option value="BILL">Facturación</option>
-            <option value="PLAN">Cambio de plan</option>
-            <option value="CNCL">Cancelación</option>
-            <option value="OTHR">Otro</option>
-          </select>
+<!-- ==================== VISTA CLIENTE: SOLO CHAT ==================== -->
+<div id="clientView" class="hidden">
+  <div class="chat-wrap">
+    <div id="chatLog">
+      <div class="welcome" id="welcome">
+        <div class="big">Hola 👋 ¿En qué podemos ayudarte?</div>
+        <div>Cuéntanos qué está pasando y nos encargamos del resto.</div>
+        <div class="chips">
+          <button class="chip" data-msg="El internet se corta cada media hora desde el lunes, ya reinicié el router y sigue igual">Mi internet falla</button>
+          <button class="chip" data-msg="Me cobraron dos veces el mismo mes en la factura y quiero que me devuelvan la diferencia">Un cobro incorrecto</button>
+          <button class="chip" data-msg="Quiero conocer las opciones para cambiar mi plan a uno con más megas de velocidad">Cambiar mi plan</button>
         </div>
       </div>
-
-      <button id="submitBtn" style="margin-top:18px" disabled>Enviar solicitud</button>
-      <div id="submitStatus" class="status"></div>
-    </section>
-
-    <!-- Comprobante del ticket creado -->
-    <section class="card receipt hidden" id="receipt">
-      <span class="pill ok">Solicitud registrada</span>
-      <div class="big" id="receiptId" style="margin-top:10px"></div>
-      <p class="sub" id="receiptLead" style="margin-bottom:0"></p>
-      <div class="facts" id="receiptFacts"></div>
-    </section>
-
-    <!-- Asistente + Mis solicitudes -->
-    <div class="grid-2">
-      <section class="card">
-        <h2>Asistente virtual</h2>
-        <p class="sub">Resuelve dudas al instante. Si detecta que necesitas una persona, te deriva.</p>
-        <div id="chatLog">
-          <div class="msg sys">Hola 👋 ¿Tienes alguna consulta?</div>
-        </div>
-        <div class="chat-input">
-          <input id="chatInput" placeholder="Escribe tu consulta…" autocomplete="off">
-          <button id="sendBtn">Enviar</button>
-        </div>
-        <div class="escalation hidden" id="escalation"></div>
-        <div id="chatStatus" class="status"></div>
-      </section>
-
-      <section class="card">
-        <h2>Mis solicitudes</h2>
-        <p class="sub">Historial de tus tickets y su estado actual.</p>
-        <div id="ticketList"><p class="sub">Cargando…</p></div>
-        <button id="reloadBtn" class="ghost" style="margin-top:14px">Actualizar</button>
-      </section>
     </div>
-
+    <div class="composer">
+      <input id="chatInput" placeholder="Escribe tu mensaje…" autocomplete="off">
+      <button id="sendBtn">Enviar</button>
+    </div>
   </div>
-</main>
+</div>
 
-<footer>TelecomEC · Centro de Ayuda — demo del sistema inteligente de atención al cliente</footer>
+<!-- ==================== VISTA AGENTE: CONSOLA ==================== -->
+<div id="agentView" class="hidden">
+  <div class="console">
+    <div class="console-head">
+      <h2>Bandeja de soporte</h2>
+      <span class="pill" id="queueCount"></span>
+      <div class="spacer"></div>
+      <label><input type="checkbox" id="onlyOpen" checked> Solo sin resolver</label>
+      <button id="reloadQueue" class="ghost small">Actualizar</button>
+    </div>
+    <p class="sub">
+      Cada solicitud llega clasificada por el modelo de tickets y enriquecida con el
+      sentimiento del cliente, su riesgo de abandono y el tiempo estimado de resolución.
+    </p>
+    <div id="queue"><p class="empty">Cargando bandeja…</p></div>
+    <div id="queueStatus" class="status"></div>
+  </div>
+</div>
+
+<footer>TelecomEC · demo del sistema inteligente de atención al cliente</footer>
 
 <script>
 (() => {
@@ -286,9 +244,7 @@
   let token = null;
   let me = null;
   let sessionId = null;
-  let lastDetection = null;
 
-  /** Cómo se le presenta cada categoría al cliente (el modelo devuelve el código). */
   const CATEGORY_UI = {
     TECH: { team: "Soporte Técnico", label: "Problema técnico" },
     BILL: { team: "Facturación", label: "Consulta de facturación" },
@@ -302,6 +258,11 @@
     in_progress: { text: "En proceso", cls: "warn" },
     resolved: { text: "Resuelto", cls: "ok" },
     closed: { text: "Cerrado", cls: "" },
+  };
+  const SENTIMENT_UI = {
+    negative: { text: "😠 negativo", cls: "danger" },
+    neutral: { text: "😐 neutral", cls: "" },
+    positive: { text: "🙂 positivo", cls: "ok" },
   };
 
   // ------------------------------ helpers ------------------------------
@@ -323,18 +284,28 @@
   }
 
   const setStatus = (el, msg, kind = "") => { el.textContent = msg; el.className = `status ${kind}`; };
-  const escapeHtml = (s) => s.replace(/[&<>"']/g, (c) =>
+  const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
   function busy(button, isBusy, idleLabel) {
     button.disabled = isBusy;
-    button.textContent = isBusy ? "Un momento…" : idleLabel;
+    button.textContent = isBusy ? "…" : idleLabel;
   }
 
   function formatHours(hours) {
-    if (hours < 1) return `${Math.round(hours * 60)} minutos`;
-    if (hours < 24) return `${hours.toFixed(1).replace(".0", "")} horas`;
+    if (hours == null) return null;
+    if (hours < 1) return `${Math.round(hours * 60)} min`;
+    if (hours < 24) return `${hours.toFixed(1).replace(".0", "")} h`;
     return `${(hours / 24).toFixed(1).replace(".0", "")} días`;
+  }
+
+  function timeAgo(iso) {
+    const minutes = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
+    if (minutes < 1) return "recién";
+    if (minutes < 60) return `hace ${minutes} min`;
+    const hours = Math.round(minutes / 60);
+    if (hours < 24) return `hace ${hours} h`;
+    return `hace ${Math.round(hours / 24)} d`;
   }
 
   // ------------------------------ login ------------------------------
@@ -356,21 +327,23 @@
       token = data.access_token;
       me = await api("/api/v1/auth/me");
 
-      $("who").textContent = me.customer_name
-        ? `${me.customer_name} · ${me.email}`
-        : `${me.email} · ${me.role}`;
+      $("gate").classList.add("hidden");
+      $("who").textContent = me.customer_name || me.email;
       $("who").classList.remove("hidden");
       $("logoutBtn").classList.remove("hidden");
-      $("gate").classList.add("hidden");
-      $("app").classList.remove("hidden");
 
-      if (!me.customer_id) {
-        setStatus($("submitStatus"),
-          `Tu cuenta (${me.role}) no está asociada a un cliente, así que las solicitudes ` +
-          `se registrarán a nombre del cliente demo.`, "");
+      // La vista la decide el rol: el cliente no ve herramientas internas.
+      if (me.role === "customer") {
+        $("viewTag").textContent = "Centro de Ayuda";
+        $("clientView").classList.remove("hidden");
+        $("chatInput").focus();
+      } else {
+        $("viewTag").textContent = "Consola de Soporte";
+        $("techLink").classList.remove("hidden");
+        $("apiLink").classList.remove("hidden");
+        $("agentView").classList.remove("hidden");
+        loadQueue();
       }
-      loadTickets();
-      $("desc").focus();
     } catch (error) {
       setStatus($("loginStatus"), error.message, "err");
     } finally {
@@ -382,234 +355,179 @@
   $("password").addEventListener("keydown", (e) => { if (e.key === "Enter") login(); });
 
   $("logoutBtn").addEventListener("click", () => {
-    token = null; me = null; sessionId = null; lastDetection = null;
-    $("app").classList.add("hidden");
+    token = null; me = null; sessionId = null;
+    for (const id of ["clientView", "agentView", "who", "logoutBtn", "techLink", "apiLink"]) {
+      $(id).classList.add("hidden");
+    }
+    $("viewTag").textContent = "Centro de Ayuda";
     $("gate").classList.remove("hidden");
-    $("who").classList.add("hidden");
-    $("logoutBtn").classList.add("hidden");
-    $("receipt").classList.add("hidden");
   });
 
-  /** El cliente asociado a la sesión; si la cuenta no es de cliente, se usa el demo. */
-  const activeCustomerId = () => me?.customer_id || 1;
+  // ==================== VISTA CLIENTE ====================
 
-  // -------------------- clasificación mientras escribe --------------------
-
-  let detectTimer = null;
-
-  $("desc").addEventListener("input", () => {
-    const text = $("desc").value.trim();
-    const counter = $("counter");
-    counter.textContent = `${text.length} / 500 caracteres (mínimo 20)`;
-    counter.className = `counter ${text.length > 500 ? "bad" : ""}`;
-    $("submitBtn").disabled = text.length < 20 || text.length > 500;
-
-    clearTimeout(detectTimer);
-    if (text.length < 20) {
-      lastDetection = null;
-      $("detect").className = "detect idle";
-      $("detectText").textContent =
-        "Escribe al menos 20 caracteres y detectaremos el tipo de solicitud…";
-      $("techDetail").classList.add("hidden");
-      $("showDetail").classList.add("hidden");
-      return;
-    }
-    // Debounce: no dispara una petición por cada tecla.
-    detectTimer = setTimeout(() => detect(text), 450);
-  });
-
-  async function detect(text) {
-    try {
-      const data = await api("/api/v1/tickets/classify", {
-        method: "POST", body: { description: text },
-      });
-      lastDetection = data;
-      const ui = CATEGORY_UI[data.predicted_category] || CATEGORY_UI.OTHR;
-      const confidence = data.probabilities[data.predicted_category];
-
-      $("detect").className = "detect";
-      $("detectText").innerHTML =
-        `Detectamos: <span class="team">${ui.label}</span> → se enviará a ` +
-        `<span class="team">${ui.team}</span>` +
-        `<span class="conf">confianza ${(confidence * 100).toFixed(0)}%</span>`;
-
-      const bars = $("bars");
-      bars.innerHTML = "";
-      Object.entries(data.probabilities).sort((a, b) => b[1] - a[1]).forEach(([cat, p]) => {
-        const pct = (p * 100).toFixed(1);
-        const row = document.createElement("div");
-        row.className = "bar-row";
-        row.innerHTML = `<span>${cat}</span><div class="bar"><span style="width:${pct}%"></span></div>` +
-                        `<span class="val">${pct}%</span>`;
-        bars.appendChild(row);
-      });
-      if ($("techDetail").classList.contains("hidden")) $("showDetail").classList.remove("hidden");
-    } catch (error) {
-      // La clasificación en vivo es una ayuda, no un bloqueo: si falla, se puede enviar igual.
-      $("detect").className = "detect idle";
-      $("detectText").textContent = "No pudimos detectar la categoría automáticamente.";
-    }
+  function appendNode(node) {
+    $("welcome")?.remove();
+    const log = $("chatLog");
+    log.appendChild(node);
+    log.scrollTop = log.scrollHeight;
+    return node;
   }
-
-  $("showDetail").addEventListener("click", () => {
-    $("techDetail").classList.remove("hidden");
-    $("showDetail").classList.add("hidden");
-  });
-  $("toggleDetail").addEventListener("click", () => {
-    $("techDetail").classList.add("hidden");
-    $("showDetail").classList.remove("hidden");
-  });
-
-  // ------------------------------ crear ticket ------------------------------
-
-  $("submitBtn").addEventListener("click", async () => {
-    const description = $("desc").value.trim();
-    const priority = $("priority").value;
-    const override = $("categoryOverride").value;
-
-    busy($("submitBtn"), true, "Enviar solicitud");
-    setStatus($("submitStatus"), "");
-    try {
-      // 1) Se crea el ticket. Sin 'category', la API lo clasifica con el modelo.
-      const ticket = await api("/api/v1/tickets", {
-        method: "POST",
-        body: {
-          customer_id: activeCustomerId(),
-          description,
-          priority,
-          category: override || null,
-        },
-      });
-
-      // 2) Se estima el tiempo de respuesta con la red multi-input.
-      let eta = null;
-      try {
-        eta = await api("/api/v1/ml/predict-resolution-time", {
-          method: "POST",
-          body: { description, category: ticket.category, priority },
-        });
-      } catch {
-        // El rol customer no puede consultar este modelo: el ticket ya quedó creado igual.
-      }
-
-      showReceipt(ticket, eta);
-      $("desc").value = "";
-      $("desc").dispatchEvent(new Event("input"));
-      loadTickets();
-    } catch (error) {
-      setStatus($("submitStatus"), error.message, "err");
-    } finally {
-      busy($("submitBtn"), false, "Enviar solicitud");
-    }
-  });
-
-  function showReceipt(ticket, eta) {
-    const ui = CATEGORY_UI[ticket.category] || CATEGORY_UI.OTHR;
-    $("receiptId").textContent = `Solicitud #${ticket.ticket_id}`;
-    $("receiptLead").textContent =
-      `La derivamos al equipo de ${ui.team}. Te avisaremos por correo cuando haya novedades.`;
-
-    const facts = [
-      { k: "Tipo de caso", v: ui.label },
-      { k: "Equipo asignado", v: ui.team },
-      { k: "Prioridad", v: PRIORITY_UI[ticket.priority] },
-      { k: "Estado", v: STATUS_UI[ticket.status]?.text || ticket.status },
-    ];
-    if (eta) {
-      facts.push({ k: "Respuesta estimada", v: formatHours(eta.estimated_hours) });
-    }
-    $("receiptFacts").innerHTML = facts
-      .map((f) => `<div class="fact"><div class="k">${f.k}</div><div class="v">${escapeHtml(f.v)}</div></div>`)
-      .join("");
-    $("receipt").classList.remove("hidden");
-    $("receipt").scrollIntoView({ behavior: "smooth", block: "center" });
-  }
-
-  // ------------------------------ mis tickets ------------------------------
-
-  async function loadTickets() {
-    const list = $("ticketList");
-    try {
-      const tickets = await api(`/api/v1/tickets?customer_id=${activeCustomerId()}&limit=8`);
-      if (!tickets.length) {
-        list.innerHTML = '<p class="sub">Todavía no tienes solicitudes registradas.</p>';
-        return;
-      }
-      list.innerHTML = tickets.map((t) => {
-        const ui = CATEGORY_UI[t.category] || CATEGORY_UI.OTHR;
-        const st = STATUS_UI[t.status] || { text: t.status, cls: "" };
-        const created = new Date(t.created_at).toLocaleDateString("es-EC",
-          { day: "numeric", month: "short", year: "numeric" });
-        const short = t.description.length > 110
-          ? `${t.description.slice(0, 110)}…` : t.description;
-        return `
-          <div class="ticket">
-            <div class="body">
-              <span class="id">#${t.ticket_id}</span>
-              <span class="pill ${st.cls}" style="margin-left:8px">${st.text}</span>
-              <span class="pill" style="margin-left:4px">${ui.team}</span>
-              <p class="desc">${escapeHtml(short)}</p>
-              <span class="id">${created} · prioridad ${PRIORITY_UI[t.priority]}</span>
-            </div>
-          </div>`;
-      }).join("");
-    } catch (error) {
-      list.innerHTML = `<p class="sub">No se pudieron cargar las solicitudes: ${escapeHtml(error.message)}</p>`;
-    }
-  }
-
-  $("reloadBtn").addEventListener("click", loadTickets);
-
-  // ------------------------------ asistente ------------------------------
 
   function appendMessage(kind, text) {
-    const log = $("chatLog");
-    log.querySelector(".msg.sys")?.remove();
     const div = document.createElement("div");
     div.className = `msg ${kind}`;
     div.textContent = text;
-    log.appendChild(div);
-    log.scrollTop = log.scrollHeight;
-    return div;
+    return appendNode(div);
   }
 
-  async function send() {
-    const message = $("chatInput").value.trim();
+  /** Tarjeta del ticket que abrió el agente durante la conversación. */
+  function appendTicketCard(ticket) {
+    const ui = CATEGORY_UI[ticket.category] || CATEGORY_UI.OTHR;
+    const eta = formatHours(ticket.estimated_hours);
+    const div = document.createElement("div");
+    div.className = "ticket-card";
+    div.innerHTML = `
+      <div class="head">
+        🎫 Solicitud #${ticket.ticket_id}
+        <span class="pill ${ticket.is_new ? "ok" : "brand"}">
+          ${ticket.is_new ? "registrada" : "actualizada"}
+        </span>
+      </div>
+      <div class="rows">
+        <div><span class="k">Equipo</span><span>${ui.team}</span></div>
+        <div><span class="k">Prioridad</span><span>${PRIORITY_UI[ticket.priority]}</span></div>
+        ${eta ? `<div><span class="k">Respuesta estimada</span><span>${eta}</span></div>` : ""}
+      </div>`;
+    return appendNode(div);
+  }
+
+  function appendNotice(html) {
+    const div = document.createElement("div");
+    div.className = "notice";
+    div.innerHTML = html;
+    return appendNode(div);
+  }
+
+  async function send(preset = null) {
+    const input = $("chatInput");
+    const message = (preset ?? input.value).trim();
     if (!message) return;
+
     appendMessage("user", message);
-    $("chatInput").value = "";
-    const placeholder = appendMessage("bot", "Escribiendo…");
-    setStatus($("chatStatus"), "");
+    input.value = "";
+    const typing = appendMessage("bot typing", "Escribiendo…");
     busy($("sendBtn"), true, "Enviar");
 
     try {
       const data = await api("/api/v1/agent/chat", {
         method: "POST",
-        body: { message, session_id: sessionId, customer_id: activeCustomerId() },
+        body: { message, session_id: sessionId, customer_id: me.customer_id },
       });
       sessionId = data.session_id;
-      placeholder.textContent = data.response;
+      typing.className = "msg bot";
+      typing.textContent = data.response;
 
-      const box = $("escalation");
+      // El ticket lo abre el agente en el backend; aquí solo se muestra.
+      if (data.ticket) appendTicketCard(data.ticket);
+
       if (data.escalate) {
         const reason = data.customer_context?.escalation_reason;
-        box.innerHTML = `<strong>Te estamos derivando con un asesor.</strong> ` +
-          (reason ? `Motivo: ${escapeHtml(reason)}.` : "") +
-          ` Un especialista continuará la conversación contigo.`;
-        box.classList.remove("hidden");
-      } else {
-        box.classList.add("hidden");
+        appendNotice(`<strong>Te estamos derivando con un asesor.</strong> ` +
+          (reason ? `Motivo: ${escapeHtml(reason)}. ` : "") +
+          `Un especialista continuará la conversación contigo.`);
       }
     } catch (error) {
-      placeholder.remove();
-      setStatus($("chatStatus"), error.message, "err");
+      typing.className = "msg bot";
+      typing.textContent = `No pudimos procesar tu mensaje: ${error.message}`;
     } finally {
       busy($("sendBtn"), false, "Enviar");
+      $("chatInput").focus();
     }
   }
 
-  $("sendBtn").addEventListener("click", send);
+  $("sendBtn").addEventListener("click", () => send());
   $("chatInput").addEventListener("keydown", (e) => { if (e.key === "Enter") send(); });
+  document.querySelectorAll(".chip").forEach((chip) => {
+    chip.addEventListener("click", () => send(chip.dataset.msg));
+  });
+
+  // ==================== VISTA AGENTE ====================
+
+  async function loadQueue() {
+    const box = $("queue");
+    setStatus($("queueStatus"), "");
+    try {
+      const onlyOpen = $("onlyOpen").checked;
+      const items = await api(`/api/v1/tickets/queue?limit=20&only_open=${onlyOpen}`);
+      $("queueCount").textContent = `${items.length} ${onlyOpen ? "sin resolver" : "en total"}`;
+
+      if (!items.length) {
+        box.innerHTML = '<p class="empty">No hay solicitudes pendientes. 🎉</p>';
+        return;
+      }
+      box.innerHTML = items.map(renderQueueCard).join("");
+      box.querySelectorAll("button[data-action]").forEach((btn) => {
+        btn.addEventListener("click", () => updateStatus(btn.dataset.id, btn.dataset.action, btn));
+      });
+    } catch (error) {
+      box.innerHTML = "";
+      setStatus($("queueStatus"), `No se pudo cargar la bandeja: ${error.message}`, "err");
+    }
+  }
+
+  function renderQueueCard(t) {
+    const ui = CATEGORY_UI[t.category] || CATEGORY_UI.OTHR;
+    const st = STATUS_UI[t.status] || { text: t.status, cls: "" };
+    const sent = SENTIMENT_UI[t.sentiment];
+    const eta = formatHours(t.estimated_hours);
+    // El borde izquierdo resalta lo que conviene atender primero.
+    const urgency = (t.is_frustrated || t.churn_risk === "high") ? "urgent"
+                  : (t.priority === "high" ? "attention" : "");
+
+    const signals = [
+      `<span class="pill ${st.cls}">${st.text}</span>`,
+      `<span class="pill brand">${ui.team}</span>`,
+      `<span class="pill ${t.priority === "high" ? "warn" : ""}">prioridad ${PRIORITY_UI[t.priority]}</span>`,
+      sent ? `<span class="pill ${sent.cls}">${sent.text}</span>` : "",
+      t.churn_risk
+        ? `<span class="pill ${t.churn_risk === "high" ? "danger" : t.churn_risk === "medium" ? "warn" : ""}">` +
+          `churn ${(t.churn_probability * 100).toFixed(0)}%</span>`
+        : "",
+      eta ? `<span class="pill">⏱ ${eta}</span>` : "",
+    ].filter(Boolean).join("");
+
+    return `
+      <div class="qcard ${urgency}">
+        <div class="line1">
+          <span class="tid">#${t.ticket_id}</span>
+          <span class="cust">${escapeHtml(t.customer_name || `cliente ${t.customer_id}`)}
+            · ${timeAgo(t.created_at)}</span>
+        </div>
+        <p class="desc">${escapeHtml(t.description)}</p>
+        <div class="signals">${signals}</div>
+        <div class="actions">
+          ${t.status === "open"
+            ? `<button class="ghost small" data-action="in_progress" data-id="${t.ticket_id}">Tomar el caso</button>`
+            : ""}
+          <button class="small" data-action="resolved" data-id="${t.ticket_id}">Marcar resuelto</button>
+        </div>
+      </div>`;
+  }
+
+  async function updateStatus(ticketId, status, button) {
+    const label = button.textContent;
+    busy(button, true, label);
+    try {
+      await api(`/api/v1/tickets/${ticketId}`, { method: "PUT", body: { status } });
+      loadQueue();
+    } catch (error) {
+      busy(button, false, label);
+      setStatus($("queueStatus"), error.message, "err");
+    }
+  }
+
+  $("reloadQueue").addEventListener("click", loadQueue);
+  $("onlyOpen").addEventListener("change", loadQueue);
 })();
 </script>
 </body>

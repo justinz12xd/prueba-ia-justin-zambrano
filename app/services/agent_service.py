@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from app.agent.graph import get_compiled_graph
 from app.repositories.agent_session_repository import AgentSessionRepository
-from app.schemas.agent import ChatRequest, ChatResponse, SessionResponse
+from app.schemas.agent import ChatRequest, ChatResponse, ChatTicket, SessionResponse
 
 
 class AgentService:
@@ -39,12 +39,15 @@ class AgentService:
             tokens_used_delta=approx_tokens,
         )
 
+        context = result.get("context") or {}
+        ticket_data = context.get("ticket")
         return ChatResponse(
             session_id=session.session_id,
             response=result.get("response", ""),
             intent=result.get("intent"),
             escalate=result.get("escalate", False),
-            customer_context=result.get("context"),
+            ticket=ChatTicket(**ticket_data) if ticket_data else None,
+            customer_context=context,
         )
 
     def get_session(self, session_id: str) -> SessionResponse:

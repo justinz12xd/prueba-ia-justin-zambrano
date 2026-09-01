@@ -49,7 +49,7 @@ data/            datasets sintéticos generados (scripts/generate_synthetic_data
 sql/init.sql     DDL + función y stored procedure PL/pgSQL
 static/          portal del cliente (/portal) y panel técnico (/demo)
 docs/            chuleta de defensa oral para la entrevista
-tests/           pytest (39 tests) con TestClient + SQLite
+tests/           pytest (44 tests) con TestClient + SQLite
 ```
 
 ## 3. Cómo ejecutar
@@ -101,7 +101,7 @@ python dl_training/train_resolution_time_model.py
 ### Tests
 
 ```bash
-pytest tests/ -v      # 39 tests, corren contra SQLite en un archivo temporal
+pytest tests/ -v      # 44 tests, corren contra SQLite en un archivo temporal
 ```
 
 ## 4. Credenciales de prueba
@@ -122,7 +122,7 @@ Todos documentados con ejemplos en Swagger (`/docs`). Resumen:
 
 - **Auth:** `POST /api/v1/auth/login`, `POST /api/v1/auth/refresh`, `GET /api/v1/auth/me`
 - **Customers:** CRUD completo + `DELETE` lógico + `GET /{id}/churn-prediction`
-- **Tickets:** CRUD + `POST /tickets/classify` (clasificación sin crear ticket)
+- **Tickets:** CRUD + `POST /tickets/classify` (clasificación sin crear ticket) + `GET /tickets/queue` (bandeja del agente con las señales de los modelos)
 - **ML:** `POST /ml/predict-churn`, `POST /ml/classify-ticket`, `POST /ml/analyze-sentiment`, `POST /ml/predict-resolution-time`, `GET /ml/models/info`
 - **Agente:** `POST /agent/chat`, `GET/DELETE /agent/sessions/{id}`
 - **MCP:** `GET /mcp/capabilities`, `GET /mcp/resources(/{id})`, `POST /mcp/tools/execute`
@@ -136,24 +136,31 @@ curl -X POST http://localhost:8000/mcp/tools/execute \
 
 ## 5.1 Interfaces web
 
-Además de Swagger, la API sirve dos páginas que consumen sus propios endpoints:
+Además de Swagger, la API sirve dos páginas que consumen sus propios endpoints.
+**`/portal` decide la vista según el rol del usuario autenticado**, porque un cliente
+y un agente no necesitan lo mismo:
 
-**`/portal` — Centro de Ayuda (simulación del producto).** Es la vista del cliente
-final: escribe su problema en lenguaje natural y, mientras teclea, el clasificador
-de tickets detecta la categoría y le dice a qué equipo se derivará
-(*"Detectamos: Consulta de facturación → Facturación, confianza 87%"*). Al enviar,
-se crea el ticket real con la categoría inferida y se le muestra el tiempo estimado
-de respuesta calculado por la red de la Parte 2.2. Incluye el asistente conversacional
-—que avisa cuando deriva a una persona— y el historial de solicitudes del cliente.
+**Rol `customer` → solo un chat.** Pantalla completa de conversación, sin formularios ni
+métricas internas. El cliente describe su problema en lenguaje natural y **es el agente
+LangGraph, en el backend, quien decide registrar el ticket**: los nodos
+`handle_technical_support` y `handle_account_query` lo abren con la categoría que infirió
+el clasificador y una prioridad derivada de las señales del mensaje (frustración,
+cancelación o churn alto ⇒ alta). Si el cliente ya tiene un ticket abierto de esa
+categoría, se reutiliza en vez de duplicarlo. El chat muestra el resultado como una
+tarjeta: número de solicitud, equipo asignado y tiempo estimado de respuesta.
 
-**`/demo` — Panel técnico.** Vista para evaluar los modelos: probabilidades por clase,
-sentimiento con su `is_frustrated`, churn con nivel de riesgo, tiempo de resolución y
-ejecución de tools MCP con el sobre JSON-RPC completo.
+**Roles `agent` / `admin` → consola de soporte.** Bandeja de tickets sin resolver, cada
+uno enriquecido con las señales de los tres modelos (sentimiento del cliente, riesgo de
+churn y tiempo estimado), con acciones para tomar el caso o marcarlo resuelto. Se arma
+con una sola llamada a `GET /api/v1/tickets/queue`: el trabajo pesado lo hace el backend
+en vez de N peticiones desde el navegador.
 
-El portal usa `GET /api/v1/auth/me` para resolver a qué cliente pertenece la sesión
-(el JWT solo transporta email y rol). La clasificación en vivo va con *debounce* de
-450 ms para no lanzar una petición por tecla, y si falla no bloquea el envío: es una
-ayuda, no un requisito.
+**`/demo` — Panel técnico.** Vista para evaluar los modelos uno por uno: probabilidades
+por clase, `is_frustrated`, churn, tiempo de resolución y ejecución de tools MCP con el
+sobre JSON-RPC completo.
+
+El portal usa `GET /api/v1/auth/me` para resolver el rol y a qué cliente pertenece la
+sesión (el JWT solo transporta email y rol).
 
 ## 6. Resultados de los modelos
 
@@ -246,6 +253,14 @@ Gráficas y reportes completos en `saved_models/ml/*.png|json` y `saved_models/d
    en `/ml/models/info`. Se expuso en `POST /api/v1/ml/predict-resolution-time`
    y como tool MCP `predict_resolution_time`, y se añadió al demo web.
 
+5. **LangGraph no inyectaba el `config` en los nodos.** Los nodos estaban firmados como
+   `def nodo(state, config: RunnableConfig | None = None)`, y LangGraph inspecciona la
+   firma para decidir si inyecta el config: con una unión y un valor por defecto **no lo
+   inyecta**, así que los nodos recibían `config=None` y `get_customer_info` caía siempre
+   en la rama "sin sesión de base de datos". Se detectó al implementar la apertura de
+   tickets desde el chat, que también necesitaba la sesión. La corrección fue anotar el
+   parámetro exactamente como `RunnableConfig`, sin unión ni default, en los 7 nodos.
+
 ## 9. Limitaciones conocidas / próximos pasos
 
 - El dataset sintético de tickets/sentimiento está generado por plantillas, por
@@ -255,6 +270,11 @@ Gráficas y reportes completos en `saved_models/ml/*.png|json` y `saved_models/d
 - No se implementaron migraciones (Alembic incluido en `requirements.txt` pero
   no configurado); las tablas se crean con `Base.metadata.create_all` al
   arrancar, más `sql/init.sql` como documentación/alternativa manual.
+- El modelo de sentimiento se entrenó con mensajes emocionales de `interactions.csv`,
+  pero en la bandeja del agente se aplica a la *descripción* del ticket, que suele ser
+  más factual. Es un desajuste de dominio: sobre descripciones neutras la predicción es
+  poco informativa. Lo correcto sería entrenarlo también con descripciones de tickets, o
+  mostrar el sentimiento del último mensaje de la conversación en vez del de la descripción.
 - El checkpointer de LangGraph no se usó explícitamente: el historial de la
   conversación se reconstruye en cada turno desde `agent_session` (Postgres),
   que es la fuente de verdad pedida por el esquema de datos.
