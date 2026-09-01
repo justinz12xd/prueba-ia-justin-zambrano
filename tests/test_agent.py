@@ -132,3 +132,40 @@ def test_chat_persists_interaction_row(client, auth_headers):
         assert row.sentiment in {"positive", "neutral", "negative", None}
     finally:
         db.close()
+
+
+def test_greeting_prefix_does_not_swallow_the_problem(client, auth_headers):
+    """Saludar antes de contar el problema no debe impedir que se registre el ticket.
+
+    Regresión: el regex de saludo estaba anclado al inicio y marcaba como "greeting"
+    todo mensaje que empezara con "buenas tardes", saltando los handlers del grafo.
+    """
+    resp = client.post("/api/v1/agent/chat", json={
+        "message": "Buenas tardes, desde el lunes el internet se corta cada media hora",
+        "customer_id": 1,
+    }, headers=auth_headers)
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["intent"] == "technical_support", "el saludo no debe ganarle al contenido"
+    assert body["ticket"] is not None
+    assert body["ticket"]["category"] == "TECH"
+
+
+def test_pure_greeting_is_still_a_greeting(client, auth_headers):
+    """Un saludo a secas sigue siendo un saludo y no abre ticket."""
+    for saludo in ("Hola", "Buenas tardes", "  hola!  ", "qué tal"):
+        body = client.post("/api/v1/agent/chat", json={"message": saludo, "customer_id": 1},
+                           headers=auth_headers).json()
+        assert body["intent"] == "greeting", f"'{saludo}' debería ser saludo"
+        assert body["ticket"] is None
+
+
+def test_courtesy_inside_a_long_message_is_not_a_farewell(client, auth_headers):
+    """'gracias' dentro de una consulta larga no es una despedida."""
+    body = client.post("/api/v1/agent/chat", json={
+        "message": "Hola, gracias por responder. Me cobraron dos veces la factura de este "
+                   "mes y necesito que revisen ese cobro duplicado, por favor",
+        "customer_id": 1,
+    }, headers=auth_headers).json()
+    assert body["intent"] != "farewell"
+    assert body["ticket"] is not None

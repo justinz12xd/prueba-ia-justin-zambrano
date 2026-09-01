@@ -6,12 +6,9 @@
 
 > **¿Te preguntan dónde está algo?** Ve directo a la **sección 12**: mapa de cada
 > requisito del enunciado con archivo y línea.
->
 > Guion para la entrevista de validación. La prueba avisa que hay que **explicar el código
 > y modificarlo en vivo**, así que la sección 9 (modificaciones en vivo) es la más importante:
 > practícala antes, con el proyecto levantado.
-
----
 
 ## 0. Elevator pitch (45 segundos)
 
@@ -41,7 +38,7 @@ app/
 ├── repositories/  acceso a datos (patrón Repository)
 ├── services/      lógica de negocio
 ├── api/v1/        routers REST: auth, customers, tickets, ml, agent
-├── mcp/           servidor MCP (capabilities, resources, tools/execute)
+├── mcp/           servidor MCP (capabilities, resources, tools/     execute)
 ├── agent/         grafo LangGraph: state.py, nodes.py, graph.py, llm.py
 └── ml_runtime/    capa de inferencia compartida (API y agente usan la misma)
 ml_training/       Parte 1 — scikit-learn

@@ -32,8 +32,14 @@ logger = logging.getLogger("agent")
 def _now() -> dt.datetime:
     return dt.datetime.now(dt.timezone.utc)
 
+# El saludo se busca SOLO al principio del mensaje y se consume junto con la
+# puntuación que lo sigue, para poder separarlo del contenido real. Las variantes
+# largas van dentro de un grupo opcional ("buenas" + "tardes") en vez de como
+# alternativas sueltas: con alternativas, "buenas" ganaría y dejaría "tardes,"
+# pegado al resto del mensaje.
 GREETING_PATTERNS = re.compile(
-    r"^\s*(hola|buenas|buenos d[ií]as|buenas tardes|buenas noches|hey|qu[eé] tal)\b",
+    r"^\s*(?:hola|hey|qu[eé] tal|buen(?:os|as)(?:\s+(?:d[ií]as|tardes|noches))?)"
+    r"[\s,;:.!¡¿?-]*",
     re.IGNORECASE,
 )
 FAREWELL_PATTERNS = re.compile(
@@ -41,6 +47,9 @@ FAREWELL_PATTERNS = re.compile(
     r"eso ser[ií]a todo|hasta pronto)\b",
     re.IGNORECASE,
 )
+
+# Mínimo de caracteres que el clasificador de tickets acepta (ver text_preprocessing).
+MIN_CLASIFICABLE = 10
 HUMAN_REQUEST_PATTERNS = re.compile(
     r"\b(hablar con (un |una )?(humano|persona|agente|supervisor)|"
     r"quiero un (agente|supervisor) real|no quiero hablar con un bot)\b",
@@ -54,6 +63,23 @@ CATEGORY_TO_INTENT = {
     "CNCL": "account_query",
     "OTHR": "general_info",
 }
+
+
+def _separar_saludo(texto: str) -> tuple[str, str]:
+    """Divide el mensaje en (saludo inicial, resto).
+
+    Hace falta porque la gente saluda antes de contar su problema: "Buenas tardes,
+    el internet no me funciona" es un ticket técnico, no un saludo. Si se tratara
+    como saludo, el grafo saltaría los handlers y no se registraría nada.
+    """
+    resto = (texto or "").strip()
+    saludos: list[str] = []
+    # En bucle, porque la gente encadena saludos: "Hola, buenas tardes, ...".
+    # Sin esto quedaría "buenas tardes" como si fuera el contenido del mensaje.
+    while (match := GREETING_PATTERNS.match(resto)) and match.end() > 0:
+        saludos.append(match.group(0).strip(" ,;:.!¡¿?-"))
+        resto = resto[match.end():].strip()
+    return " ".join(s for s in saludos if s), resto
 
 
 def _last_user_message(state: AgentState) -> str:
@@ -73,19 +99,28 @@ def classify_intent(state: AgentState, config: RunnableConfig) -> AgentState:
     context = dict(state.get("context") or {})
 
     try:
-        if GREETING_PATTERNS.search(text or ""):
+        saludo, resto = _separar_saludo(text)
+        despedida = FAREWELL_PATTERNS.search(text or "")
+
+        if saludo and len(resto) < MIN_CLASIFICABLE:
+            # El mensaje es SOLO un saludo ("hola", "buenas tardes").
             intent = "greeting"
-        elif FAREWELL_PATTERNS.search(text or ""):
+        elif despedida and len(text.strip()) < 40:
+            # Despedida breve. En un mensaje largo, "gracias" o "adiós" suelen ser
+            # cortesía dentro de una consulta real, no el final de la conversación.
             intent = "farewell"
+        elif len(resto) < MIN_CLASIFICABLE:
+            # Demasiado corto para el clasificador -> se trata como info general
+            intent = "general_info"
         else:
-            if len(text.strip()) < 10:
-                # Muy corto para el clasificador ML -> se trata como info general
-                intent = "general_info"
-            else:
-                category, probabilities = ticket_classifier.classify_ticket(text)
-                intent = CATEGORY_TO_INTENT.get(category, "general_info")
-                context["predicted_category"] = category
-                context["category_probabilities"] = probabilities
+            # Se clasifica el CONTENIDO, sin el saludo: así "Buenas tardes, no tengo
+            # internet" llega al clasificador como "no tengo internet".
+            category, probabilities = ticket_classifier.classify_ticket(resto)
+            intent = CATEGORY_TO_INTENT.get(category, "general_info")
+            context["predicted_category"] = category
+            context["category_probabilities"] = probabilities
+            if saludo:
+                context["greeting_prefix"] = saludo
 
         # Señal de frustración vía modelo de sentimiento (Parte 2.1)
         try:
@@ -352,9 +387,16 @@ def generate_response(state: AgentState, config: RunnableConfig) -> AgentState:
             + (f"Cliente: {context.get('customer_name')}, plan {context.get('plan_type')}, "
                f"{context.get('tenure_months')} meses de antigüedad.\n"
                if context.get("customer_found") else "Cliente no identificado.\n")
+            + (f"Se registró la solicitud de soporte #{context['ticket']['ticket_id']} "
+               f"para este caso; menciónala en la respuesta.\n"
+               if context.get("ticket") and context["ticket"].get("is_new") else "")
+            + (f"El caso se sumó a la solicitud #{context['ticket']['ticket_id']}, que "
+               f"ya estaba abierta; menciónalo.\n"
+               if context.get("ticket") and not context["ticket"].get("is_new") else "")
             + "Si se debe escalar, indícalo amablemente en la respuesta. "
             "Si es un saludo, saluda y pregunta en qué puedes ayudar. "
-            "Si es una despedida, despídete cordialmente."
+            "Si es una despedida, despídete cordialmente. "
+            "No inventes datos concretos (precios, horarios, fechas) que no te hayan dado."
         )
         history = state.get("messages") or []
         recent = history[-6:]
@@ -363,8 +405,13 @@ def generate_response(state: AgentState, config: RunnableConfig) -> AgentState:
             lc_messages.append(HumanMessage(content=f"[{m.get('role')}] {m.get('content')}"))
 
         result = llm.invoke(lc_messages)
-        response_text = result.content if hasattr(result, "content") else str(result)
-        return {**state, "response": response_text}
+        response_text = (result.content if hasattr(result, "content") else str(result)) or ""
+        if not response_text.strip():
+            # El LLM puede devolver vacío si agota el presupuesto de tokens; en ese
+            # caso es preferible una plantilla correcta a un mensaje en blanco.
+            logger.warning("El LLM devolvió una respuesta vacía, uso plantilla")
+            return {**state, "response": _template_response(state)}
+        return {**state, "response": response_text.strip()}
     except Exception as exc:  # noqa: BLE001 - nunca debe tumbar el endpoint /agent/chat
         logger.exception("Error llamando al LLM, uso respuesta de fallback")
         return {**state, "response": _template_response(state), "error": str(exc)}
