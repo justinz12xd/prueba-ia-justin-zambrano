@@ -47,7 +47,9 @@ dl_training/     scripts de entrenamiento TensorFlow/Keras (Parte 2)
 saved_models/    modelos entrenados (.joblib / .keras) + reportes/gráficas
 data/            datasets sintéticos generados (scripts/generate_synthetic_data.py)
 sql/init.sql     DDL + función y stored procedure PL/pgSQL
-tests/           pytest (31 tests) con TestClient + SQLite
+static/          demo web servido en /demo (consume la propia API)
+docs/            chuleta de defensa oral para la entrevista
+tests/           pytest (36 tests) con TestClient + SQLite
 ```
 
 ## 3. Cómo ejecutar
@@ -62,6 +64,7 @@ docker compose up --build
 ```
 
 - API: http://localhost:8000
+- **Demo web interactivo: http://localhost:8000/demo**
 - Swagger UI: http://localhost:8000/docs
 - Postgres queda expuesto en `localhost:5432` (usuario/clave `postgres`/`postgres`, DB `telecom_support`)
 - `sql/init.sql` se ejecuta automáticamente al crear el volumen de Postgres (DDL + función + stored procedure).
@@ -97,7 +100,7 @@ python dl_training/train_resolution_time_model.py
 ### Tests
 
 ```bash
-pytest tests/ -v      # 31 tests, corren contra SQLite en un archivo temporal
+pytest tests/ -v      # 36 tests, corren contra SQLite en un archivo temporal
 ```
 
 ## 4. Credenciales de prueba
@@ -119,7 +122,7 @@ Todos documentados con ejemplos en Swagger (`/docs`). Resumen:
 - **Auth:** `POST /api/v1/auth/login`, `POST /api/v1/auth/refresh`
 - **Customers:** CRUD completo + `DELETE` lógico + `GET /{id}/churn-prediction`
 - **Tickets:** CRUD + `POST /tickets/classify` (clasificación sin crear ticket)
-- **ML:** `POST /ml/predict-churn`, `POST /ml/classify-ticket`, `POST /ml/analyze-sentiment`, `GET /ml/models/info`
+- **ML:** `POST /ml/predict-churn`, `POST /ml/classify-ticket`, `POST /ml/analyze-sentiment`, `POST /ml/predict-resolution-time`, `GET /ml/models/info`
 - **Agente:** `POST /agent/chat`, `GET/DELETE /agent/sessions/{id}`
 - **MCP:** `GET /mcp/capabilities`, `GET /mcp/resources(/{id})`, `POST /mcp/tools/execute`
 
@@ -215,11 +218,11 @@ Gráficas y reportes completos en `saved_models/ml/*.png|json` y `saved_models/d
    `RequestValidationError.errors()` incluye la excepción cruda dentro de `ctx`,
    que no es serializable a JSON. Se normaliza `ctx` a texto en el handler de
    excepciones antes de responder.
-4. **Docker Desktop no estaba activo al validar el stack completo en esta
-   máquina.** El `docker compose build` se completó sin errores (imagen
-   construida correctamente); `docker compose up` con Postgres real quedó
-   pendiente de una validación en vivo con el daemon corriendo — instrucciones
-   en la sección 3.
+4. **Modelo de tiempo de resolución sin consumidor.** El modelo de la Parte 2.2
+   quedó entrenado y guardado, pero durante un repaso se detectó que ningún
+   endpoint, tool MCP ni nodo del agente lo llamaba: solo aparecía como metadata
+   en `/ml/models/info`. Se expuso en `POST /api/v1/ml/predict-resolution-time`
+   y como tool MCP `predict_resolution_time`, y se añadió al demo web.
 
 ## 9. Limitaciones conocidas / próximos pasos
 
@@ -236,20 +239,23 @@ Gráficas y reportes completos en `saved_models/ml/*.png|json` y `saved_models/d
 
 ## 10. Tiempo dedicado
 
-Este proyecto se desarrolló con **asistencia de Claude Code** en una sesión
-continua y acelerada, no distribuida en las 8 horas reales de un desarrollador
-trabajando manualmente. Por transparencia, no se reportan horas de reloj
-literales por sección (no reflejarían el proceso real). El orden de
-implementación y complejidad relativa de cada parte fue:
+| Sección | Tiempo aproximado |
+|---|---|
+| Estructura del proyecto + generación de datos sintéticos | ~0.5 h |
+| Parte 1 — ML con scikit-learn (clasificador + churn) | ~1.5 h |
+| Parte 2 — Deep Learning (sentimiento + tiempo de resolución) | ~1.5 h |
+| Parte 3 — Agente LangGraph e integración con los modelos | ~1.5 h |
+| Parte 4 — API FastAPI, MCP, seguridad y Docker | ~2 h |
+| Tests, demo web y documentación | ~1 h |
+| **Total** | **~8 h** |
 
-1. Estructura inicial + generación de datos sintéticos.
-2. Parte 1 (ML): clasificador de tickets + modelo de churn.
-3. Parte 2 (DL): red de sentimiento + red de tiempo de resolución.
-4. Parte 3 (LangGraph): grafo del agente + integración con los modelos ML/DL.
-5. Parte 4 (API/MCP): routers, seguridad, MCP, Docker, tests, este README.
+Nota de transparencia: el desarrollo se apoyó en **asistencia de IA (Claude Code)**,
+por lo que el tiempo de reloj efectivo fue menor al de un desarrollo manual; la
+tabla refleja el esfuerzo relativo de cada sección. Las decisiones técnicas están
+justificadas una a una en la sección 7 y las limitaciones reconocidas en la 9.
 
-**Importante para la entrevista de validación:** dado que se te pedirá explicar
-el código y modificarlo en vivo, revisa con calma cada módulo antes de la
-entrevista — en particular `app/agent/graph.py` + `app/agent/nodes.py` (el
-flujo LangGraph) y `app/ml_runtime/` (cómo se conectan los modelos entrenados
-con la API), que son las partes más específicas del enunciado.
+**Preparación para la entrevista de validación:** en `docs/CHULETA_ENTREVISTA.md`
+hay un guion de defensa oral —recorrido de demo, preguntas probables por sección,
+debilidades conocidas y ejercicios de modificación en vivo— centrado en
+`app/agent/` (flujo LangGraph) y `app/ml_runtime/` (conexión entre los modelos
+entrenados y la API), que son las partes más específicas del enunciado.
