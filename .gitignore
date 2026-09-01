@@ -32,6 +32,9 @@ Thumbs.db
 # Enunciado de la prueba (documento fuente, no forma parte del entregable)
 *.pdf
 
+# Notas personales de preparación, fuera del entregable
+docs/CHULETA_ENTREVISTA.md
+
 # Docker
 *.pid
 
